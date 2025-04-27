@@ -20,7 +20,7 @@ class Map {
     let walls = Array.new(nWalls);
 
     let walls[0] = Wall.new(20, 9, 190, 15);
-    let walls[1] = Wall.new(60, 34, 190, 40);
+    let walls[1] = Wall.new(60, 35, 190, 41);
     
 
     return;

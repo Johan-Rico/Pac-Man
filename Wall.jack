@@ -23,11 +23,11 @@ class Wall {
     return (
       // left of object overlaps right of wall
       // right of object overlaps left of wall
-      ((x - radius) < (rightX + 2)) & ((x+radius) > (leftX - 2))
+      ((x - radius) < (rightX + 3)) & ((x+radius) > (leftX - 3))
     ) & (
       // top of object overlaps bottom of wall
       // bottom of object overlaps top of wall
-      ((y-radius) < (bottomY + 2)) & ((y+radius) > (topY - 2))
+      ((y-radius) < (bottomY + 3)) & ((y+radius) > (topY - 3))
     );
   }
 
