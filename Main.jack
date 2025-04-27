@@ -1,0 +1,17 @@
+class Main {
+	function void main() {
+		var int key;
+		var Game game;
+		let game = Game.new(true);
+		do game.init();
+		while (true) {
+			do game.next();
+			let key = Keyboard.keyPressed();
+			if (~(key = 0)) {
+				do game.handleKey(key);
+			}
+			do Sys.wait(15);
+		}
+		return;
+	}
+}

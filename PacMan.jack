@@ -1,0 +1,139 @@
+class PacMan {
+    field boolean color;
+    field Map map;
+    field int x, y, dir, nextDir;
+    field int nextX, nextY;
+    field int sprite, adition; 
+    field int speed, radius;
+
+    constructor PacMan new(boolean c, Map m) {
+        let color = c;
+        let map = m;
+        let x = 256; // start x
+        let y = 128; // start y
+        let dir = 1; // start by going right
+        let nextDir = 1;
+        let speed = 1;
+        let radius = 7;
+        
+        return this;
+    }
+
+    method void init() {
+        do draw();
+        return;
+    }
+
+    method void next() {
+       
+        if (NextMoveIsPossible(nextDir)) {
+            let dir = nextDir;
+        } else {
+            if (~NextMoveIsPossible(dir)) {
+                return;
+            }
+        }
+
+        do Screen.setColor(color);
+        do Screen.drawRectangle(x-radius, y-radius, x+radius, y+radius);
+        do Screen.setColor(~color);
+
+        let x = nextX;
+        let y = nextY;
+
+        do draw();
+
+        return;
+    }
+    
+    method void draw() {
+
+        var int i, limit, func, d;
+
+        do Screen.drawCircle(x,y,radius);
+        
+        if (~((sprite/3) = 0)) {
+            let func = 2*(sprite/3)-5;
+            let limit = 3*(sprite/3)-1;
+            let i = -limit;
+            do Screen.setColor(color);
+            if (dir > 2) {
+                let d = -2*dir+7;
+                while (~(i > limit)) {
+                    do Screen.drawLine(x+i, y-(func*Math.abs(i)*d)-d, x+i, y+(d*radius));
+                    let i = i+1;
+                }
+            } else {
+                let d = -2*dir+3;
+                while (~(i > limit)) {
+                    do Screen.drawLine(x-(func*Math.abs(i)*d)-d, y+i, x+(d*radius), y+i);
+                    let i = i+1;
+                }
+            }
+            do Screen.setColor(~color);
+        }
+
+        if (sprite = 0) {
+            let adition = 1;
+        }
+
+        if (sprite = 8) {
+            let adition = -1;
+        }
+
+        let sprite = sprite + adition; 
+        
+        return;
+    }
+
+    method boolean NextMoveIsPossible(int d) {
+        let nextX = x;
+        let nextY = y;
+
+        if (d = 1) {
+            let nextX = x + speed;
+        }
+        if (d = 2) {
+            let nextX = x - speed;
+        }
+        if (d = 3) {
+            let nextY = y + speed;
+        }
+        if (d = 4) {
+            let nextY = y - speed;
+        }
+
+        if ((nextX = x) & (nextY = y)) {
+            return false;
+        }
+
+        if (map.checkOverlapping(nextX, nextY, radius)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    method void handleKey(int key) {
+        if (key = 130) {
+            let nextDir = 2; // left
+        }
+        if (key = 133) {
+            let nextDir = 3; // down
+        }
+        if (key = 132) {
+            let nextDir = 1; // right
+        }
+        if (key = 131) {
+            let nextDir = 4; // up
+        }
+
+        return;
+    }
+
+    method void dispose() {
+    	do Memory.deAlloc(this);
+        return;
+    }
+    
+}
