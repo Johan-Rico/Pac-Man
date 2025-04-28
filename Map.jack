@@ -1,70 +1,70 @@
 class Map {
-  // number of walls
-  field int nWalls;
-  // collection of walls
-  field Array walls;
-
-  constructor Map new() {
-    let nWalls = 2;
-    do createWalls();
-    return this;
-  }
-
-  method void init() {
-    do draw();
-    return;
-  }
-
-  method void createWalls() {
-    var int i, bx;
-    let walls = Array.new(nWalls);
-
-    let walls[0] = Wall.new(20, 9, 190, 15);
-    let walls[1] = Wall.new(60, 35, 190, 41);
-    
-
-    return;
-  }
-
-  // draw all walls
-  method void draw() {
-    var Wall w;
-    var int i;
-    let i = 0;
-    while (i < nWalls) {
-      let w = walls[i];
-      do w.draw();
-      let i = i + 1;
-    }
-    return;
-  }
-
-  // check if object given corners is overlapping a wall
-  method boolean checkOverlapping(int x, int y, int radius) {
-    var Wall w;
-    var int i;
-    let i = 0;
-    while (i < nWalls) {
-      let w = walls[i];
-      if (w.checkOverlapping(x, y, radius)) {
-        return true;
-      }
-      let i = i + 1;
-    }
-    return false;
-  }
-
-  method void dispose() {
-	var Wall w;
-	var int i;
-    let i = 0;
-    while (i < nWalls) {
-      let w = walls[i];
-      do w.dispose();
-      let i = i + 1;
-    }
-	  do walls.dispose();
-    do Memory.deAlloc(this);
-    return;
-  }
+	field int nWalls;
+	field Array walls;
+	field boolean color;
+  
+	constructor Map new(boolean c) {
+		let color = c;
+		let nWalls = 2;
+		do createWalls();
+		return this;
+	}
+  
+	method void init() {
+		do draw();
+	  	return;
+	}
+  
+	method void createWalls() {
+	  	var int i, bx;
+	  	let walls = Array.new(nWalls);
+  
+	  	let walls[0] = Wall.new(color, 20, 9, 190, 15);
+	  	let walls[1] = Wall.new(color, 60, 35, 190, 41);
+	  
+  
+	  	return;
+	}
+  
+	// draw all walls
+	method void draw() {
+	  	var Wall w;
+	  	var int i;
+	  	let i = 0;
+	  	while (i < nWalls) {
+			let w = walls[i];
+			do w.draw();
+			let i = i + 1;
+		}
+		return;
+	}
+  
+	// check if object given corners is overlapping a wall
+	method boolean checkOverlapping(int x, int y, int radius) {
+	  	var Wall w;
+	  	var int i;
+	  	let i = 0;
+	  	while (i < nWalls) {
+			let w = walls[i];
+			if (w.checkOverlapping(x, y, radius)) {
+		  		return true;
+			}
+			let i = i + 1;
+	  	}
+	  	return false;
+	}
+  
+	method void dispose() {
+	  	var Wall w;
+	  	var int i;
+	  	let i = 0;
+	  	while (i < nWalls) {
+			let w = walls[i];
+			do w.dispose();
+			let i = i + 1;
+	  	}
+		do walls.dispose();
+	  	do Memory.deAlloc(this);
+	  	return;
+	}
 }

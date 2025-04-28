@@ -1,0 +1,47 @@
+class Label {
+
+	function void draw(boolean color, String text, int col, int row) {
+		do Output.moveCursor(row, col);
+		do Output.printString(text);
+		if (color) {
+			do Screen.setColor(true);
+			do Label.invert(col, col + text.length(), row);
+			do Screen.setColor(false);
+		}
+		return;
+	}
+
+	function void invert(int col1, int col2, int row) {
+		var int address, bitmap, col, y;
+		let y = (row*11+1);
+
+		while (~(y > (row+1*11))) {
+			let address = (col1/2) + (y*32) + 16384;
+			let col = col1;
+
+			if (~((col1/2*4) = (col1*2))) {
+				let bitmap = Memory.peek(address);
+        		do Memory.poke(address, ~bitmap | 255);
+				let address = address + 1;
+				let col = col + 2;
+			}
+
+			while (col < (col2/2*2)) {
+        		let bitmap = Memory.peek(address);
+        		do Memory.poke(address, ~bitmap); 
+				let address = address + 1;
+				let col = col + 2;
+			}
+
+			if (~((col2/2*4) = (col2*2))) {
+				let bitmap = Memory.peek(address);
+        		do Memory.poke(address, ~bitmap | -256);
+			}
+
+			
+			let y = y + 1;
+			let col = col1;
+		}
+		return;
+	}
+}

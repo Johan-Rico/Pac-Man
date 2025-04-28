@@ -55,7 +55,7 @@ class Game {
   	}
 
 	method void createSprites() {
-		let map = Map.new();
+		let map = Map.new(color);
 		let pacman = PacMan.new(color, map);
 		return;
   	}
