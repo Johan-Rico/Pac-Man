@@ -56,13 +56,22 @@ class Game {
   	}
 
 	method void createSprites() {
+		var int x;
+		var int y;
+		let y = 38;
 		let map = Map.new(color);
-		let pacman = PacMan.new(color, map);
-		do Output.moveCursor(20,14);
-		do Output.printString("Score: ");
-		do Output.printInt(1050);
+		let pacman = PacMan.new(~color, map);
+		while (y < 255) {
+			let x = 17;
+			while (x < 511) {
+				do Screen.drawRectangle(x, y, x+1, y+1);
+				let x = x + 9;
+			}
+			let y = y + 9;
+		}
 		return;
-  	}
+	}
+		
 
   	// destroy all sprites
   	method void disposeSprites() {

@@ -34,9 +34,9 @@ class PacMan {
             }
         }
 
-        do Screen.setColor(color);
-        do Screen.drawRectangle(x-radius, y-radius, x+radius, y+radius);
         do Screen.setColor(~color);
+        do Screen.drawRectangle(x-radius, y-radius, x+radius, y+radius);
+        do Screen.setColor(color);
 
         let x = nextX;
         let y = nextY;
@@ -56,7 +56,7 @@ class PacMan {
             let func = 2*(sprite/3)-5;
             let limit = 3*(sprite/3)-1;
             let i = -limit;
-            do Screen.setColor(color);
+            do Screen.setColor(~color);
             if (dir > 2) {
                 let d = -2*dir+7;
                 while (~(i > limit)) {
@@ -70,7 +70,7 @@ class PacMan {
                     let i = i+1;
                 }
             }
-            do Screen.setColor(~color);
+            do Screen.setColor(color);
         }
 
         if (sprite = 0) {
