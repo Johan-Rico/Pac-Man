@@ -5,7 +5,7 @@ class Map {
   
 	constructor Map new(boolean c) {
 		let color = c;
-		let nWalls = 2;
+		let nWalls = 18;
 		do createWalls();
 		return this;
 	}
@@ -19,8 +19,87 @@ class Map {
 	  	var int i, bx;
 	  	let walls = Array.new(nWalls);
   
-	  	let walls[0] = Wall.new(color, 20, 9, 190, 15);
-	  	let walls[1] = Wall.new(color, 60, 35, 190, 41);
+		/* 
+		
+		//Horizontal walls
+	  	let walls[0] = Wall.new(color, 10, 30, 503, 37);
+		let walls[1] = Wall.new(color, 10, 57, 503, 64);
+		let walls[2] = Wall.new(color, 10, 84, 503, 91);
+		let walls[3] = Wall.new(color, 10, 111, 503, 118);
+		let walls[4] = Wall.new(color, 10, 138, 503, 145);
+		let walls[5] = Wall.new(color, 10, 165, 503, 172);
+		let walls[6] = Wall.new(color, 10, 192, 503, 199);
+		let walls[7] = Wall.new(color, 10, 219, 503, 226);
+		let walls[8] = Wall.new(color, 10, 246, 503, 253);
+
+
+		// Vertical walls
+		let walls[9] = Wall.new(color, 10, 30, 17, 253);
+		let walls[10] = Wall.new(color, 37, 30, 44, 253);
+		let walls[11] = Wall.new(color, 64, 30, 71, 253);
+		let walls[12] = Wall.new(color, 91, 30, 98, 253);
+		let walls[13] = Wall.new(color, 118, 30, 125, 253);
+		let walls[14] = Wall.new(color, 145, 30, 152, 253);
+		let walls[15] = Wall.new(color, 172, 30, 179, 253);
+		let walls[16] = Wall.new(color, 199, 30, 206, 253);
+		let walls[17] = Wall.new(color, 226, 30, 233, 253);
+		let walls[18] = Wall.new(color, 253, 30, 260, 253);
+		let walls[19] = Wall.new(color, 280, 30, 287, 253);
+		let walls[20] = Wall.new(color, 307, 30, 314, 253);
+		let walls[21] = Wall.new(color, 334, 30, 341, 253);
+		let walls[22] = Wall.new(color, 361, 30, 368, 253);
+		let walls[23] = Wall.new(color, 388, 30, 395, 253);
+		let walls[24] = Wall.new(color, 415, 30, 422, 253);
+		let walls[25] = Wall.new(color, 442, 30, 449, 253);
+		let walls[26] = Wall.new(color, 469, 30, 476, 253);
+		let walls[27] = Wall.new(color, 496, 30, 503, 253);
+		*/
+
+		//Pacman bordes
+		//bordes de arriba y abajo
+		let walls[0] = Wall.new(color, 10, 30, 503, 37);
+		let walls[1] = Wall.new(color, 10, 246, 503, 253);
+		//bordes de izquierda y derecha
+		let walls[2] = Wall.new(color, 496, 30, 503, 118);
+		let walls[3] = Wall.new(color, 496, 192, 503, 253);
+
+		let walls[4] = Wall.new(color, 10, 30, 17, 118);
+		let walls[5] = Wall.new(color, 10, 192, 17, 253);
+		
+		//bordes de los pasillos horizontales
+		let walls[8] = Wall.new(color, 10, 111, 71, 118);
+		let walls[6] = Wall.new(color, 10, 138, 71, 145);
+		let walls[7] = Wall.new(color, 10, 165, 71, 172);
+		let walls[9] = Wall.new(color, 10, 192, 71, 199);
+
+		let walls[10] = Wall.new(color, 442, 111, 503, 118);
+		let walls[11] = Wall.new(color, 442, 138, 503, 145);
+		let walls[12] = Wall.new(color, 442, 165, 503, 172);
+		let walls[13] = Wall.new(color, 442, 192, 503, 199);
+
+		//bordes de los pasillos verticales
+		let walls[14] = Wall.new(color, 64, 111, 71, 145);
+		let walls[15] = Wall.new(color, 64, 165, 71, 199);
+		let walls[16] = Wall.new(color, 442, 111, 449, 145);
+		let walls[17] = Wall.new(color, 442, 165, 449, 199);
+
+		/*
+		let walls[6] = Wall.new(color, 226, 30, 233, 253);
+		let walls[7] = Wall.new(color, 253, 30, 260, 253);
+		let walls[9] = Wall.new(color, 280, 30, 287, 253);
+
+		let walls[8] = Wall.new(color, 10, 111, 503, 118);
+		let walls[10] = Wall.new(color, 10, 138, 503, 145);
+		let walls[11] = Wall.new(color, 10, 165, 503, 172);
+		*/
+
+
+
+
+
+
+
+
 	  
   
 	  	return;
@@ -31,9 +110,17 @@ class Map {
 	  	var Wall w;
 	  	var int i;
 	  	let i = 0;
+		do Screen.setColor(~color);
 	  	while (i < nWalls) {
 			let w = walls[i];
-			do w.draw();
+			do w.drawBorder();
+			let i = i + 1;
+		}
+		let i = 0;
+		do Screen.setColor(color);
+	  	while (i < nWalls) {
+			let w = walls[i];
+			do w.drawInside();
 			let i = i + 1;
 		}
 		return;
