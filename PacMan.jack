@@ -3,15 +3,15 @@ class PacMan {
     field Map map;
     field int x, y, dir, nextDir;
     field int nextX, nextY;
-    field int sprite, adition; 
+    field int sprite, adition;
     field int speed, radius;
 
     constructor PacMan new(boolean c, Map m) {
         let color = c;
         let map = m;
-        let x = 256; // start x
-        let y = 128; // start y
-        let dir = 1; // start by going right
+        let x = 256;
+        let y = 128;
+        let dir = 1;
         let nextDir = 1;
         let speed = 1;
         let radius = 7;
