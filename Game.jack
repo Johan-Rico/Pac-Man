@@ -57,10 +57,7 @@ class Game {
 
 	method void createSprites() {
 		let map = Map.new(color);
-		let pacman = PacMan.new(color, map);
-		do Output.moveCursor(20,14);
-		do Output.printString("Score: ");
-		do Output.printInt(1050);
+		let pacman = PacMan.new(~color, map);
 		return;
   	}
 
