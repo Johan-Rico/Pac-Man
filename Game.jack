@@ -9,6 +9,7 @@ class Game {
 	// create a new game
 	constructor Game new(boolean c) {
 		let color = c;
+		do Output.setColor(~color);
 		// initialize sprites
 		do clearScreen();
 		do createSprites();
@@ -57,6 +58,9 @@ class Game {
 	method void createSprites() {
 		let map = Map.new(color);
 		let pacman = PacMan.new(color, map);
+		do Output.moveCursor(20,14);
+		do Output.printString("Score: ");
+		do Output.printInt(1050);
 		return;
   	}
 
