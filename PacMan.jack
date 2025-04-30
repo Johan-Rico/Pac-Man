@@ -5,6 +5,7 @@ class PacMan {
     field int nextX, nextY;
     field int sprite, adition;
     field int speed, radius;
+    field int leftLimit, rightLimit;
 
     constructor PacMan new(boolean c, Map m) {
         let color = c;
@@ -20,7 +21,19 @@ class PacMan {
     }
 
     method void init() {
+        do setPos();
         do draw();
+        return;
+    }
+
+    method void setPos() {
+        var Array pos;
+        let pos = map.getPos();
+        let x = pos[0];
+        let y = pos[1];
+        let leftLimit = pos[2] + radius;
+        let rightLimit = pos[3] - radius;
+        do Memory.deAlloc(pos);
         return;
     }
 
@@ -40,6 +53,13 @@ class PacMan {
 
         let x = nextX;
         let y = nextY;
+
+        if (x < 9) {
+            let x = rightLimit - 1;
+        }
+        if (x > rightLimit) {
+            let x = leftLimit + 1;
+        }
 
         do draw();
 

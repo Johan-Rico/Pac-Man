@@ -1,36 +1,30 @@
 class Game {
 
-	// the pacman instance
 	field PacMan pacman;
 	field int score;
 	field Map map;
 	field boolean color;
 	
-	// create a new game
 	constructor Game new(boolean c) {
 		let color = c;
 		do Output.setColor(~color);
-		// initialize sprites
 		do clearScreen();
 		do createSprites();
 		return this;
 	}
 
-	// call initialization functions
 	method void init() {
 		do map.init();
 		do pacman.init();
 		return;
 	}
 
-	// repeated game logic
 	method void next() {
 		do pacman.next();
 		return;
 	}
-
+	
 	method void handleKey(int key) {
-		// handle as pacman movement
 		do pacman.handleKey(key);
 		return;
 	}
@@ -44,13 +38,9 @@ class Game {
 	}
 
 	method void newGame() {
-		// destroy sprites
 		do disposeSprites();
-		// clear screen
 		do clearScreen();
-		// recreate sprites
 		do createSprites();
-		// call initialization functions
 		do init();
 		return;
   	}
@@ -58,11 +48,11 @@ class Game {
 	method void createSprites() {
 		var int x;
 		var int y;
-		let y = 38;
-		let map = Map.new(color);
+		let y = 29;
+		let map = Map.new(~color);
 		let pacman = PacMan.new(~color, map);
 		while (y < 255) {
-			let x = 17;
+			let x = 8;
 			while (x < 511) {
 				do Screen.drawRectangle(x, y, x+1, y+1);
 				let x = x + 9;
@@ -72,15 +62,12 @@ class Game {
 		return;
 	}
 		
-
-  	// destroy all sprites
   	method void disposeSprites() {
 		do pacman.dispose();
 		do map.dispose();
 		return;
 	}
 
-  	// dispose all
   	method void dispose() {
 		do Memory.deAlloc(this);
 		return;

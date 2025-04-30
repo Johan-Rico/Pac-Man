@@ -1,40 +1,74 @@
 class Wall {
-  	// corners of wall
 	field int leftX, topY, rightX, bottomY;
-	field boolean color;
 
-  	// construct wall
-  	constructor Wall new(boolean c, int x1, int y1, int x2, int y2) {
-    	let color = c;
-    	let leftX = x1;
-    	let topY = y1;
-    	let rightX = x2;
-    	let bottomY = y2;
+  	constructor Wall new(int x1, int y1, int x2, int y2) {
+		if ((x1 > x2) | (y1 > y2)) {
+			let leftX = x2;
+    		let topY = y2;
+    		let rightX = x1;
+    		let bottomY = y1;
+		} else {
+			let leftX = x1;
+    		let topY = y1;
+    		let rightX = x2;
+    		let bottomY = y2;
+		}
+		let leftX = leftX*9+10;
+		let topY = topY*9+30;
+		let rightX = rightX*9+17;
+		let bottomY = bottomY*9+37;
     	return this;
   	}
 
-  	// draw wall rectangle
   	method void drawBorder() {
-		do Screen.drawRectangle(leftX, topY, rightX, bottomY);	
+		do Screen.drawRectangle(leftX, topY, rightX, bottomY);
     	return;
   	}
 
 	method void drawInside() {
-		do Screen.drawRectangle(leftX+1, topY+1, rightX-1, bottomY-1);	
+    	do Screen.drawRectangle(leftX+1, topY+1, rightX-1, bottomY-1);
     	return;
 	}
 
-  	// check if object is overlapping wall given its coordinates
+	method void drawDetails(boolean color) {
+		do Screen.setColor(~color);
+		do Screen.drawPixel(leftX, topY);
+		do Screen.drawPixel(leftX+1, topY);
+		do Screen.drawPixel(leftX, topY+1);
+		do Screen.drawPixel(leftX, bottomY);
+		do Screen.drawPixel(leftX+1, bottomY);
+		do Screen.drawPixel(leftX, bottomY-1);
+		do Screen.drawPixel(rightX, topY);
+		do Screen.drawPixel(rightX-1, topY);
+		do Screen.drawPixel(rightX, topY+1);
+		do Screen.drawPixel(rightX, bottomY);
+		do Screen.drawPixel(rightX-1, bottomY);
+		do Screen.drawPixel(rightX, bottomY-1);
+		do Screen.setColor(color);
+		do Screen.drawPixel(leftX+1, topY+1);
+		do Screen.drawPixel(leftX+1, bottomY-1);
+		do Screen.drawPixel(rightX-1, topY+1);
+		do Screen.drawPixel(rightX-1, bottomY-1);
+		return;
+	}
+
+	method void fixDetails1() {
+		do Screen.drawLine(leftX+2, topY, rightX-2, topY);
+		do Screen.drawLine(leftX+2, bottomY, rightX-2, bottomY);
+		do Screen.drawLine(leftX, topY+2, leftX, bottomY-2);
+		do Screen.drawLine(rightX, topY+2, rightX, bottomY-2);
+		return;
+	}
+
+	method void fixDetails2() {
+		do Screen.drawRectangle(leftX+2, topY+1, rightX-2, bottomY-1);
+		do Screen.drawRectangle(leftX+1, topY+2, rightX-1, bottomY-2);
+		return;
+	}
+
   	method boolean checkOverlapping(int x, int y, int radius) {
-    	return (
-      	// left of object overlaps right of wall
-      	// right of object overlaps left of wall
-      	((x - radius) < (rightX + 3)) & ((x+radius) > (leftX - 3))
-    	) & (
-      	// top of object overlaps bottom of wall
-      	// bottom of object overlaps top of wall
-      	((y-radius) < (bottomY + 3)) & ((y+radius) > (topY - 3))
-    	);
+		return ((((x - radius) < (rightX+3)) & ((x+radius) > (leftX-3))) 
+		& (((y-radius) < (bottomY+3)) & ((y+radius) > (topY-3))));	
   	}
 
   	// dispose wall
