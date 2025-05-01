@@ -216,10 +216,6 @@ goto IF_FALSE0
 label IF_TRUE0
 push this 4
 pop static 0
-push constant 1
-push constant 36
-call Output.moveCursor 2
-pop temp 0
 push static 0
 call Output.printInt 1
 pop temp 0
@@ -282,6 +278,10 @@ call Game.startLevel 1
 pop temp 0
 goto IF_END0
 label IF_FALSE0
+push constant 16
+push constant 28
+call Output.moveCursor 2
+pop temp 0
 push constant 9
 call String.new 1
 push constant 71

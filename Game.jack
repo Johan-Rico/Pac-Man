@@ -22,6 +22,8 @@ class Game {
 		do map.init();
 		do startLevel();
 		do Sys.wait(1000);
+
+
 		return;
 	}
 
@@ -86,7 +88,6 @@ class Game {
 		do Output.printInt(score);
 		if (score > highScore) {
 			let highScore = score;
-			do Output.moveCursor(1,36);
 			do Output.printInt(highScore);
 		}
 		return;
@@ -120,6 +121,7 @@ class Game {
 		if (lives > 0) {
 			do startLevel();
 		} else {
+			do Output.moveCursor(16,28);
 			do Output.printString("GAME OVER");
 		}
 		return;
