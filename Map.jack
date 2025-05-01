@@ -6,7 +6,7 @@ class Map {
   
 	constructor Map new(boolean c) {
 		let color = c;
-		let nWalls = 18;
+		let nWalls = 39;
 		do createWalls();
 		return this;
 	}
@@ -20,7 +20,7 @@ class Map {
 		var Array pos;
 		let pos = Array.new(4);
 		let pos[0] = 256;	// x PacMan position
-		let pos[1] = 155;	// y PacMan position
+		let pos[1] = 182;	// y PacMan position
 		let pos[2] = 1;		// left limit
 		let pos[3] = 510;	// right limit
 		return pos;
@@ -29,6 +29,8 @@ class Map {
 	method void createWalls() {
 		
 		let walls = Array.new(nWalls);
+
+		// Border walls
 		let walls[0] = Wall.new(0,12,6,12);
 		let walls[1] = Wall.new(6,12,6,9);
 		let walls[2] = Wall.new(6,9,0,9);
@@ -47,6 +49,37 @@ class Map {
 		let walls[15] = Wall.new(54,18,48,18);
 		let walls[16] = Wall.new(48,18,48,15);
 		let walls[17] = Wall.new(48,15,54,15);
+
+		// Ghost house walls
+		let walls[18] = Wall.new(23,15,31,15);
+		let walls[19] = Wall.new(23,15,23,10);
+		let walls[20] = Wall.new(31,15,31,10);
+		let walls[21] = Wall.new(23,10,25,10);
+		let walls[22] = Wall.new(31,10,29,10);
+
+		// Walls inside the map
+		let walls[23] = Wall.new(3,21,9,21);
+		let walls[24] = Wall.new(9,21,9,18);
+
+		let walls[25] = Wall.new(23,18,31,18);
+		let walls[26] = Wall.new(27,18,27,21);
+		let walls[27] = Wall.new(24,21,24,24);
+
+		let walls[28] = Wall.new(30,21,30,24);
+		let walls[29] = Wall.new(21,21,12,21);
+		let walls[30] = Wall.new(33,21,42,21);
+
+		let walls[31] = Wall.new(45,21,51,21);
+		let walls[32] = Wall.new(45,21,45,18);
+
+		let walls[33] = Wall.new(45,18,41,18);
+		let walls[34] = Wall.new(9,18,13,18);
+
+		let walls[35] = Wall.new(9,15,13,15);
+		let walls[36] = Wall.new(41,15,45,15);
+
+		let walls[37] = Wall.new(16,15,20,18);
+		let walls[38] = Wall.new(34,15,38,18);
 
 	  	return;
 	}
