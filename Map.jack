@@ -16,14 +16,9 @@ class Map {
 	  	return;
 	}
 
-	method Array getPos() {
-		var Array pos;
-		let pos = Array.new(4);
-		let pos[0] = 256;	// x PacMan position
-		let pos[1] = 182;	// y PacMan position
-		let pos[2] = 1;		// left limit
-		let pos[3] = 510;	// right limit
-		return pos;
+	method void changeColor(boolean c) {
+		let color = c;
+		return;
 	}
   
 	method void createWalls() {

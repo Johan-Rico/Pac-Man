@@ -4,9 +4,14 @@ class Game {
 	field int score;
 	field Map map;
 	field boolean color;
+	field int score;
+	field int lives;
+	static int highScore;
 	
 	constructor Game new(boolean c) {
 		let color = c;
+		let lives = 3;
+		let score = 32000;
 		do Output.setColor(~color);
 		do clearScreen();
 		do createSprites();
@@ -15,7 +20,8 @@ class Game {
 
 	method void init() {
 		do map.init();
-		do pacman.init();
+		do startLevel();
+		do Sys.wait(1000);
 		return;
 	}
 
@@ -25,6 +31,13 @@ class Game {
 	}
 	
 	method void handleKey(int key) {
+		if (key = 144) {
+			do changeColor(true);
+		}
+		if (key = 145){
+			do handlePacmanDeath();
+			//do changeColor(false);
+		}
 		do pacman.handleKey(key);
 		return;
 	}
@@ -45,12 +58,80 @@ class Game {
 		return;
   	}
 
+	method void changeColor(boolean c) {
+		let color = c;
+		do Output.setColor(~color);
+		do clearScreen();
+		do printLabels();
+		do pacman.changeColor(~color);
+		do pacman.draw();
+		do map.changeColor(~color);
+		do map.draw();
+		return;
+	}
+
+	method void printLabels() {
+		do Output.moveCursor(1,24);
+		do Output.printString("HIGH SCORE");
+		do Output.moveCursor(1,36);
+		do Output.printString("00");
+		do Output.moveCursor(1,4);
+		do Output.printString("00");
+		return;
+	}
+
+
+	method void printScore() {
+		do Output.moveCursor(1,4);
+		do Output.printInt(score);
+		if (score > highScore) {
+			let highScore = score;
+			do Output.moveCursor(1,36);
+			do Output.printInt(highScore);
+		}
+		return;
+	}
+
+	method void printLives() {
+
+		//TODO: print lives
+		return;
+	}
+
+	method void printLive(int x, int y) {
+
+		//TODO: print live (pacman)
+		return;
+	}
+
+	method void startLevel() {
+		let pacman = PacMan.new(~color, map);
+		do pacman.init();
+		do Sys.wait(2000);
+		return;
+	}
+
+	method void handlePacmanDeath() {
+		let lives = lives - 1;
+		do Sys.wait(1000);
+		do pacman.deathAnimation();
+		do Sys.wait(2000);
+		do pacman.dispose();
+		if (lives > 0) {
+			do startLevel();
+		} else {
+			do Output.printString("GAME OVER");
+		}
+		return;
+	}
+
+
 	method void createSprites() {
 		var int x;
 		var int y;
 		let y = 29;
+		do printLabels();
 		let map = Map.new(~color);
-		let pacman = PacMan.new(~color, map);
 		while (y < 255) {
 			let x = 8;
 			while (x < 511) {
