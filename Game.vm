@@ -4,7 +4,7 @@ call Memory.alloc 1
 pop pointer 0
 push argument 0
 pop this 3
-push constant 3
+push constant 1
 pop this 5
 push constant 32000
 pop this 4
@@ -279,10 +279,10 @@ pop temp 0
 goto IF_END0
 label IF_FALSE0
 push constant 16
-push constant 28
+push constant 27
 call Output.moveCursor 2
 pop temp 0
-push constant 9
+push constant 10
 call String.new 1
 push constant 71
 call String.appendChar 2
@@ -291,6 +291,8 @@ call String.appendChar 2
 push constant 77
 call String.appendChar 2
 push constant 69
+call String.appendChar 2
+push constant 32
 call String.appendChar 2
 push constant 32
 call String.appendChar 2
@@ -310,7 +312,7 @@ return
 function Game.createSprites 2
 push argument 0
 pop pointer 0
-push constant 29
+push constant 27
 pop local 1
 push pointer 0
 call Game.printLabels 1
@@ -325,7 +327,7 @@ push constant 255
 lt
 not
 if-goto WHILE_END0
-push constant 8
+push constant 6
 pop local 0
 label WHILE_EXP1
 push local 0

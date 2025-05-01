@@ -193,12 +193,15 @@ class Output {
 
     /** Displays the given character at the cursor location,
      *  and advances the cursor one column forward. */
+    /** Displays the given character at the cursor location,
+     *  and advances the cursor one column forward. */
     function void printChar(char c) {
         var Array character;
         var int addr;
         var int addr_temp;
-        var int two_old_char;
-        var int input_char;
+        var int cur_val;
+        var int mask;
+        var int new_val;
         var int i;
         var int charValue;
         var bool is_right_segment;
@@ -216,19 +219,34 @@ class Output {
 
         // print
         while(i < charHeight) {
-            if (color) {
-                let charValue = character[i];
-            } else {
-                let charValue = ~character[i];
-            }
+            // Obtener el valor actual de la memoria
+            let cur_val = Memory.peek(addr);
+            
+            // Obtener el valor del carácter
+            let charValue = character[i];
+            
+            // Determinar qué segmento estamos modificando (izquierdo o derecho)
             if (is_right_segment) {
-                let input_char = charValue & (-256);
-                let two_old_char = Memory.peek(addr) & (255);
+                // Bits altos (8-15)
+                let mask = -256;  // 1111111100000000 en binario
+                let charValue = charValue * 256;  // Desplazar al segmento correcto
             } else {
-                let input_char = charValue & 255;
-                let two_old_char = Memory.peek(addr) & (-256);
+                // Bits bajos (0-7)
+                let mask = 255;   // 0000000011111111 en binario
             }
-            do Memory.poke(addr, two_old_char | input_char);
+            
+            // Aplicar la inversión de color si es necesario
+            if (color) {
+                // Modo normal (fondo blanco, texto negro)
+                let new_val = (cur_val & (~mask)) | (charValue & mask);
+            } else {
+                // Modo invertido (fondo negro, texto blanco)
+                let new_val = (cur_val & (~mask)) | ((~charValue) & mask);
+            }
+            
+            // Escribir a memoria
+            do Memory.poke(addr, new_val);
+            
             let addr = addr + 32;
             let i = i + 1;
         }
@@ -248,6 +266,7 @@ class Output {
 
         return;
     }
+
 
     /** displays the given string starting at the cursor location,
      *  and advances the cursor appropriately. */

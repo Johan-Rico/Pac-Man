@@ -34,25 +34,25 @@ label IF_END0
 push this 0
 push constant 9
 call Math.multiply 2
-push constant 10
+push constant 8
 add
 pop this 0
 push this 1
 push constant 9
 call Math.multiply 2
-push constant 30
+push constant 28
 add
 pop this 1
 push this 2
 push constant 9
 call Math.multiply 2
-push constant 17
+push constant 15
 add
 pop this 2
 push this 3
 push constant 9
 call Math.multiply 2
-push constant 37
+push constant 35
 add
 pop this 3
 push pointer 0

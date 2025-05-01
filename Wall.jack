@@ -13,10 +13,10 @@ class Wall {
     		let rightX = x2;
     		let bottomY = y2;
 		}
-		let leftX = leftX*9+10;
-		let topY = topY*9+30;
-		let rightX = rightX*9+17;
-		let bottomY = bottomY*9+37;
+		let leftX = leftX*9+8;
+		let topY = topY*9+28;
+		let rightX = rightX*9+15;
+		let bottomY = bottomY*9+35;
     	return this;
   	}
 
