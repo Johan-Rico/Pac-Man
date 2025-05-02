@@ -1,5 +1,4 @@
 class Game {
-
 	field PacMan pacman;
 	field int score;
 	field Map map;
@@ -8,13 +7,13 @@ class Game {
 	field int lives;
 	static int highScore;
 	
-	constructor Game new(boolean c) {
-		let color = c;
+	constructor Game new() {
+		let color = true;
 		let lives = 3;
-		let score = 32000;
 		do Output.setColor(~color);
 		do clearScreen();
 		do createSprites();
+		do printLives();
 		return this;
 	}
 
@@ -65,6 +64,7 @@ class Game {
 		do Output.setColor(~color);
 		do clearScreen();
 		do printLabels();
+		do printLives();
 		do pacman.changeColor(~color);
 		do pacman.draw();
 		do map.changeColor(~color);
@@ -73,9 +73,9 @@ class Game {
 	}
 
 	method void printLabels() {
-		do Output.moveCursor(1,24);
+		do Output.moveCursor(1,26);
 		do Output.printString("HIGH SCORE");
-		do Output.moveCursor(1,36);
+		do Output.moveCursor(1,38);
 		do Output.printString("00");
 		do Output.moveCursor(1,4);
 		do Output.printString("00");
@@ -88,20 +88,32 @@ class Game {
 		do Output.printInt(score);
 		if (score > highScore) {
 			let highScore = score;
+			do Output.moveCursor(1,38);
 			do Output.printInt(highScore);
 		}
 		return;
 	}
 
 	method void printLives() {
-
-		//TODO: print lives
+		var int i;
+		let i = 0;
+		while (i < (lives - 1)) {	
+			do printLive(470-(20*i),14);
+			let i = i + 1;
+		}
 		return;
 	}
 
 	method void printLive(int x, int y) {
-
-		//TODO: print live (pacman)
+		var int i;
+		do Screen.setColor(~color);
+		do Screen.drawCircle(x, y, 7);
+		let i = -7;
+		do Screen.setColor(color);
+		while (~(i > 7)) {
+			do Screen.drawLine(x-1+Math.abs(i), y+i, x+7, y+i);
+			let i = i + 1;
+		}
 		return;
 	}
 
@@ -114,11 +126,14 @@ class Game {
 
 	method void handlePacmanDeath() {
 		let lives = lives - 1;
+		
 		do Sys.wait(1000);
 		do pacman.deathAnimation();
 		do Sys.wait(2000);
 		do pacman.dispose();
 		if (lives > 0) {
+			do Screen.setColor(color);
+			do Screen.drawRectangle(463-(20*(lives)), 7, 477-(20*(lives))+20, 21);
 			do startLevel();
 		} else {
 			do Output.moveCursor(16,27);

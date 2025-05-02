@@ -480,6 +480,11 @@ neg
 push argument 2
 call Math.abs 1
 call Math.multiply 2
+push argument 2
+call Math.abs 1
+push constant 5
+lt
+call Math.multiply 2
 return
 label IF_FALSE8
 push constant 6
@@ -532,6 +537,8 @@ push this 2
 push local 0
 add
 push this 3
+push constant 1
+add
 push pointer 0
 push local 1
 push local 0

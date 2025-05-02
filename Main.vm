@@ -1,7 +1,5 @@
 function Main.main 2
-push constant 0
-not
-call Game.new 1
+call Game.new 0
 pop local 1
 push local 1
 call Game.init 1
