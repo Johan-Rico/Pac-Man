@@ -273,7 +273,7 @@ push argument 2
 push constant 7
 call Screen.drawCircle 3
 pop temp 0
-push constant 7
+push constant 2
 neg
 pop local 0
 push this 3
@@ -281,17 +281,19 @@ call Screen.setColor 1
 pop temp 0
 label WHILE_EXP0
 push local 0
-push constant 7
+push constant 2
 gt
 not
 not
 if-goto WHILE_END0
 push argument 1
-push constant 1
-sub
+push constant 3
 push local 0
 call Math.abs 1
+call Math.multiply 2
 add
+push constant 1
+sub
 push argument 2
 push local 0
 add

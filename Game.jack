@@ -98,7 +98,7 @@ class Game {
 		var int i;
 		let i = 0;
 		while (i < (lives - 1)) {	
-			do printLive(470-(20*i),14);
+			do printLive(470-(20*i), 14);
 			let i = i + 1;
 		}
 		return;
@@ -108,10 +108,10 @@ class Game {
 		var int i;
 		do Screen.setColor(~color);
 		do Screen.drawCircle(x, y, 7);
-		let i = -7;
+		let i = -2;
 		do Screen.setColor(color);
-		while (~(i > 7)) {
-			do Screen.drawLine(x-1+Math.abs(i), y+i, x+7, y+i);
+		while (~(i > 2)) {
+			do Screen.drawLine(x+(3*Math.abs(i))-1, y+i, x+7, y+i);
 			let i = i + 1;
 		}
 		return;
