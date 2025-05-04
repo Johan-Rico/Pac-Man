@@ -114,6 +114,7 @@ class Score {
 		var Pellet p;
 		var int i;
 	  	let i = 0;
+		do Screen.setColor(~color);
 	  	while (i < nPellets) {
 			let p = pellets[i];
 			if (p.checkCollision(x, y, radius)) {

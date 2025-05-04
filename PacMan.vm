@@ -26,7 +26,7 @@ push constant 2
 pop this 5
 push constant 2
 pop this 6
-push constant 1
+push constant 3
 pop this 11
 push pointer 0
 return
@@ -130,6 +130,8 @@ call PacMan.draw 1
 pop temp 0
 push this 2
 push this 3
+push constant 1
+sub
 push this 4
 push this 12
 call Score.checkCollision 4
@@ -286,6 +288,7 @@ goto IF_FALSE2
 label IF_TRUE2
 push constant 1
 pop this 10
+goto IF_END2
 label IF_FALSE2
 push this 9
 push constant 8
@@ -297,15 +300,24 @@ push constant 1
 neg
 pop this 10
 label IF_FALSE3
+label IF_END2
 push this 9
 push this 10
 add
 pop this 9
 push constant 0
 return
-function PacMan.NextMoveIsPossible 0
+function PacMan.NextMoveIsPossible 1
 push argument 0
 pop pointer 0
+push this 11
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+gt
+not
+if-goto WHILE_END0
 push this 3
 pop this 7
 push this 4
@@ -317,9 +329,10 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push this 3
-push this 11
+push local 0
 add
 pop this 7
+goto IF_END0
 label IF_FALSE0
 push argument 1
 push constant 2
@@ -328,9 +341,10 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push this 3
-push this 11
+push local 0
 sub
 pop this 7
+goto IF_END1
 label IF_FALSE1
 push argument 1
 push constant 3
@@ -339,9 +353,10 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push this 4
-push this 11
+push local 0
 add
 pop this 8
+goto IF_END2
 label IF_FALSE2
 push argument 1
 push constant 4
@@ -350,36 +365,33 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push this 4
-push this 11
+push local 0
 sub
 pop this 8
 label IF_FALSE3
-push this 7
-push this 3
-eq
-push this 8
-push this 4
-eq
-and
-if-goto IF_TRUE4
-goto IF_FALSE4
-label IF_TRUE4
-push constant 0
-return
-label IF_FALSE4
+label IF_END2
+label IF_END1
+label IF_END0
 push this 1
 push this 7
 push this 8
 push this 12
 call Map.checkOverlapping 4
-if-goto IF_TRUE5
-goto IF_FALSE5
-label IF_TRUE5
-push constant 0
-return
-label IF_FALSE5
+not
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
 push constant 0
 not
+return
+label IF_FALSE4
+push local 0
+push constant 1
+sub
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
 return
 function PacMan.deathAnimationFunction 0
 push argument 0

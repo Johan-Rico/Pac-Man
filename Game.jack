@@ -59,8 +59,8 @@ class Game {
 		do clearScreen();
 		do printLives();
 		do map.changeColor(~color);
-		do score.changeColor(~color);
 		do pacman.changeColor(~color);
+		do score.changeColor(~color);
 		return;
 	}
 

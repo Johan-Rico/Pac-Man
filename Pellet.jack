@@ -28,6 +28,16 @@ class Pellet {
 		return;
 	}
 
+	method void delete () {
+		if (isCokie) {
+			let radius = 5;
+			do Screen.drawCircle(x, y, radius);
+		} else {	
+			do Screen.drawRectangle(x, y, x+1, y+1);
+		}
+		return;
+	}
+
 	method int getPoints() {
 		if (isCokie) {
 			return 50;
@@ -36,8 +46,10 @@ class Pellet {
 	}
 
   	method boolean checkCollision(int xi, int yi, int radius) {
-		if ((Math.abs(xi - x) < radius) & (Math.abs(yi - y) < radius) & ~eaten) {
+		if ((((Math.abs(y-yi) < (radius + 2)) & (xi=x)) | 
+		((Math.abs(x-xi) < (radius + 2)) & (yi=y))) & ~eaten) {
 			let eaten = true;
+			do delete();
 			return true;
 		}
 		return false;

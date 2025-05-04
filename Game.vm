@@ -130,15 +130,15 @@ push this 3
 not
 call Map.changeColor 2
 pop temp 0
-push this 2
-push this 3
-not
-call Score.changeColor 2
-pop temp 0
 push this 0
 push this 3
 not
 call PacMan.changeColor 2
+pop temp 0
+push this 2
+push this 3
+not
+call Score.changeColor 2
 pop temp 0
 push constant 0
 return
