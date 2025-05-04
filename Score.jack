@@ -93,6 +93,30 @@ class Score {
 		if ((x > 21) & (x < 30) & (y > 16)) {
 			return false;
 		}
+		if ((x = 0) & (y = 0)) {
+			let pellets[i] = Pellet.new(x, y, true);
+			return true	;
+		} 
+		if ((x = 51) & (y = 0)) {
+			let pellets[i] = Pellet.new(x, y, true);
+			return true;
+		}
+		if ((x = 9) & (y = 6)) {
+			let pellets[i] = Pellet.new(x, y, true);
+			return true;
+		}
+		if ((x = 42) & (y = 6)) {
+			let pellets[i] = Pellet.new(x, y, true);
+			return true;
+		}
+		if ((x = 0) & (y = 21)) {
+			let pellets[i] = Pellet.new(x, y, true);
+			return true;
+		}
+		if ((x = 51) & (y = 21)) {
+			let pellets[i] = Pellet.new(x, y, true);
+			return true;
+		}
 		let pellets[i] = Pellet.new(x, y, false);
 		return true;
 	}

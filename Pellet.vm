@@ -20,8 +20,17 @@ call Math.multiply 2
 push constant 45
 add
 pop this 1
-push constant 2
+push this 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 4
 pop this 5
+goto IF_END0
+label IF_FALSE0
+push constant 1
+pop this 5
+label IF_END0
 push pointer 0
 return
 function Pellet.draw 0
@@ -38,8 +47,6 @@ push this 2
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push constant 5
-pop this 5
 push this 0
 push this 1
 push this 5
@@ -67,8 +74,6 @@ push this 2
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push constant 5
-pop this 5
 push this 0
 push this 1
 push this 5
@@ -101,36 +106,58 @@ return
 label IF_FALSE0
 push constant 10
 return
-function Pellet.checkCollision 0
+function Pellet.checkCollision 4
 push argument 0
 pop pointer 0
-push this 1
-push argument 2
+push this 0
+push this 5
 sub
-call Math.abs 1
-push argument 3
-push constant 2
+push constant 1
+sub
+pop local 0
+push this 1
+push this 5
+sub
+push constant 1
+sub
+pop local 1
+push this 0
+push this 5
 add
+push constant 1
+add
+pop local 2
+push this 1
+push this 5
+add
+push constant 1
+add
+pop local 3
+push argument 1
+push argument 3
+sub
+push local 2
 lt
 push argument 1
-push this 0
-eq
-and
-push this 0
-push argument 1
-sub
-call Math.abs 1
 push argument 3
-push constant 2
 add
+push local 0
+gt
+and
+push argument 2
+push argument 3
+sub
+push local 3
 lt
 push argument 2
-push this 1
-eq
+push argument 3
+add
+push local 1
+gt
 and
-or
 push this 4
 not
+and
 and
 if-goto IF_TRUE0
 goto IF_FALSE0

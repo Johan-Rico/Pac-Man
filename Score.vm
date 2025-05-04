@@ -308,6 +308,162 @@ label IF_TRUE3
 push constant 0
 return
 label IF_FALSE3
+push argument 1
+push constant 0
+eq
+push argument 2
+push constant 0
+eq
+and
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+not
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+label IF_FALSE4
+push argument 1
+push constant 51
+eq
+push argument 2
+push constant 0
+eq
+and
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+not
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+label IF_FALSE5
+push argument 1
+push constant 9
+eq
+push argument 2
+push constant 6
+eq
+and
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+not
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+label IF_FALSE6
+push argument 1
+push constant 42
+eq
+push argument 2
+push constant 6
+eq
+and
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+not
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+label IF_FALSE7
+push argument 1
+push constant 0
+eq
+push argument 2
+push constant 21
+eq
+and
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+not
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+label IF_FALSE8
+push argument 1
+push constant 51
+eq
+push argument 2
+push constant 21
+eq
+and
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+not
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+label IF_FALSE9
 push argument 3
 push this 3
 add

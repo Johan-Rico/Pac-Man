@@ -11,7 +11,11 @@ class Pellet {
 		let isCokie = cokie;
 		let x = xi*9+24;
 		let y = yi*9+45;
-		let radius = 2;
+		if (isCokie) {
+			let radius = 4;
+		} else {	
+			let radius = 1;
+		}
 		return this;
   	}
 
@@ -20,7 +24,6 @@ class Pellet {
 			return;
 		}
 		if (isCokie) {
-			let radius = 5;
 			do Screen.drawCircle(x, y, radius);
 		} else {	
 			do Screen.drawRectangle(x, y, x+1, y+1);
@@ -30,7 +33,6 @@ class Pellet {
 
 	method void delete () {
 		if (isCokie) {
-			let radius = 5;
 			do Screen.drawCircle(x, y, radius);
 		} else {	
 			do Screen.drawRectangle(x, y, x+1, y+1);
@@ -45,9 +47,15 @@ class Pellet {
 		return 10;
 	}
 
-  	method boolean checkCollision(int xi, int yi, int radius) {
-		if ((((Math.abs(y-yi) < (radius + 2)) & (xi=x)) | 
-		((Math.abs(x-xi) < (radius + 2)) & (yi=y))) & ~eaten) {
+  	method boolean checkCollision(int xi, int yi, int pRadius) {
+		var int leftX, topY, rightX, bottomY;
+		let leftX = x - radius-1;
+		let topY = y - radius-1;
+		let rightX = x + radius+1;
+		let bottomY = y + radius+1;
+		
+		if ((((xi-pRadius) < (rightX)) & ((xi+pRadius) > (leftX))) &
+		(((yi-pRadius) < (bottomY)) & ((yi+pRadius) > (topY)) & ~eaten)) {
 			let eaten = true;
 			do delete();
 			return true;
