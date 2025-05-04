@@ -6,7 +6,7 @@ class Map {
   
 	constructor Map new(boolean c) {
 		let color = c;
-		let nWalls = 1 + 68;
+		let nWalls = 1 + 66;
 		do createWalls();
 		return this;
 	}
@@ -92,8 +92,8 @@ class Map {
 		let walls[47] = Wall.new(17,9,20,9);
 		let walls[48] = Wall.new(34,9,37,9);
 
-		let walls[49] = Wall.new(3,3,5,6);
-		let walls[50] = Wall.new(49,3,51,6);
+		let walls[49] = Wall.new(3,3,6,6);
+		let walls[50] = Wall.new(48,3,51,6);
 
 		let walls[51] = Wall.new(20,3,20,6);
 		let walls[52] = Wall.new(34,3,34,6);
@@ -102,8 +102,8 @@ class Map {
 		let walls[54] = Wall.new(37,0,37,4);
 
 		//espiral walls
-		let walls[55] = Wall.new(14,3,8,3);
-		let walls[56] = Wall.new(40,3,46,3);
+		let walls[55] = Wall.new(14,3,9,3);
+		let walls[56] = Wall.new(40,3,45,3);
 
 		let walls[57] = Wall.new(14,3,14,9);
 		let walls[58] = Wall.new(40,3,40,9);
@@ -117,11 +117,8 @@ class Map {
 		let walls[63] = Wall.new(9,6,11,6);
 		let walls[64] = Wall.new(43,6,45,6);
 
-		let walls[65] = Wall.new(5,6,6,6);
-		let walls[66] = Wall.new(48,6,49,6);
-
-		let walls[67] = Wall.new(9,12,14,12);
-		let walls[68] = Wall.new(40,12,45,12);
+		let walls[65] = Wall.new(9,12,14,12);
+		let walls[66] = Wall.new(40,12,45,12);
 
 
 	  	return;
