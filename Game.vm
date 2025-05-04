@@ -1,12 +1,26 @@
 function Game.new 0
-push constant 6
+push constant 5
 call Memory.alloc 1
 pop pointer 0
 push constant 0
 not
 pop this 3
 push constant 3
-pop this 5
+pop this 4
+push this 3
+not
+call Map.new 1
+pop this 1
+push this 3
+not
+push this 1
+call Score.new 2
+pop this 2
+push pointer 0
+return
+function Game.init 0
+push argument 0
+pop pointer 0
 push this 3
 not
 call Output.setColor 1
@@ -15,18 +29,13 @@ push pointer 0
 call Game.clearScreen 1
 pop temp 0
 push pointer 0
-call Game.createSprites 1
-pop temp 0
-push pointer 0
 call Game.printLives 1
 pop temp 0
-push pointer 0
-return
-function Game.init 0
-push argument 0
-pop pointer 0
-push this 2
+push this 1
 call Map.init 1
+pop temp 0
+push this 2
+call Score.init 1
 pop temp 0
 push pointer 0
 call Game.startLevel 1
@@ -66,7 +75,8 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push pointer 0
-call Game.handlePacmanDeath 1
+push constant 0
+call Game.changeColor 2
 pop temp 0
 label IF_FALSE1
 push this 0
@@ -97,13 +107,7 @@ function Game.newGame 0
 push argument 0
 pop pointer 0
 push pointer 0
-call Game.disposeSprites 1
-pop temp 0
-push pointer 0
 call Game.clearScreen 1
-pop temp 0
-push pointer 0
-call Game.createSprites 1
 pop temp 0
 push pointer 0
 call Game.init 1
@@ -115,120 +119,27 @@ push argument 0
 pop pointer 0
 push argument 1
 pop this 3
-push this 3
-not
-call Output.setColor 1
-pop temp 0
 push pointer 0
 call Game.clearScreen 1
 pop temp 0
 push pointer 0
-call Game.printLabels 1
-pop temp 0
-push pointer 0
 call Game.printLives 1
+pop temp 0
+push this 1
+push this 3
+not
+call Map.changeColor 2
+pop temp 0
+push this 2
+push this 3
+not
+call Score.changeColor 2
 pop temp 0
 push this 0
 push this 3
 not
 call PacMan.changeColor 2
 pop temp 0
-push this 0
-call PacMan.draw 1
-pop temp 0
-push this 2
-push this 3
-not
-call Map.changeColor 2
-pop temp 0
-push this 2
-call Map.draw 1
-pop temp 0
-push constant 0
-return
-function Game.printLabels 0
-push argument 0
-pop pointer 0
-push constant 1
-push constant 26
-call Output.moveCursor 2
-pop temp 0
-push constant 10
-call String.new 1
-push constant 72
-call String.appendChar 2
-push constant 73
-call String.appendChar 2
-push constant 71
-call String.appendChar 2
-push constant 72
-call String.appendChar 2
-push constant 32
-call String.appendChar 2
-push constant 83
-call String.appendChar 2
-push constant 67
-call String.appendChar 2
-push constant 79
-call String.appendChar 2
-push constant 82
-call String.appendChar 2
-push constant 69
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push constant 1
-push constant 38
-call Output.moveCursor 2
-pop temp 0
-push constant 2
-call String.new 1
-push constant 48
-call String.appendChar 2
-push constant 48
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push constant 1
-push constant 4
-call Output.moveCursor 2
-pop temp 0
-push constant 2
-call String.new 1
-push constant 48
-call String.appendChar 2
-push constant 48
-call String.appendChar 2
-call Output.printString 1
-pop temp 0
-push constant 0
-return
-function Game.printScore 0
-push argument 0
-pop pointer 0
-push constant 1
-push constant 4
-call Output.moveCursor 2
-pop temp 0
-push this 4
-call Output.printInt 1
-pop temp 0
-push this 4
-push static 0
-gt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push this 4
-pop static 0
-push constant 1
-push constant 38
-call Output.moveCursor 2
-pop temp 0
-push static 0
-call Output.printInt 1
-pop temp 0
-label IF_FALSE0
 push constant 0
 return
 function Game.printLives 1
@@ -238,7 +149,7 @@ push constant 0
 pop local 0
 label WHILE_EXP0
 push local 0
-push this 5
+push this 4
 push constant 1
 sub
 lt
@@ -318,8 +229,9 @@ push argument 0
 pop pointer 0
 push this 3
 not
+push this 1
 push this 2
-call PacMan.new 2
+call PacMan.new 3
 pop this 0
 push this 0
 call PacMan.init 1
@@ -332,10 +244,10 @@ return
 function Game.handlePacmanDeath 0
 push argument 0
 pop pointer 0
-push this 5
+push this 4
 push constant 1
 sub
-pop this 5
+pop this 4
 push constant 1000
 call Sys.wait 1
 pop temp 0
@@ -348,7 +260,7 @@ pop temp 0
 push this 0
 call PacMan.dispose 1
 pop temp 0
-push this 5
+push this 4
 push constant 0
 gt
 if-goto IF_TRUE0
@@ -359,13 +271,13 @@ call Screen.setColor 1
 pop temp 0
 push constant 463
 push constant 20
-push this 5
+push this 4
 call Math.multiply 2
 sub
 push constant 7
 push constant 477
 push constant 20
-push this 5
+push this 4
 call Math.multiply 2
 sub
 push constant 20
@@ -407,67 +319,6 @@ call String.appendChar 2
 call Output.printString 1
 pop temp 0
 label IF_END0
-push constant 0
-return
-function Game.createSprites 2
-push argument 0
-pop pointer 0
-push constant 27
-pop local 1
-push pointer 0
-call Game.printLabels 1
-pop temp 0
-push this 3
-not
-call Map.new 1
-pop this 2
-label WHILE_EXP0
-push local 1
-push constant 255
-lt
-not
-if-goto WHILE_END0
-push constant 6
-pop local 0
-label WHILE_EXP1
-push local 0
-push constant 511
-lt
-not
-if-goto WHILE_END1
-push local 0
-push local 1
-push local 0
-push constant 1
-add
-push local 1
-push constant 1
-add
-call Screen.drawRectangle 4
-pop temp 0
-push local 0
-push constant 9
-add
-pop local 0
-goto WHILE_EXP1
-label WHILE_END1
-push local 1
-push constant 9
-add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
-push constant 0
-return
-function Game.disposeSprites 0
-push argument 0
-pop pointer 0
-push this 0
-call PacMan.dispose 1
-pop temp 0
-push this 2
-call Map.dispose 1
-pop temp 0
 push constant 0
 return
 function Game.dispose 0

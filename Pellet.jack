@@ -1,0 +1,50 @@
+class Pellet {
+	field int x, y;
+	field boolean isCokie;
+	field boolean isCovered;
+	field boolean eaten;
+	field int radius;
+
+  	constructor Pellet new(int xi, int yi, boolean cokie) {
+		let isCovered = false;
+		let eaten = false;
+		let isCokie = cokie;
+		let x = xi*9+24;
+		let y = yi*9+45;
+		let radius = 2;
+		return this;
+  	}
+
+	method void draw() {
+		if (eaten) {
+			return;
+		}
+		if (isCokie) {
+			let radius = 5;
+			do Screen.drawCircle(x, y, radius);
+		} else {	
+			do Screen.drawRectangle(x, y, x+1, y+1);
+		}
+		return;
+	}
+
+	method int getPoints() {
+		if (isCokie) {
+			return 50;
+		}
+		return 10;
+	}
+
+  	method boolean checkCollision(int xi, int yi, int radius) {
+		if ((Math.abs(xi - x) < radius) & (Math.abs(yi - y) < radius) & ~eaten) {
+			let eaten = true;
+			return true;
+		}
+		return false;
+  	}
+
+  	method void dispose() {
+    	do Memory.deAlloc(this);
+    	return;
+  	}
+}

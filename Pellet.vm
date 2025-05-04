@@ -1,0 +1,113 @@
+function Pellet.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push constant 0
+pop this 3
+push constant 0
+pop this 4
+push argument 2
+pop this 2
+push argument 0
+push constant 9
+call Math.multiply 2
+push constant 24
+add
+pop this 0
+push argument 1
+push constant 9
+call Math.multiply 2
+push constant 45
+add
+pop this 1
+push constant 2
+pop this 5
+push pointer 0
+return
+function Pellet.draw 0
+push argument 0
+pop pointer 0
+push this 4
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push this 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 5
+pop this 5
+push this 0
+push this 1
+push this 5
+call Screen.drawCircle 3
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push this 0
+push this 1
+push this 0
+push constant 1
+add
+push this 1
+push constant 1
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_END1
+push constant 0
+return
+function Pellet.getPoints 0
+push argument 0
+pop pointer 0
+push this 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 50
+return
+label IF_FALSE0
+push constant 10
+return
+function Pellet.checkCollision 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+sub
+call Math.abs 1
+push argument 3
+lt
+push argument 2
+push this 1
+sub
+call Math.abs 1
+push argument 3
+lt
+and
+push this 4
+not
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop this 4
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+return
+function Pellet.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

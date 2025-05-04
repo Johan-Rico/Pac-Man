@@ -1,17 +1,19 @@
 class PacMan {
     field boolean color;
     field Map map;
+    field Score score;
     field int x, y, dir, nextDir;
     field int nextX, nextY;
     field int sprite, adition;
     field int speed, radius;
     field int leftLimit, rightLimit;
 
-    constructor PacMan new(boolean c, Map m) {
+    constructor PacMan new(boolean c, Map m, Score s) {
         let color = c;
         let map = m;
-        let x = 256;
-        let y = 180;
+        let score = s;
+        let x = 254;
+        let y = 234;
         let radius = 7;
         let leftLimit = 1 + radius;
         let rightLimit = 510 - radius;
@@ -29,6 +31,8 @@ class PacMan {
 
     method void changeColor(boolean c) {
         let color = c;
+        let sprite = sprite - adition;
+        do draw();
         return;
     }
 
@@ -44,7 +48,6 @@ class PacMan {
 
         do Screen.setColor(~color);
         do Screen.drawRectangle(x-radius, y-radius, x+radius, y+radius);
-        do Screen.setColor(color);
 
         let x = nextX;
         let y = nextY;
@@ -57,14 +60,14 @@ class PacMan {
         }
 
         do draw();
-
+        do score.checkCollision(x, y, radius);
         return;
     }
     
     method void draw() {
-
         var int i, limit, func, d;
-
+        
+        do Screen.setColor(color);
         do Screen.drawCircle(x,y,radius);
         
         if (~((sprite/3) = 0)) {

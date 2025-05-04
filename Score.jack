@@ -1,0 +1,141 @@
+class Score {
+	field int score;
+	field Map map;
+	static int high;
+	field int nPellets;
+	field Array pellets;
+	field boolean color;
+	
+	constructor Score new(boolean c, Map m) {
+		let map = m;
+		let nPellets = 408;
+		let score = 0;
+		let high = 0;
+		let color = c;
+		
+		return this;
+	}
+	
+	method void init() {
+		do printLabels();
+		do printScore();
+		do createPellets();
+		do draw();
+		return;
+	}
+	
+	method void changeColor(boolean c) {
+		let color = c;
+		do printLabels();
+		do printScore();
+		do draw();
+		return;
+	}
+
+	method void printLabels() {
+		do Output.setColor(color);
+		do Output.moveCursor(1,26);
+		do Output.printString("HIGH SCORE");
+		do Output.moveCursor(1,38);
+		if (high > 0) {
+			do Output.printInt(high);
+		} else {
+			do Output.printString("00");
+		}
+		
+		return;
+	}
+
+	method void printScore() {
+		do Output.moveCursor(1,4);
+		do Output.setColor(color);
+		if (score > 0) {	do Output.printInt(score);	}
+		else {	do Output.printString("00");	}
+		if (score > high) {
+			let high = score;
+			do Output.moveCursor(1,38);
+			do Output.printInt(high);
+		}
+		return;
+	}
+  
+	method void createPellets() {
+		var int i, x, y;
+		let pellets = Array.new(nPellets);
+		let i = 0;
+		let y = 0;
+		while (y < 22) {
+			let x = 0;
+			while (x < 52) {
+				if (~map.checkOverlapping(x*9+24, y*9+45, 2)) {
+					if (createPellet(x, y, i)) {
+						let i = i + 1;
+						if (i = nPellets) { return; }
+					}
+				}
+				let x = x + 1;
+			}
+			let y = y + 1;
+		}
+		return;
+	}
+
+	method boolean createPellet(int x, int y, int i) {
+		if ((x < 6) & (y > 6) & (y < 18)) {
+			return false;
+		}
+		if ((x > 20) & (x < 31) & (y > 7) & (y < 15)) {
+			return false;
+		}
+		if ((x > 45) & (y > 6) & (y < 18)) {
+			return false;
+		}
+		if ((x > 21) & (x < 30) & (y > 16)) {
+			return false;
+		}
+		let pellets[i] = Pellet.new(x, y, false);
+		return true;
+	}
+
+	method void draw() {
+		var Pellet p;
+	  	var int i;
+	  	let i = 0;
+		do Screen.setColor(color);
+	  	while (i < nPellets) {
+			let p = pellets[i];
+			do p.draw();
+			let i = i + 1;
+		}
+		return;
+	}
+  
+	method void checkCollision(int x, int y, int radius) {
+		var Pellet p;
+		var int i;
+	  	let i = 0;
+	  	while (i < nPellets) {
+			let p = pellets[i];
+			if (p.checkCollision(x, y, radius)) {
+				let score = score + p.getPoints();
+				do printScore();
+			}
+			let i = i + 1;
+		}
+	  	return;
+	}
+  
+	method void dispose() {
+		var Pellet p;
+	  	var int i;
+	  	let i = 0;
+	  	while (i < nPellets) {
+			let p = pellets[i];
+			do p.dispose();
+			let i = i + 1;
+		}
+		do walls.dispose();
+	  	do Memory.deAlloc(this);
+	  	return;
+	}
+}

@@ -1,31 +1,33 @@
 function PacMan.new 0
-push constant 14
+push constant 15
 call Memory.alloc 1
 pop pointer 0
 push argument 0
 pop this 0
 push argument 1
 pop this 1
-push constant 256
+push argument 2
 pop this 2
-push constant 180
+push constant 254
 pop this 3
-push constant 7
-pop this 11
-push constant 1
-push this 11
-add
-pop this 12
-push constant 510
-push this 11
-sub
-pop this 13
-push constant 2
+push constant 234
 pop this 4
+push constant 7
+pop this 12
+push constant 1
+push this 12
+add
+pop this 13
+push constant 510
+push this 12
+sub
+pop this 14
 push constant 2
 pop this 5
+push constant 2
+pop this 6
 push constant 1
-pop this 10
+pop this 11
 push pointer 0
 return
 function PacMan.init 0
@@ -34,9 +36,9 @@ pop pointer 0
 push this 0
 call Screen.setColor 1
 pop temp 0
-push this 2
 push this 3
-push this 11
+push this 4
+push this 12
 call Screen.drawCircle 3
 pop temp 0
 push constant 0
@@ -46,23 +48,30 @@ push argument 0
 pop pointer 0
 push argument 1
 pop this 0
+push this 9
+push this 10
+sub
+pop this 9
+push pointer 0
+call PacMan.draw 1
+pop temp 0
 push constant 0
 return
 function PacMan.next 0
 push argument 0
 pop pointer 0
 push pointer 0
-push this 5
+push this 6
 call PacMan.NextMoveIsPossible 2
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 5
-pop this 4
+push this 6
+pop this 5
 goto IF_END0
 label IF_FALSE0
 push pointer 0
-push this 4
+push this 5
 call PacMan.NextMoveIsPossible 2
 not
 if-goto IF_TRUE1
@@ -76,63 +85,69 @@ push this 0
 not
 call Screen.setColor 1
 pop temp 0
-push this 2
-push this 11
+push this 3
+push this 12
+sub
+push this 4
+push this 12
 sub
 push this 3
-push this 11
-sub
-push this 2
-push this 11
+push this 12
 add
-push this 3
-push this 11
+push this 4
+push this 12
 add
 call Screen.drawRectangle 4
 pop temp 0
-push this 0
-call Screen.setColor 1
-pop temp 0
-push this 6
-pop this 2
 push this 7
 pop this 3
-push this 2
+push this 8
+pop this 4
+push this 3
 push constant 9
 lt
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 13
+push this 14
 push constant 1
 sub
-pop this 2
+pop this 3
 label IF_FALSE2
-push this 2
-push this 13
+push this 3
+push this 14
 gt
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 12
+push this 13
 push constant 1
 add
-pop this 2
+pop this 3
 label IF_FALSE3
 push pointer 0
 call PacMan.draw 1
+pop temp 0
+push this 2
+push this 3
+push this 4
+push this 12
+call Score.checkCollision 4
 pop temp 0
 push constant 0
 return
 function PacMan.draw 4
 push argument 0
 pop pointer 0
-push this 2
+push this 0
+call Screen.setColor 1
+pop temp 0
 push this 3
-push this 11
+push this 4
+push this 12
 call Screen.drawCircle 3
 pop temp 0
-push this 8
+push this 9
 push constant 3
 call Math.divide 2
 push constant 0
@@ -142,7 +157,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 2
-push this 8
+push this 9
 push constant 3
 call Math.divide 2
 call Math.multiply 2
@@ -150,7 +165,7 @@ push constant 5
 sub
 pop local 2
 push constant 3
-push this 8
+push this 9
 push constant 3
 call Math.divide 2
 call Math.multiply 2
@@ -164,7 +179,7 @@ push this 0
 not
 call Screen.setColor 1
 pop temp 0
-push this 4
+push this 5
 push constant 2
 gt
 if-goto IF_TRUE1
@@ -172,7 +187,7 @@ goto IF_FALSE1
 label IF_TRUE1
 push constant 2
 neg
-push this 4
+push this 5
 call Math.multiply 2
 push constant 7
 add
@@ -184,10 +199,10 @@ gt
 not
 not
 if-goto WHILE_END0
-push this 2
+push this 3
 push local 0
 add
-push this 3
+push this 4
 push local 2
 push local 0
 call Math.abs 1
@@ -197,12 +212,12 @@ call Math.multiply 2
 sub
 push local 3
 sub
-push this 2
+push this 3
 push local 0
 add
-push this 3
+push this 4
 push local 3
-push this 11
+push this 12
 call Math.multiply 2
 add
 call Screen.drawLine 4
@@ -217,7 +232,7 @@ goto IF_END1
 label IF_FALSE1
 push constant 2
 neg
-push this 4
+push this 5
 call Math.multiply 2
 push constant 3
 add
@@ -229,7 +244,7 @@ gt
 not
 not
 if-goto WHILE_END1
-push this 2
+push this 3
 push local 2
 push local 0
 call Math.abs 1
@@ -239,15 +254,15 @@ call Math.multiply 2
 sub
 push local 3
 sub
-push this 3
+push this 4
 push local 0
 add
-push this 2
+push this 3
 push local 3
-push this 11
+push this 12
 call Math.multiply 2
 add
-push this 3
+push this 4
 push local 0
 add
 call Screen.drawLine 4
@@ -263,16 +278,16 @@ push this 0
 call Screen.setColor 1
 pop temp 0
 label IF_FALSE0
-push this 8
+push this 9
 push constant 0
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push constant 1
-pop this 9
+pop this 10
 label IF_FALSE2
-push this 8
+push this 9
 push constant 8
 eq
 if-goto IF_TRUE3
@@ -280,31 +295,31 @@ goto IF_FALSE3
 label IF_TRUE3
 push constant 1
 neg
-pop this 9
+pop this 10
 label IF_FALSE3
-push this 8
 push this 9
+push this 10
 add
-pop this 8
+pop this 9
 push constant 0
 return
 function PacMan.NextMoveIsPossible 0
 push argument 0
 pop pointer 0
-push this 2
-pop this 6
 push this 3
 pop this 7
+push this 4
+pop this 8
 push argument 1
 push constant 1
 eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 2
-push this 10
+push this 3
+push this 11
 add
-pop this 6
+pop this 7
 label IF_FALSE0
 push argument 1
 push constant 2
@@ -312,10 +327,10 @@ eq
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push this 2
-push this 10
+push this 3
+push this 11
 sub
-pop this 6
+pop this 7
 label IF_FALSE1
 push argument 1
 push constant 3
@@ -323,10 +338,10 @@ eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
-push this 3
-push this 10
+push this 4
+push this 11
 add
-pop this 7
+pop this 8
 label IF_FALSE2
 push argument 1
 push constant 4
@@ -334,16 +349,16 @@ eq
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push this 3
-push this 10
+push this 4
+push this 11
 sub
-pop this 7
+pop this 8
 label IF_FALSE3
-push this 6
-push this 2
-eq
 push this 7
 push this 3
+eq
+push this 8
+push this 4
 eq
 and
 if-goto IF_TRUE4
@@ -353,9 +368,9 @@ push constant 0
 return
 label IF_FALSE4
 push this 1
-push this 6
 push this 7
-push this 11
+push this 8
+push this 12
 call Map.checkOverlapping 4
 if-goto IF_TRUE5
 goto IF_FALSE5
@@ -502,9 +517,9 @@ pop local 1
 push this 0
 call Screen.setColor 1
 pop temp 0
-push this 2
 push this 3
-push this 11
+push this 4
+push this 12
 call Screen.drawCircle 3
 pop temp 0
 push this 0
@@ -527,16 +542,16 @@ gt
 not
 not
 if-goto WHILE_END1
-push this 2
+push this 3
 push local 0
 add
-push this 3
-push this 11
+push this 4
+push this 12
 sub
-push this 2
+push this 3
 push local 0
 add
-push this 3
+push this 4
 push constant 1
 add
 push pointer 0
@@ -565,151 +580,151 @@ push this 0
 not
 call Screen.setColor 1
 pop temp 0
-push this 2
-push this 11
+push this 3
+push this 12
+sub
+push this 4
+push this 12
 sub
 push this 3
-push this 11
-sub
-push this 2
-push this 11
+push this 12
 add
-push this 3
-push this 11
+push this 4
+push this 12
 add
 call Screen.drawRectangle 4
 pop temp 0
 push this 0
 call Screen.setColor 1
 pop temp 0
-push this 2
+push this 3
 push constant 4
 sub
+push this 4
 push this 3
-push this 2
 push constant 7
 sub
-push this 3
+push this 4
 call Screen.drawLine 4
 pop temp 0
-push this 2
+push this 3
 push constant 4
 add
-push this 3
-push this 2
-push constant 7
-add
-push this 3
-call Screen.drawLine 4
-pop temp 0
-push this 2
-push constant 3
-sub
-push this 3
-push constant 3
-sub
-push this 2
-push constant 6
-sub
-push this 3
-push constant 6
-sub
-call Screen.drawLine 4
-pop temp 0
-push this 2
-push constant 3
-add
-push this 3
-push constant 3
-sub
-push this 2
-push constant 6
-add
-push this 3
-push constant 6
-sub
-call Screen.drawLine 4
-pop temp 0
-push this 2
-push constant 3
-sub
-push this 3
-push constant 3
-add
-push this 2
-push constant 6
-sub
-push this 3
-push constant 6
-add
-call Screen.drawLine 4
-pop temp 0
-push this 2
-push constant 3
-add
-push this 3
-push constant 3
-add
-push this 2
-push constant 6
-add
-push this 3
-push constant 6
-add
-call Screen.drawLine 4
-pop temp 0
-push this 2
-push constant 1
-sub
-push this 3
-push constant 5
-sub
-push this 2
-push constant 3
-sub
+push this 4
 push this 3
 push constant 7
+add
+push this 4
+call Screen.drawLine 4
+pop temp 0
+push this 3
+push constant 3
+sub
+push this 4
+push constant 3
+sub
+push this 3
+push constant 6
+sub
+push this 4
+push constant 6
 sub
 call Screen.drawLine 4
 pop temp 0
-push this 2
-push constant 1
-add
 push this 3
-push constant 5
+push constant 3
+add
+push this 4
+push constant 3
 sub
-push this 2
+push this 3
+push constant 6
+add
+push this 4
+push constant 6
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 3
+push constant 3
+sub
+push this 4
 push constant 3
 add
 push this 3
+push constant 6
+sub
+push this 4
+push constant 6
+add
+call Screen.drawLine 4
+pop temp 0
+push this 3
+push constant 3
+add
+push this 4
+push constant 3
+add
+push this 3
+push constant 6
+add
+push this 4
+push constant 6
+add
+call Screen.drawLine 4
+pop temp 0
+push this 3
+push constant 1
+sub
+push this 4
+push constant 5
+sub
+push this 3
+push constant 3
+sub
+push this 4
 push constant 7
 sub
 call Screen.drawLine 4
 pop temp 0
-push this 2
+push this 3
+push constant 1
+add
+push this 4
+push constant 5
+sub
+push this 3
+push constant 3
+add
+push this 4
+push constant 7
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 3
 push constant 1
 sub
-push this 3
+push this 4
 push constant 5
 add
-push this 2
+push this 3
 push constant 3
 sub
-push this 3
+push this 4
 push constant 7
 add
 call Screen.drawLine 4
 pop temp 0
-push this 2
+push this 3
 push constant 1
 add
-push this 3
+push this 4
 push constant 5
 add
-push this 2
+push this 3
 push constant 3
 add
-push this 3
+push this 4
 push constant 7
 add
 call Screen.drawLine 4
@@ -721,17 +736,17 @@ push this 0
 not
 call Screen.setColor 1
 pop temp 0
-push this 2
-push this 11
+push this 3
+push this 12
+sub
+push this 4
+push this 12
 sub
 push this 3
-push this 11
-sub
-push this 2
-push this 11
+push this 12
 add
-push this 3
-push this 11
+push this 4
+push this 12
 add
 call Screen.drawRectangle 4
 pop temp 0
@@ -747,7 +762,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push constant 2
-pop this 5
+pop this 6
 label IF_FALSE0
 push argument 1
 push constant 133
@@ -756,7 +771,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 3
-pop this 5
+pop this 6
 label IF_FALSE1
 push argument 1
 push constant 132
@@ -765,7 +780,7 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push constant 1
-pop this 5
+pop this 6
 label IF_FALSE2
 push argument 1
 push constant 131
@@ -774,7 +789,7 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push constant 4
-pop this 5
+pop this 6
 label IF_FALSE3
 push constant 0
 return

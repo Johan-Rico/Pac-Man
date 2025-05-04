@@ -1,0 +1,430 @@
+function Score.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 1
+pop this 1
+push constant 408
+pop this 2
+push constant 0
+pop this 0
+push constant 0
+pop static 0
+push argument 0
+pop this 4
+push pointer 0
+return
+function Score.init 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Score.printLabels 1
+pop temp 0
+push pointer 0
+call Score.printScore 1
+pop temp 0
+push pointer 0
+call Score.createPellets 1
+pop temp 0
+push pointer 0
+call Score.draw 1
+pop temp 0
+push constant 0
+return
+function Score.changeColor 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 4
+push pointer 0
+call Score.printLabels 1
+pop temp 0
+push pointer 0
+call Score.printScore 1
+pop temp 0
+push pointer 0
+call Score.draw 1
+pop temp 0
+push constant 0
+return
+function Score.printLabels 0
+push argument 0
+pop pointer 0
+push this 4
+call Output.setColor 1
+pop temp 0
+push constant 1
+push constant 26
+call Output.moveCursor 2
+pop temp 0
+push constant 10
+call String.new 1
+push constant 72
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 72
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 67
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 1
+push constant 38
+call Output.moveCursor 2
+pop temp 0
+push static 0
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push static 0
+call Output.printInt 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push constant 2
+call String.new 1
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_END0
+push constant 0
+return
+function Score.printScore 0
+push argument 0
+pop pointer 0
+push constant 1
+push constant 4
+call Output.moveCursor 2
+pop temp 0
+push this 4
+call Output.setColor 1
+pop temp 0
+push this 0
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+call Output.printInt 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push constant 2
+call String.new 1
+push constant 48
+call String.appendChar 2
+push constant 48
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+label IF_END0
+push this 0
+push static 0
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+pop static 0
+push constant 1
+push constant 38
+call Output.moveCursor 2
+pop temp 0
+push static 0
+call Output.printInt 1
+pop temp 0
+label IF_FALSE1
+push constant 0
+return
+function Score.createPellets 3
+push argument 0
+pop pointer 0
+push this 2
+call Array.new 1
+pop this 3
+push constant 0
+pop local 0
+push constant 0
+pop local 2
+label WHILE_EXP0
+push local 2
+push constant 22
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push constant 52
+lt
+not
+if-goto WHILE_END1
+push this 1
+push local 1
+push constant 9
+call Math.multiply 2
+push constant 24
+add
+push local 2
+push constant 9
+call Math.multiply 2
+push constant 45
+add
+push constant 2
+call Map.checkOverlapping 4
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 1
+push local 2
+push local 0
+call Score.createPellet 4
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push constant 1
+add
+pop local 0
+push local 0
+push this 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+return
+label IF_FALSE2
+label IF_FALSE1
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Score.createPellet 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 6
+lt
+push argument 2
+push constant 6
+gt
+and
+push argument 2
+push constant 18
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push argument 1
+push constant 20
+gt
+push argument 1
+push constant 31
+lt
+and
+push argument 2
+push constant 7
+gt
+and
+push argument 2
+push constant 15
+lt
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push argument 1
+push constant 45
+gt
+push argument 2
+push constant 6
+gt
+and
+push argument 2
+push constant 18
+lt
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+return
+label IF_FALSE2
+push argument 1
+push constant 21
+gt
+push argument 1
+push constant 30
+lt
+and
+push argument 2
+push constant 16
+gt
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+return
+label IF_FALSE3
+push argument 3
+push this 3
+add
+push argument 1
+push argument 2
+push constant 0
+call Pellet.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+not
+return
+function Score.draw 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push this 4
+call Screen.setColor 1
+pop temp 0
+label WHILE_EXP0
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 3
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+call Pellet.draw 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Score.checkCollision 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 3
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+push argument 1
+push argument 2
+push argument 3
+call Pellet.checkCollision 4
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push local 0
+call Pellet.getPoints 1
+add
+pop this 0
+push pointer 0
+call Score.printScore 1
+pop temp 0
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Score.dispose 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 3
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+call Pellet.dispose 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+call walls.dispose 0
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
