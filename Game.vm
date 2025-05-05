@@ -75,8 +75,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push pointer 0
-push constant 0
-call Game.changeColor 2
+call Game.handlePacmanDeath 1
 pop temp 0
 label IF_FALSE1
 push this 0
@@ -291,11 +290,13 @@ pop temp 0
 goto IF_END0
 label IF_FALSE0
 push constant 16
-push constant 27
+push constant 26
 call Output.moveCursor 2
 pop temp 0
-push constant 10
+push constant 11
 call String.new 1
+push constant 32
+call String.appendChar 2
 push constant 71
 call String.appendChar 2
 push constant 65

@@ -4,7 +4,7 @@ call Memory.alloc 1
 pop pointer 0
 push argument 1
 pop this 1
-push constant 408
+push constant 366
 pop this 2
 push constant 0
 pop this 0
@@ -54,11 +54,13 @@ push this 4
 call Output.setColor 1
 pop temp 0
 push constant 1
-push constant 26
+push constant 24
 call Output.moveCursor 2
 pop temp 0
-push constant 10
+push constant 11
 call String.new 1
+push constant 32
+call String.appendChar 2
 push constant 72
 call String.appendChar 2
 push constant 73
@@ -82,7 +84,7 @@ call String.appendChar 2
 call Output.printString 1
 pop temp 0
 push constant 1
-push constant 38
+push constant 36
 call Output.moveCursor 2
 pop temp 0
 push static 0
@@ -146,7 +148,7 @@ label IF_TRUE1
 push this 0
 pop static 0
 push constant 1
-push constant 38
+push constant 36
 call Output.moveCursor 2
 pop temp 0
 push static 0
@@ -254,18 +256,18 @@ push constant 0
 return
 label IF_FALSE0
 push argument 1
-push constant 20
+push constant 17
 gt
 push argument 1
-push constant 31
+push constant 34
 lt
 and
 push argument 2
-push constant 7
+push constant 4
 gt
 and
 push argument 2
-push constant 15
+push constant 18
 lt
 and
 if-goto IF_TRUE1
@@ -292,14 +294,14 @@ push constant 0
 return
 label IF_FALSE2
 push argument 1
-push constant 21
+push constant 24
 gt
 push argument 1
-push constant 30
+push constant 27
 lt
 and
 push argument 2
-push constant 16
+push constant 17
 gt
 and
 if-goto IF_TRUE3

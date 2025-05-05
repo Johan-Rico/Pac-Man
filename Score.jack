@@ -8,7 +8,7 @@ class Score {
 	
 	constructor Score new(boolean c, Map m) {
 		let map = m;
-		let nPellets = 408;
+		let nPellets = 366;
 		let score = 0;
 		let high = 0;
 		let color = c;
@@ -34,9 +34,9 @@ class Score {
 
 	method void printLabels() {
 		do Output.setColor(color);
-		do Output.moveCursor(1,26);
-		do Output.printString("HIGH SCORE");
-		do Output.moveCursor(1,38);
+		do Output.moveCursor(1,24);
+		do Output.printString(" HIGH SCORE");
+		do Output.moveCursor(1,36);
 		if (high > 0) {
 			do Output.printInt(high);
 		} else {
@@ -49,11 +49,11 @@ class Score {
 	method void printScore() {
 		do Output.moveCursor(1,4);
 		do Output.setColor(color);
-		if (score > 0) {	do Output.printInt(score);	}
+		if (score > 0) { do Output.printInt(score);	}
 		else {	do Output.printString("00");	}
 		if (score > high) {
 			let high = score;
-			do Output.moveCursor(1,38);
+			do Output.moveCursor(1,36);
 			do Output.printInt(high);
 		}
 		return;
@@ -84,13 +84,13 @@ class Score {
 		if ((x < 6) & (y > 6) & (y < 18)) {
 			return false;
 		}
-		if ((x > 20) & (x < 31) & (y > 7) & (y < 15)) {
+		if ((x > 17) & (x < 34) & (y > 4) & (y < 18)) {
 			return false;
 		}
 		if ((x > 45) & (y > 6) & (y < 18)) {
 			return false;
 		}
-		if ((x > 21) & (x < 30) & (y > 16)) {
+		if ((x > 24) & (x < 27) & (y > 17)) {
 			return false;
 		}
 		if ((x = 0) & (y = 0)) {
