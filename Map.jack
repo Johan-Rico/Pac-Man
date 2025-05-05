@@ -161,6 +161,7 @@ class Map {
 			do w.fixDetails2();
 			let i = i + 1;
 		}
+		do drawDoor();
 		return;
 	}
   
@@ -176,6 +177,17 @@ class Map {
 			let i = i + 1;
 		}
 	  	return false;
+	}
+	
+		method void drawDoor() {
+			do Screen.setColor(color);
+			do Screen.drawRectangle(241, 120, 268, 123);
+			return;
+		}
+
+	method boolean checkDoorOverlaping(int x, int y, int radius) {
+		return ((((x-radius) < 271) & ((x+radius) > 238)) 
+		& (((y-radius) < 126) & ((y+radius) > 115)));
 	}
   
 	method void dispose() {

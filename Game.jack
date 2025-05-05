@@ -20,7 +20,6 @@ class Game {
 		do map.init();
 		do score.init();
 		do startLevel();
-		do Sys.wait(1000);
 		return;
 	}
 
@@ -91,7 +90,11 @@ class Game {
 	method void startLevel() {
 		let pacman = PacMan.new(~color, map, score);
 		do pacman.init();
-		do Sys.wait(2000);
+		do Output.moveCursor(16,28);
+		do Output.printString(" READY!");
+		do Sys.wait(2500);
+		do Output.moveCursor(16,28);
+		do Output.printString("       ");
 		return;
 	}
 

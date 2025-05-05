@@ -976,6 +976,9 @@ add
 pop local 1
 goto WHILE_EXP4
 label WHILE_END4
+push pointer 0
+call Map.drawDoor 1
+pop temp 0
 push constant 0
 return
 function Map.checkOverlapping 2
@@ -1014,6 +1017,47 @@ pop local 1
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0
+return
+function Map.drawDoor 0
+push argument 0
+pop pointer 0
+push this 0
+call Screen.setColor 1
+pop temp 0
+push constant 241
+push constant 120
+push constant 268
+push constant 123
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Map.checkDoorOverlaping 0
+push argument 0
+pop pointer 0
+push argument 1
+push argument 3
+sub
+push constant 271
+lt
+push argument 1
+push argument 3
+add
+push constant 238
+gt
+and
+push argument 2
+push argument 3
+sub
+push constant 126
+lt
+push argument 2
+push argument 3
+add
+push constant 115
+gt
+and
+and
 return
 function Map.dispose 2
 push argument 0

@@ -31,7 +31,7 @@ class Pellet {
 		return;
 	}
 
-	method void delete () {
+	method void delete() {
 		if (isCokie) {
 			do Screen.drawCircle(x, y, radius);
 		} else {	

@@ -67,7 +67,7 @@ class Wall {
 	}
 
   	method boolean checkOverlapping(int x, int y, int radius) {
-		return ((((x - radius) < (rightX+3)) & ((x+radius) > (leftX-3))) 
+		return ((((x-radius) < (rightX+3)) & ((x+radius) > (leftX-3))) 
 		& (((y-radius) < (bottomY+3)) & ((y+radius) > (topY-3))));	
   	}
 

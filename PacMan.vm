@@ -81,6 +81,14 @@ push constant 0
 return
 label IF_FALSE1
 label IF_END0
+push this 2
+push this 3
+push constant 1
+sub
+push this 4
+push this 12
+call Score.checkCollision 4
+pop temp 0
 push this 0
 not
 call Screen.setColor 1
@@ -127,14 +135,6 @@ pop this 3
 label IF_FALSE3
 push pointer 0
 call PacMan.draw 1
-pop temp 0
-push this 2
-push this 3
-push constant 1
-sub
-push this 4
-push this 12
-call Score.checkCollision 4
 pop temp 0
 push constant 0
 return
@@ -377,6 +377,12 @@ push this 7
 push this 8
 push this 12
 call Map.checkOverlapping 4
+push this 1
+push this 7
+push this 8
+push this 12
+call Map.checkDoorOverlaping 4
+or
 not
 if-goto IF_TRUE4
 goto IF_FALSE4

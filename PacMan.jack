@@ -46,6 +46,7 @@ class PacMan {
             }
         }
 
+        do score.checkCollision(x-1, y, radius);
         do Screen.setColor(~color);
         do Screen.drawRectangle(x-radius, y-radius, x+radius, y+radius);
 
@@ -60,7 +61,6 @@ class PacMan {
         }
 
         do draw();
-        do score.checkCollision(x-1, y, radius);
         return;
     }
     
@@ -123,7 +123,7 @@ class PacMan {
                 let nextY = y - i;
             }}}}
 
-            if (~map.checkOverlapping(nextX, nextY, radius)) {
+            if (~(map.checkOverlapping(nextX, nextY, radius) | map.checkDoorOverlaping(nextX, nextY, radius))) {
                 return true;
             }
             let i = i - 1;
