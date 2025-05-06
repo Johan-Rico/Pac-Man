@@ -1,5 +1,6 @@
 class Game {
 	field PacMan pacman;
+	field Ghost ghost;
 	field Map map;
 	field Score score;
 	field boolean color;
@@ -25,6 +26,7 @@ class Game {
 
 	method void next() {
 		do pacman.next();
+		do ghost.next();
 		return;
 	}
 	
@@ -60,6 +62,7 @@ class Game {
 		do printLives();
 		do map.changeColor(~color);
 		do pacman.changeColor(~color);
+		do ghost.changeColor(~color);
 		do score.changeColor(~color);
 		return;
 	}
@@ -89,7 +92,9 @@ class Game {
 
 	method void startLevel() {
 		let pacman = PacMan.new(~color, map, score);
+		let ghost = Ghost.new(~color, map, pacman);
 		do pacman.init();
+		do ghost.init();
 		do Output.moveCursor(16,28);
 		do Output.printString(" READY!");
 		do Sys.wait(2500);
@@ -103,8 +108,10 @@ class Game {
 		
 		do Sys.wait(1000);
 		do pacman.deathAnimation();
+		do ghost.deathAnimation();
 		do Sys.wait(2000);
 		do pacman.dispose();
+		do ghost.dispose();
 		if (lives > 0) {
 			do Screen.setColor(color);
 			do Screen.drawRectangle(463-(20*(lives)), 7, 477-(20*(lives))+20, 21);

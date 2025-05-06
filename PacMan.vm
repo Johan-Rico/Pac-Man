@@ -811,6 +811,16 @@ pop this 6
 label IF_FALSE3
 push constant 0
 return
+function PacMan.getX 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function PacMan.getY 0
+push argument 0
+pop pointer 0
+push this 4
+return
 function PacMan.dispose 0
 push argument 0
 pop pointer 0

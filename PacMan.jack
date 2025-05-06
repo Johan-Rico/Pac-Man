@@ -196,6 +196,14 @@ class PacMan {
 
         return;
     }
+    method int getX() {
+        return x;
+    }
+    
+    method int getY() {
+        return y;
+    }
+    
 
     method void dispose() {
     	do Memory.deAlloc(this);

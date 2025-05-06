@@ -1,0 +1,30 @@
+class Random {
+    static int initial_value;
+
+    function int rand() {
+        let initial_value = initial_value + 20251;
+        if (initial_value < 0) {
+            let initial_value = initial_value - 32767 - 1;
+        }
+        return initial_value;
+    }
+
+    function int randRange(int max) {
+        var int filter, randValue;
+        let filter = 1;
+        while (filter < max) {
+            let filter = filter * 2 + 1;
+        }
+        let randValue = Random.rand() & filter;
+        while (randValue > max) {
+            let randValue = Random.rand() & filter;
+        }
+        return randValue;
+    }
+
+    method void dispose() {
+    	do Memory.deAlloc(this);
+        return;
+    }
+}
+

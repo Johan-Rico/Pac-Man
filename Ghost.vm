@@ -1,0 +1,1069 @@
+function Ghost.new 0
+push constant 19
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 2
+push argument 2
+pop this 3
+push constant 256
+pop this 5
+push constant 150
+pop this 6
+push constant 7
+pop this 14
+push constant 12
+pop this 4
+push constant 0
+pop this 18
+push constant 2
+pop this 15
+push constant 1
+push this 14
+add
+pop this 16
+push constant 510
+push this 14
+sub
+pop this 17
+push constant 2
+pop this 7
+push constant 0
+not
+pop this 1
+push constant 2
+pop this 8
+push constant 1
+pop this 13
+push pointer 0
+call Ghost.init 1
+pop temp 0
+push pointer 0
+return
+function Ghost.init 2
+push argument 0
+pop pointer 0
+push this 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 6
+push this 14
+call Screen.drawCircle 3
+pop temp 0
+push this 14
+neg
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 14
+gt
+not
+not
+if-goto WHILE_END0
+push local 0
+push constant 20
+add
+push constant 1
+and
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 6
+push this 14
+add
+push constant 2
+sub
+pop local 1
+goto IF_END0
+label IF_FALSE0
+push this 6
+push this 14
+add
+pop local 1
+label IF_END0
+push this 5
+push local 0
+add
+push this 6
+push this 5
+push local 0
+add
+push local 1
+call Screen.drawLine 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Ghost.changeColor 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 0
+push constant 0
+return
+function Ghost.next 3
+push argument 0
+pop pointer 0
+push this 5
+pop local 0
+push this 6
+pop local 1
+push pointer 0
+call Ghost.advance 1
+pop local 2
+push local 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 0
+push local 1
+call Ghost.clearOld 3
+pop temp 0
+push pointer 0
+call Ghost.draw 1
+pop temp 0
+label IF_FALSE0
+push constant 0
+return
+function Ghost.advance 2
+push argument 0
+pop pointer 0
+push this 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+pop this 7
+push constant 0
+pop this 1
+label IF_FALSE0
+push pointer 0
+call Ghost.getNextX 1
+pop local 0
+push pointer 0
+call Ghost.getNextY 1
+pop local 1
+push pointer 0
+push local 0
+push local 1
+call Ghost.checkWalls 3
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Ghost.setNextDirRandom 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE1
+push this 5
+push local 0
+eq
+push this 6
+push local 1
+eq
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+return
+label IF_FALSE2
+push local 0
+pop this 5
+push local 1
+pop this 6
+push this 5
+push constant 9
+lt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push this 17
+push constant 1
+sub
+pop this 5
+label IF_FALSE3
+push this 5
+push this 17
+gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 16
+push constant 1
+add
+pop this 5
+label IF_FALSE4
+push constant 0
+not
+return
+function Ghost.checkWalls 2
+push argument 0
+pop pointer 0
+push argument 1
+push this 4
+add
+push constant 1
+sub
+pop local 0
+push argument 2
+push this 4
+add
+push constant 1
+sub
+pop local 1
+push this 2
+push argument 1
+push argument 2
+push this 14
+call Map.checkOverlapping 4
+return
+function Ghost.setNextDir 4
+push argument 0
+pop pointer 0
+push this 3
+call PacMan.getX 1
+pop local 0
+push this 3
+call PacMan.getY 1
+pop local 1
+push this 5
+push local 0
+call Math.max 2
+push this 5
+push local 0
+call Math.min 2
+sub
+pop local 2
+push this 6
+push local 1
+call Math.max 2
+push this 6
+push local 1
+call Math.min 2
+sub
+pop local 3
+push local 2
+push constant 0
+eq
+not
+push local 2
+push local 3
+gt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push this 5
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 3
+pop this 7
+push constant 0
+return
+label IF_FALSE1
+push constant 4
+pop this 7
+push constant 0
+return
+label IF_FALSE0
+push local 1
+push this 6
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 1
+pop this 7
+push constant 0
+return
+label IF_FALSE2
+push constant 2
+pop this 7
+push constant 0
+return
+function Ghost.setNextDirRandom 1
+push argument 0
+pop pointer 0
+push constant 150
+call Random.randRange 1
+pop local 0
+push local 0
+push constant 10
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+pop this 7
+push constant 0
+return
+label IF_FALSE0
+push local 0
+push constant 20
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 2
+pop this 7
+push constant 0
+return
+label IF_FALSE1
+push local 0
+push constant 25
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 3
+pop this 7
+push constant 0
+return
+label IF_FALSE2
+push local 0
+push constant 150
+lt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 4
+pop this 7
+push constant 0
+return
+label IF_FALSE3
+push pointer 0
+call Ghost.setNextDir 1
+pop temp 0
+push constant 0
+return
+function Ghost.getNextX 1
+push argument 0
+pop pointer 0
+push this 5
+pop local 0
+push this 7
+push constant 4
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 5
+push this 13
+add
+pop local 0
+label IF_FALSE0
+push this 7
+push constant 3
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 5
+push this 13
+sub
+pop local 0
+label IF_FALSE1
+push local 0
+return
+function Ghost.getNextY 1
+push argument 0
+pop pointer 0
+push this 6
+pop local 0
+push this 7
+push constant 2
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 6
+push this 13
+add
+pop local 0
+label IF_FALSE0
+push this 7
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 6
+push this 13
+sub
+pop local 0
+label IF_FALSE1
+push local 0
+push constant 250
+gt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 12
+pop local 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 6
+push pointer 0
+call Ghost.endX 1
+push pointer 0
+call Ghost.endY 1
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE2
+push local 0
+push constant 12
+lt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 250
+pop local 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 6
+push pointer 0
+call Ghost.endX 1
+push pointer 0
+call Ghost.endY 1
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE3
+push local 0
+return
+function Ghost.clearOld 0
+push argument 0
+pop pointer 0
+push this 0
+not
+call Screen.setColor 1
+pop temp 0
+push argument 1
+push this 14
+sub
+push argument 2
+push this 14
+sub
+push argument 1
+push this 14
+add
+push argument 2
+push this 14
+add
+push constant 2
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Ghost.draw 4
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 6
+push this 14
+call Screen.drawCircle 3
+pop temp 0
+push this 14
+neg
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 14
+gt
+not
+not
+if-goto WHILE_END0
+push local 0
+push constant 20
+add
+push constant 1
+and
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 6
+push this 14
+add
+push constant 2
+sub
+pop local 1
+goto IF_END0
+label IF_FALSE0
+push this 6
+push this 14
+add
+pop local 1
+label IF_END0
+push this 5
+push local 0
+add
+push this 6
+push this 5
+push local 0
+add
+push local 1
+call Screen.drawLine 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 7
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 1
+pop local 2
+push constant 0
+pop local 3
+label IF_FALSE1
+push this 7
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 1
+neg
+pop local 2
+push constant 0
+pop local 3
+label IF_FALSE2
+push this 7
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+pop local 2
+push constant 1
+pop local 3
+label IF_FALSE3
+push this 7
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 0
+pop local 2
+push constant 1
+neg
+pop local 3
+label IF_FALSE4
+push this 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 5
+push constant 3
+sub
+push this 6
+push constant 2
+sub
+push constant 2
+call Screen.drawCircle 3
+pop temp 0
+push this 5
+push constant 3
+add
+push this 6
+push constant 2
+sub
+push constant 2
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push constant 3
+sub
+push local 2
+add
+push this 6
+push constant 2
+sub
+push local 3
+add
+push constant 1
+call Screen.drawCircle 3
+pop temp 0
+push this 5
+push constant 3
+add
+push local 2
+add
+push this 6
+push constant 2
+sub
+push local 3
+add
+push constant 1
+call Screen.drawCircle 3
+pop temp 0
+push this 18
+push constant 1
+add
+pop this 18
+push this 18
+push constant 3
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push this 11
+push constant 0
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 1
+pop this 12
+label IF_FALSE6
+push this 11
+push constant 4
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push constant 1
+neg
+pop this 12
+label IF_FALSE7
+push this 11
+push this 12
+add
+pop this 11
+push constant 0
+pop this 18
+label IF_FALSE5
+push constant 0
+return
+function Ghost.deathAnimationFunction 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 2
+call Math.abs 1
+return
+label IF_FALSE0
+push argument 1
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 2
+call Math.abs 1
+push constant 1
+add
+push constant 2
+call Math.divide 2
+return
+label IF_FALSE1
+push argument 1
+push constant 2
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 2
+call Math.abs 1
+push constant 1
+add
+push constant 3
+call Math.divide 2
+return
+label IF_FALSE2
+push argument 1
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push argument 2
+call Math.abs 1
+push constant 4
+call Math.divide 2
+return
+label IF_FALSE3
+push argument 1
+push constant 4
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push argument 2
+call Math.abs 1
+neg
+push constant 4
+call Math.divide 2
+return
+label IF_FALSE4
+push argument 1
+push constant 5
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push argument 2
+call Math.abs 1
+neg
+push constant 2
+call Math.divide 2
+return
+label IF_FALSE5
+push argument 1
+push constant 6
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push argument 2
+call Math.abs 1
+neg
+push constant 3
+call Math.divide 2
+return
+label IF_FALSE6
+push argument 1
+push constant 7
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push argument 2
+call Math.abs 1
+neg
+return
+label IF_FALSE7
+push argument 1
+push constant 8
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push constant 2
+neg
+push argument 2
+call Math.abs 1
+call Math.multiply 2
+push argument 2
+call Math.abs 1
+push constant 5
+lt
+call Math.multiply 2
+return
+label IF_FALSE8
+push constant 6
+push argument 2
+push constant 0
+eq
+not
+call Math.multiply 2
+return
+function Ghost.deathAnimation 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push this 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 6
+push this 14
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+not
+call Screen.setColor 1
+pop temp 0
+label WHILE_EXP0
+push local 1
+push constant 10
+lt
+not
+if-goto WHILE_END0
+push constant 7
+neg
+pop local 0
+label WHILE_EXP1
+push local 0
+push constant 7
+gt
+not
+not
+if-goto WHILE_END1
+push this 5
+push local 0
+add
+push this 6
+push this 14
+sub
+push this 5
+push local 0
+add
+push this 6
+push constant 1
+add
+push pointer 0
+push local 1
+push local 0
+call Ghost.deathAnimationFunction 3
+sub
+call Screen.drawLine 4
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push local 1
+push constant 1
+add
+pop local 1
+push constant 125
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 14
+sub
+push this 6
+push this 14
+sub
+push this 5
+push this 14
+add
+push this 6
+push this 14
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+call Screen.setColor 1
+pop temp 0
+push this 5
+push constant 4
+sub
+push this 6
+push this 5
+push constant 7
+sub
+push this 6
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 4
+add
+push this 6
+push this 5
+push constant 7
+add
+push this 6
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 3
+sub
+push this 6
+push constant 3
+sub
+push this 5
+push constant 6
+sub
+push this 6
+push constant 6
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 3
+add
+push this 6
+push constant 3
+sub
+push this 5
+push constant 6
+add
+push this 6
+push constant 6
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 3
+sub
+push this 6
+push constant 3
+add
+push this 5
+push constant 6
+sub
+push this 6
+push constant 6
+add
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 3
+add
+push this 6
+push constant 3
+add
+push this 5
+push constant 6
+add
+push this 6
+push constant 6
+add
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 1
+sub
+push this 6
+push constant 5
+sub
+push this 5
+push constant 3
+sub
+push this 6
+push constant 7
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 1
+add
+push this 6
+push constant 5
+sub
+push this 5
+push constant 3
+add
+push this 6
+push constant 7
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 1
+sub
+push this 6
+push constant 5
+add
+push this 5
+push constant 3
+sub
+push this 6
+push constant 7
+add
+call Screen.drawLine 4
+pop temp 0
+push this 5
+push constant 1
+add
+push this 6
+push constant 5
+add
+push this 5
+push constant 3
+add
+push this 6
+push constant 7
+add
+call Screen.drawLine 4
+pop temp 0
+push constant 125
+call Sys.wait 1
+pop temp 0
+push this 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 5
+push this 14
+sub
+push this 6
+push this 14
+sub
+push this 5
+push this 14
+add
+push this 6
+push this 14
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Ghost.endX 0
+push argument 0
+pop pointer 0
+push this 5
+push this 4
+add
+push constant 1
+sub
+return
+function Ghost.endY 0
+push argument 0
+pop pointer 0
+push this 6
+push this 4
+add
+push constant 1
+sub
+return
+function Ghost.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
