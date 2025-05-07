@@ -14,13 +14,9 @@ push constant 234
 pop this 4
 push constant 7
 pop this 12
-push constant 2
-push this 12
-add
+push constant 9
 pop this 13
-push constant 510
-push this 12
-sub
+push constant 503
 pop this 14
 push constant 2
 pop this 5
@@ -112,7 +108,7 @@ pop this 3
 push this 8
 pop this 4
 push this 3
-push constant 9
+push this 13
 lt
 if-goto IF_TRUE2
 goto IF_FALSE2

@@ -1,5 +1,5 @@
 class Ghost {
-    field boolean color,firstMove;
+    field boolean color, firstMove;
     field Map map;
     field PacMan pacman;
     field int size;
@@ -11,12 +11,12 @@ class Ghost {
     field int leftLimit, rightLimit;
     field int spriteDelay;
 
-    constructor Ghost new(boolean c, Map m, PacMan p) {
+    constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi) {
         let color = c;
         let map = m;
         let pacman=p;
-        let x = 256;
-        let y = 150;
+        let x = xi;
+        let y = yi;
         let radius = 7;
         let size=12;
         let spriteDelay=0;
@@ -26,7 +26,7 @@ class Ghost {
         let dir = 2;
         let firstMove=true;
         let nextDir = 2;
-        let speed = 1;
+        let speed = 3;
         do init();
         return this;
 
@@ -35,13 +35,13 @@ class Ghost {
     method void init() {
         var int i, ghostBottom;
         do Screen.setColor(color);
-        do Screen.drawCircle(x,y,radius);      
+        do Screen.drawCircle(x, y, radius);      
         let i = -radius;
         while (~(i > radius)) {
             if (((i + 20) & 1) = 0) {
-              let ghostBottom = y + radius - 2;
+              	let ghostBottom = y + radius - 2;
             } else {
-              let ghostBottom = y + radius;
+              	let ghostBottom = y + radius;
             }
             do Screen.drawLine(x + i, y, x + i, ghostBottom);
             let i = i + 1;
@@ -61,7 +61,7 @@ class Ghost {
         let didMove = advance();
         if (didMove) {
             do clearOld(oldX,oldY);
-          do draw();
+          	do draw();
         }
         return;
     }
@@ -75,11 +75,11 @@ class Ghost {
         let nextX = getNextX();
         let nextY = getNextY();
         if (checkWalls(nextX, nextY)) {
-          do setNextDirRandom();
-          return false;
+          	do setNextDirRandom();
+          	return false;
         }
         if ((x = nextX) & (y = nextY)) {
-          return false;
+          	return false;
         }
         let x = nextX;
         let y = nextY;
@@ -90,7 +90,7 @@ class Ghost {
             let x = leftLimit + 1;
         }
         return true;
-      }
+    }
  
     method boolean checkWalls(int nextX, int nextY) {
         var int nextEndX, nextEndY;
@@ -98,99 +98,108 @@ class Ghost {
         let nextEndY = nextY + size - 1;
         return map.checkOverlapping(nextX, nextY, radius);
     }
-   
-  method void setNextDir() {
-    var int pacmanX, pacmanY;
-    var int diffX, diffY;
-    let pacmanX = pacman.getX();
-    let pacmanY = pacman.getY();
-    let diffX = Math.max(x, pacmanX) - Math.min(x, pacmanX);
-    let diffY = Math.max(y, pacmanY) - Math.min(y, pacmanY);
-    if (~(diffX = 0) & (diffX > diffY)) {
-      if (pacmanX < x) {
-        let dir = 3;
-        return;
-      }
-      let dir = 4;
-      return;
-    }
-    if (pacmanY < y) {
-      let dir = 1;
-      return;
-    }
-    let dir = 2;
-    return;
-  }
-  
-  method void setNextDirRandom() {
-	  var int i;
-	  let i = Random.randRange(150);
-    if (i < 10) {
-		let dir = 1;
-    return;
-	  }
-	  if (i < 20) {
-		  let dir = 2;
-      return;
-	  }
-	  if (i < 25) {
-		  let dir = 3;
-      return;
-	  }
-	  if (i < 150) {
-		  let dir = 4;
-      return;
-	  }
-	  do setNextDir();
-    return;
-  }
-  
-  method int getNextX() {
-    var int nextX;
-    let nextX = x;
-    if (dir = 4) {
-      let nextX = x + speed;
-    }
-    if (dir = 3) {
-      let nextX = x - speed;
-    }
-    return nextX;
-  }
 
-  method int getNextY() {
-    var int nextY;
-    let nextY = y;
-    if (dir = 2) {
-      let nextY = y + speed;
-    }
-    if (dir = 1) {
-      let nextY = y - speed;
-    }
-	  if (nextY > 250) {
-      let nextY = 12;
-      do Screen.setColor(false);
-      do Screen.drawRectangle(x, y, endX(), endY());
-    }
-    if (nextY < 12) {
-      let nextY = 250;
-      do Screen.setColor(false);
-      do Screen.drawRectangle(x, y, endX(), endY());
-    }
-    return nextY;
-  }
-  method void clearOld(int oldX, int oldY) {
-    do Screen.setColor(~color);
-    do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2); // +2 o +3
-    return;
-}
+	method boolean checkPacmanCollision() {
+		var int pacmanX, pacmanY;
+		let pacmanX = pacman.getX();
+		let pacmanY = pacman.getY();
+		if ((Math.abs(x-pacmanX)<radius) & (Math.abs(y-pacmanY)<radius)) {
+			return true;
+		}
+		return false;
+	}
+   
+  	method void setNextDir() {
+    	var int pacmanX, pacmanY;
+    	var int diffX, diffY;
+    	let pacmanX = pacman.getX();
+    	let pacmanY = pacman.getY();
+    	let diffX = Math.max(x, pacmanX) - Math.min(x, pacmanX);
+    	let diffY = Math.max(y, pacmanY) - Math.min(y, pacmanY);
+    	if (~(diffX = 0) & (diffX > diffY)) {
+    		if (pacmanX < x) {
+    			let dir = 3;
+        		return;
+      		}
+      		let dir = 4;
+      		return;
+    	}
+    	if (pacmanY < y) {
+    		let dir = 1;
+    		return;
+    	}
+    	let dir = 2;
+    	return;
+	}
+  
+  	method void setNextDirRandom() {
+	  	var int i;
+	  	let i = Random.randRange(150);
+    	if (i < 10) {
+			let dir = 1;
+    		return;
+	  	}
+	  	if (i < 20) {
+		  	let dir = 2;
+      	return;
+	  	}
+	  	if (i < 25) {
+		  	let dir = 3;
+      		return;
+	  	}
+	  	if (i < 150) {
+		  	let dir = 4;
+      		return;
+	  	}
+	  	do setNextDir();
+    	return;
+  	}
+  
+  	method int getNextX() {
+    	var int nextX;
+    	let nextX = x;
+    	if (dir = 4) {
+      		let nextX = x + speed;
+    	}
+    	if (dir = 3) {
+      		let nextX = x - speed;
+    	}
+    	return nextX;
+  	}
+
+  	method int getNextY() {
+    	var int nextY;
+    	let nextY = y;
+    	if (dir = 2) {
+      		let nextY = y + speed;
+    	}
+    	if (dir = 1) {
+      		let nextY = y - speed;
+    	}
+	  	if (nextY > 250) {
+      		let nextY = 12;
+      		do Screen.setColor(false);
+      		do Screen.drawRectangle(x, y, endX(), endY());
+    	}
+    	if (nextY < 12) {
+      		let nextY = 250;
+      		do Screen.setColor(false);
+      		do Screen.drawRectangle(x, y, endX(), endY());
+    	}
+    	return nextY;
+  	}
+ 
+	method void clearOld(int oldX, int oldY) {
+    	do Screen.setColor(~color);
+    	do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2); // +2 o +3
+    	return;
+	}
 
 
     method void draw() {
         var int i, ghostBottom;
         var int pupilOffsetX, pupilOffsetY;
-    
-      
-      
+
         do Screen.setColor(false);
         do Screen.drawCircle(x, y, radius);
     
@@ -282,15 +291,14 @@ class Ghost {
     }
     method int endX() {
         return x + size - 1;
-      }
+    }
     
-      method int endY() {
+    method int endY() {
         return y + size - 1;
-      }
+    }
 
     method void dispose() {
     	do Memory.deAlloc(this);
         return;
-    }
-    
+    }   
 }

@@ -1,0 +1,93 @@
+class Ghosts {
+    field Map map;
+    field PacMan pacman;
+    field Array ghosts;
+	field int nGhosts;
+
+    constructor Ghosts new(boolean color, Map m, PacMan p) {
+        let map = m;
+        let pacman = p;
+		let nGhosts = 5;
+        do createGhosts(color);
+        return this;
+    }
+
+	method void createGhosts(boolean color) {
+		let ghosts = Array.new(nGhosts);
+		let ghosts[0] = Ghost.new(color, map, pacman, 256, 150);
+		let ghosts[1] = Ghost.new(color, map, pacman, 256, 150);
+		let ghosts[2] = Ghost.new(color, map, pacman, 256, 150);
+		let ghosts[3] = Ghost.new(color, map, pacman, 256, 150);
+		let ghosts[4] = Ghost.new(color, map, pacman, 256, 150);
+		return;
+	}
+
+    method void init() {
+		do draw();
+	  	return;
+	}
+
+    method void changeColor(boolean color) {
+		var Ghost g;
+        var int i;
+		let i = 0;
+		while (i < nGhosts) {
+			let g = ghosts[i];
+			do g.changeColor(color);
+			let i = i + 1;
+		}
+		return;
+	}
+
+	method void draw() {
+		var Ghost g;
+		var int i;
+		let i = 0;
+		while (i < nGhosts) {
+			let g = ghosts[i];
+			do g.draw();
+			let i = i + 1;
+		}
+        return;
+    }
+
+    method void next() {
+		var Ghost g;
+        var int i;
+		let i = 0;
+		while (i < nGhosts) {
+			let g = ghosts[i];
+			do g.next();
+			let i = i + 1;
+		}
+        return;
+    }
+
+	method boolean checkPacmanCollision() {
+		var Ghost g;
+		var int i;
+		let i = 0;
+		while (i < nGhosts) {
+			let g = ghosts[i];
+			if (g.checkPacmanCollision()) {
+				return true;
+			}
+			let i = i + 1;
+		}
+		return false;
+	}
+
+    method void dispose() {
+		var Ghost g;
+		var int i;
+		let i = 0;
+		while (i < nGhosts) {
+			let g = ghosts[i];
+			do g.dispose();
+			let i = i + 1;
+		}
+    	do Memory.deAlloc(this);
+        return;
+    }
+    
+}

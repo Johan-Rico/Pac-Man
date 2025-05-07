@@ -15,8 +15,8 @@ class PacMan {
         let x = 254;
         let y = 234;
         let radius = 7;
-        let leftLimit = 2 + radius;
-        let rightLimit = 510 - radius;
+        let leftLimit = 9;
+        let rightLimit = 503;
         let dir = 2;
         let nextDir = 2;
         let speed = 3;
@@ -53,7 +53,7 @@ class PacMan {
         let x = nextX;
         let y = nextY;
 
-        if (x < 9) {
+        if (x < leftLimit) {
             let x = rightLimit - 1;
         }
         if (x > rightLimit) {
@@ -203,7 +203,6 @@ class PacMan {
     method int getY() {
         return y;
     }
-    
 
     method void dispose() {
     	do Memory.deAlloc(this);

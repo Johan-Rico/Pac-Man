@@ -8,9 +8,9 @@ push argument 1
 pop this 2
 push argument 2
 pop this 3
-push constant 256
+push argument 3
 pop this 5
-push constant 150
+push argument 4
 pop this 6
 push constant 7
 pop this 14
@@ -35,7 +35,7 @@ not
 pop this 1
 push constant 2
 pop this 8
-push constant 1
+push constant 3
 pop this 13
 push pointer 0
 call Ghost.init 1
@@ -229,6 +229,37 @@ push argument 1
 push argument 2
 push this 14
 call Map.checkOverlapping 4
+return
+function Ghost.checkPacmanCollision 2
+push argument 0
+pop pointer 0
+push this 3
+call PacMan.getX 1
+pop local 0
+push this 3
+call PacMan.getY 1
+pop local 1
+push this 5
+push local 0
+sub
+call Math.abs 1
+push this 14
+lt
+push this 6
+push local 1
+sub
+call Math.abs 1
+push this 14
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
 return
 function Ghost.setNextDir 4
 push argument 0

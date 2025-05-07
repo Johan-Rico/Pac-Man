@@ -49,8 +49,17 @@ push this 0
 call PacMan.next 1
 pop temp 0
 push this 1
-call Ghost.next 1
+call Ghosts.next 1
 pop temp 0
+push this 1
+call Ghosts.checkPacmanCollision 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+call Game.handlePacmanDeath 1
+pop temp 0
+label IF_FALSE0
 push constant 0
 return
 function Game.handleKey 0
@@ -137,7 +146,7 @@ pop temp 0
 push this 1
 push this 4
 not
-call Ghost.changeColor 2
+call Ghosts.changeColor 2
 pop temp 0
 push this 3
 push this 4
@@ -241,13 +250,13 @@ push this 4
 not
 push this 2
 push this 0
-call Ghost.new 3
+call Ghosts.new 3
 pop this 1
 push this 0
 call PacMan.init 1
 pop temp 0
 push this 1
-call Ghost.init 1
+call Ghosts.init 1
 pop temp 0
 push constant 16
 push constant 28
@@ -311,9 +320,6 @@ pop temp 0
 push this 0
 call PacMan.deathAnimation 1
 pop temp 0
-push this 1
-call Ghost.deathAnimation 1
-pop temp 0
 push constant 2000
 call Sys.wait 1
 pop temp 0
@@ -321,7 +327,7 @@ push this 0
 call PacMan.dispose 1
 pop temp 0
 push this 1
-call Ghost.dispose 1
+call Ghosts.dispose 1
 pop temp 0
 push this 5
 push constant 0
