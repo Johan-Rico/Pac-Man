@@ -2,7 +2,7 @@
 
 > 🎮 A classic Pac-Man game built using the Jack language and running on the Nand2Tetris simulator.
 
-("C:/Users/Samuel Herrera/OneDrive - Universidad EAFIT/Laboratorios/Pictures/Screenshots/Screenshot 2025-05-08 203250.png")
+![Captura del juego]("C:\Users\Samuel Herrera\OneDrive - Universidad EAFIT\Laboratorios\Pictures\Screenshots\Screenshot 2025-05-08 203250.png")
 
 ## 📌 Description
 
