@@ -61,11 +61,4 @@ PAC-MAN-DEMO/
 
 ## 👨‍💻 Author
 
-Developed by **Johan** **Laura** **Salome** **David** **Samuel** as part of his learning journey with Nand2Tetris and computer architecture.
-
-## 🚀 Future Improvements
-
-- Add smoother animations.
-- Implement retro sound effects.
-- Improve ghost AI.
-- Create a start menu and in-game help.
+Developed by **Johan Rico** **Laura Restrepo** **Salome Gutierrez** **David Arismendy** **Samuel Herrera** as part of his learning journey with Nand2Tetris and computer architecture.
