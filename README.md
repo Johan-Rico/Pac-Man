@@ -59,6 +59,6 @@ PAC-MAN-DEMO/
 - Special pellet: **+50 points**
 - Eating a ghost: **+200 points**
 
-## 👨‍💻 Author
+## 👨‍💻 Authors
 
 Developed by **Johan Rico** **Laura Restrepo** **Salome Gutierrez** **David Arismendy** **Samuel Herrera** as part of his learning journey with Nand2Tetris and computer architecture.
