@@ -5,12 +5,16 @@ class Game {
 	field Score score;
 	field boolean color;
 	field int lives;
+	field int level;
 	
 	constructor Game new() {
 		let color = true;
 		let lives = 3;
+		let level = 1;
 		let map = Map.new(~color);
 		let score = Score.new(~color, map);
+		let pacman = PacMan.new(~color, map, score);
+		let ghosts = Ghosts.new(~color, map, pacman);
 		return this;
 	}
 
@@ -25,12 +29,16 @@ class Game {
 	}
 
 	method void next() {
+		do score.drawPellets();
+		do map.drawDoor();
 		do pacman.next();
 		do ghosts.next();
 		if (ghosts.checkPacmanCollision()) {
 			do handlePacmanDeath();
-			//do ghosts.clearGhosts();
-		}
+		} else {
+		if (score.allPelletsCollected()) {
+			do newLevel();
+		}}
 		return;
 	}
 	
@@ -39,8 +47,7 @@ class Game {
 			do changeColor(true);
 		}
 		if (key = 145) {
-			do handlePacmanDeath();
-			//do changeColor(false);
+			do changeColor(false);
 		}
 		do pacman.handleKey(key);
 		return;
@@ -94,9 +101,21 @@ class Game {
 		return;
 	}
 
+	method void newLevel() {
+		let level = level + 1;
+		do Sys.wait(2000);
+		do ghosts.clearGhosts();
+		do clearScreen();
+		do Sys.wait(100);
+		do score.nextLevel();
+		do map.draw();
+		do printLives();
+		do score.drawPellets();
+		do startLevel();
+		return;
+	}
+
 	method void startLevel() {
-		let pacman = PacMan.new(~color, map, score);
-		let ghosts = Ghosts.new(~color, map, pacman);
 		do pacman.init();
 		do ghosts.init();
 		do Output.moveCursor(16,28);
@@ -110,11 +129,11 @@ class Game {
 	method void handlePacmanDeath() {
 		let lives = lives - 1;
 		
-		do Sys.wait(1000);
+		do Sys.wait(750);
+		do ghosts.clearGhosts();
+		do score.drawPellets();
 		do pacman.deathAnimation();
 		do Sys.wait(2000);
-		do pacman.dispose();
-		do ghosts.dispose();
 		if (lives > 0) {
 			do Screen.setColor(color);
 			do Screen.drawRectangle(463-(20*(lives)), 7, 477-(20*(lives))+20, 21);

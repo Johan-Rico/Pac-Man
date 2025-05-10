@@ -1,13 +1,11 @@
 class Pellet {
 	field int x, y;
 	field boolean isCokie;
-	field boolean isCovered;
-	field boolean eaten;
+	field boolean collected;
 	field int radius;
 
   	constructor Pellet new(int xi, int yi, boolean cokie) {
-		let isCovered = false;
-		let eaten = false;
+		let collected = false;
 		let isCokie = cokie;
 		let x = xi*9+24;
 		let y = yi*9+45;
@@ -20,7 +18,7 @@ class Pellet {
   	}
 
 	method void draw() {
-		if (eaten) {
+		if (collected) {
 			return;
 		}
 		if (isCokie) {
@@ -31,6 +29,11 @@ class Pellet {
 		return;
 	}
 
+	method void restart() {
+		let collected = false;
+		return;
+	}
+
 	method void delete() {
 		if (isCokie) {
 			do Screen.drawCircle(x, y, radius);
@@ -38,6 +41,13 @@ class Pellet {
 			do Screen.drawRectangle(x, y, x+1, y+1);
 		}
 		return;
+	}
+	
+	method int getCollected() {
+		if (collected) {
+			return 1;
+		}
+		return 0;
 	}
 
 	method int getPoints() {
@@ -55,8 +65,8 @@ class Pellet {
 		let bottomY = y + radius+1;
 		
 		if ((((xi-pRadius) < (rightX)) & ((xi+pRadius) > (leftX))) &
-		(((yi-pRadius) < (bottomY)) & ((yi+pRadius) > (topY)) & ~eaten)) {
-			let eaten = true;
+		(((yi-pRadius) < (bottomY)) & ((yi+pRadius) > (topY)) & ~collected)) {
+			let collected = true;
 			do delete();
 			return true;
 		}

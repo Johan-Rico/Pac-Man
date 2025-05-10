@@ -3,15 +3,28 @@ class Ghosts {
     field PacMan pacman;
     field Array ghosts;
 	field int nGhosts;
-
+	
     constructor Ghosts new(boolean color, Map m, PacMan p) {
-        let map = m;
+		let map = m;
         let pacman = p;
 		let nGhosts = 5;
         do createGhosts(color);
         return this;
     }
-
+	
+		method void init() {
+			var Ghost g;
+			var int i;
+			let i = 0;
+			while (i < nGhosts) {
+				let g = ghosts[i];
+				do g.init();
+				let i = i + 1;
+			}
+			do draw();
+			  return;
+		}
+	
 	method void createGhosts(boolean color) {
 		let ghosts = Array.new(nGhosts);
 		let ghosts[0] = Ghost.new(color, map, pacman, 256, 150);
@@ -21,12 +34,19 @@ class Ghosts {
 		let ghosts[4] = Ghost.new(color, map, pacman, 256, 150);
 		return;
 	}
-
-    method void init() {
-		do draw();
-	  	return;
-	}
-
+	
+		method void next() {
+			var Ghost g;
+			var int i;
+			let i = 0;
+			while (i < nGhosts) {
+				let g = ghosts[i];
+				do g.next();
+				let i = i + 1;
+			}
+			return;
+		}
+	
     method void changeColor(boolean color) {
 		var Ghost g;
         var int i;
@@ -51,17 +71,17 @@ class Ghosts {
         return;
     }
 
-    method void next() {
+	method void clearGhosts() {
 		var Ghost g;
-        var int i;
+		var int i;
 		let i = 0;
 		while (i < nGhosts) {
 			let g = ghosts[i];
-			do g.next();
+			do g.clearGhost();
 			let i = i + 1;
 		}
-        return;
-    }
+		return;
+	}
 
 	method boolean checkPacmanCollision() {
 		var Ghost g;

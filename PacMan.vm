@@ -29,6 +29,16 @@ return
 function PacMan.init 0
 push argument 0
 pop pointer 0
+push constant 254
+pop this 3
+push constant 234
+pop this 4
+push constant 2
+pop this 5
+push constant 2
+pop this 6
+push constant 0
+pop this 9
 push this 0
 call Screen.setColor 1
 pop temp 0
@@ -539,6 +549,9 @@ pop temp 0
 push this 0
 not
 call Screen.setColor 1
+pop temp 0
+push constant 125
+call Sys.wait 1
 pop temp 0
 label WHILE_EXP0
 push local 1

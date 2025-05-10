@@ -20,7 +20,7 @@ class Score {
 		do printLabels();
 		do printScore();
 		do createPellets();
-		do draw();
+		do drawPellets();
 		return;
 	}
 	
@@ -28,7 +28,7 @@ class Score {
 		let color = c;
 		do printLabels();
 		do printScore();
-		do draw();
+		do drawPellets();
 		return;
 	}
 
@@ -42,8 +42,20 @@ class Score {
 		} else {
 			do Output.printString("00");
 		}
-		
 		return;
+	}
+
+	method boolean allPelletsCollected() {
+		var int collected, i;
+		var Pellet p;
+		let collected = 0;
+		let i = 0;
+		while (i < nPellets) {
+			let p = pellets[i];
+			let collected = collected + p.getCollected();
+			let i = i + 1;
+		}
+		return (collected = nPellets);
 	}
 
 	method void printScore() {
@@ -121,7 +133,7 @@ class Score {
 		return true;
 	}
 
-	method void draw() {
+	method void drawPellets() {
 		var Pellet p;
 	  	var int i;
 	  	let i = 0;
@@ -149,6 +161,20 @@ class Score {
 		}
 	  	return;
 	}
+
+	method void nextLevel() {
+		var Pellet p;
+		var int i;
+		let i = 0;
+		while (i < nPellets) {
+			let p = pellets[i];
+			do p.restart();
+			let i = i + 1;
+		}
+		do printLabels();
+		do printScore();
+		return;
+	}
   
 	method void dispose() {
 		var Pellet p;
@@ -159,7 +185,7 @@ class Score {
 			do p.dispose();
 			let i = i + 1;
 		}
-		do walls.dispose();
+		do pellets.dispose();
 	  	do Memory.deAlloc(this);
 	  	return;
 	}

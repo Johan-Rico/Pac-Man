@@ -1,5 +1,5 @@
 function Game.new 0
-push constant 6
+push constant 7
 call Memory.alloc 1
 pop pointer 0
 push constant 0
@@ -7,6 +7,8 @@ not
 pop this 4
 push constant 3
 pop this 5
+push constant 1
+pop this 6
 push this 4
 not
 call Map.new 1
@@ -16,6 +18,18 @@ not
 push this 2
 call Score.new 2
 pop this 3
+push this 4
+not
+push this 2
+push this 3
+call PacMan.new 3
+pop this 0
+push this 4
+not
+push this 2
+push this 0
+call Ghosts.new 3
+pop this 1
 push pointer 0
 return
 function Game.init 0
@@ -45,6 +59,12 @@ return
 function Game.next 0
 push argument 0
 pop pointer 0
+push this 3
+call Score.drawPellets 1
+pop temp 0
+push this 2
+call Map.drawDoor 1
+pop temp 0
 push this 0
 call PacMan.next 1
 pop temp 0
@@ -59,7 +79,18 @@ label IF_TRUE0
 push pointer 0
 call Game.handlePacmanDeath 1
 pop temp 0
+goto IF_END0
 label IF_FALSE0
+push this 3
+call Score.allPelletsCollected 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Game.newLevel 1
+pop temp 0
+label IF_FALSE1
+label IF_END0
 push constant 0
 return
 function Game.handleKey 0
@@ -84,7 +115,8 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push pointer 0
-call Game.handlePacmanDeath 1
+push constant 0
+call Game.changeColor 2
 pop temp 0
 label IF_FALSE1
 push this 0
@@ -237,21 +269,45 @@ goto WHILE_EXP0
 label WHILE_END0
 push constant 0
 return
+function Game.newLevel 0
+push argument 0
+pop pointer 0
+push this 6
+push constant 1
+add
+pop this 6
+push constant 2000
+call Sys.wait 1
+pop temp 0
+push this 1
+call Ghosts.clearGhosts 1
+pop temp 0
+push pointer 0
+call Game.clearScreen 1
+pop temp 0
+push constant 100
+call Sys.wait 1
+pop temp 0
+push this 3
+call Score.nextLevel 1
+pop temp 0
+push this 2
+call Map.draw 1
+pop temp 0
+push pointer 0
+call Game.printLives 1
+pop temp 0
+push this 3
+call Score.drawPellets 1
+pop temp 0
+push pointer 0
+call Game.startLevel 1
+pop temp 0
+push constant 0
+return
 function Game.startLevel 0
 push argument 0
 pop pointer 0
-push this 4
-not
-push this 2
-push this 3
-call PacMan.new 3
-pop this 0
-push this 4
-not
-push this 2
-push this 0
-call Ghosts.new 3
-pop this 1
 push this 0
 call PacMan.init 1
 pop temp 0
@@ -314,20 +370,20 @@ push this 5
 push constant 1
 sub
 pop this 5
-push constant 1000
+push constant 750
 call Sys.wait 1
+pop temp 0
+push this 1
+call Ghosts.clearGhosts 1
+pop temp 0
+push this 3
+call Score.drawPellets 1
 pop temp 0
 push this 0
 call PacMan.deathAnimation 1
 pop temp 0
 push constant 2000
 call Sys.wait 1
-pop temp 0
-push this 0
-call PacMan.dispose 1
-pop temp 0
-push this 1
-call Ghosts.dispose 1
 pop temp 0
 push this 5
 push constant 0

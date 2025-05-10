@@ -24,6 +24,11 @@ class PacMan {
     }
 
     method void init() {
+        let x = 254;
+        let y = 234;
+        let dir = 2;
+        let nextDir = 2;
+        let sprite = 0;
         do Screen.setColor(color);
         do Screen.drawCircle(x,y,radius);
         return;
@@ -152,6 +157,7 @@ class PacMan {
         do Screen.setColor(color);
         do Screen.drawCircle(x,y,radius);
         do Screen.setColor(~color);
+        do Sys.wait(125);
         while (deathSprite < 10) {
             let i = -7;
             while (~(i > 7)) {
