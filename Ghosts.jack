@@ -2,112 +2,159 @@ class Ghosts {
     field Map map;
     field PacMan pacman;
     field Array ghosts;
-	field int nGhosts;
-	
+    field int nGhosts;
+    field boolean ghostsVulnerable;
+    field int vulnerableTimer;
+	field Score score;
+    
     constructor Ghosts new(boolean color, Map m, PacMan p) {
-		let map = m;
+        let map = m;
         let pacman = p;
-		let nGhosts = 5;
+        let nGhosts = 5;
+        let ghostsVulnerable = false;
+        let vulnerableTimer = 0;
         do createGhosts(color);
         return this;
     }
-	
-		method void init() {
-			var Ghost g;
-			var int i;
-			let i = 0;
-			while (i < nGhosts) {
-				let g = ghosts[i];
-				do g.init();
-				let i = i + 1;
-			}
-			do draw();
-			  return;
-		}
-	
-	method void createGhosts(boolean color) {
-		let ghosts = Array.new(nGhosts);
-		let ghosts[0] = Ghost.new(color, map, pacman, 256, 150);
-		let ghosts[1] = Ghost.new(color, map, pacman, 256, 150);
-		let ghosts[2] = Ghost.new(color, map, pacman, 256, 150);
-		let ghosts[3] = Ghost.new(color, map, pacman, 256, 150);
-		let ghosts[4] = Ghost.new(color, map, pacman, 256, 150);
-		return;
-	}
-	
-		method void next() {
-			var Ghost g;
-			var int i;
-			let i = 0;
-			while (i < nGhosts) {
-				let g = ghosts[i];
-				do g.next();
-				let i = i + 1;
-			}
-			return;
-		}
-	
-    method void changeColor(boolean color) {
-		var Ghost g;
+    
+    method void init() {
+        var Ghost g;
         var int i;
-		let i = 0;
-		while (i < nGhosts) {
-			let g = ghosts[i];
-			do g.changeColor(color);
-			let i = i + 1;
-		}
-		return;
-	}
-
-	method void draw() {
-		var Ghost g;
-		var int i;
-		let i = 0;
-		while (i < nGhosts) {
-			let g = ghosts[i];
-			do g.draw();
-			let i = i + 1;
-		}
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.init();
+            let i = i + 1;
+        }
+        do draw();
         return;
     }
 
-	method void clearGhosts() {
-		var Ghost g;
-		var int i;
-		let i = 0;
-		while (i < nGhosts) {
-			let g = ghosts[i];
-			do g.clearGhost();
-			let i = i + 1;
-		}
-		return;
-	}
-
-	method boolean checkPacmanCollision() {
-		var Ghost g;
-		var int i;
-		let i = 0;
-		while (i < nGhosts) {
-			let g = ghosts[i];
-			if (g.checkPacmanCollision()) {
-				return true;
-			}
-			let i = i + 1;
-		}
-		return false;
-	}
-
-    method void dispose() {
-		var Ghost g;
-		var int i;
-		let i = 0;
-		while (i < nGhosts) {
-			let g = ghosts[i];
-			do g.dispose();
-			let i = i + 1;
-		}
-    	do Memory.deAlloc(this);
+	method void setScore(Score s) {
+        let score = s;
         return;
     }
     
+    method void createGhosts(boolean color) {
+        let ghosts = Array.new(nGhosts);
+        
+        let ghosts[0] = Ghost.new(color, map, pacman, 256, 150, true);
+        let ghosts[1] = Ghost.new(color, map, pacman, 256, 150, true); 
+        let ghosts[2] = Ghost.new(color, map, pacman, 256, 150, true);  
+        let ghosts[3] = Ghost.new(color, map, pacman, 256, 150, false); 
+        let ghosts[4] = Ghost.new(color, map, pacman, 256, 150, false); 
+        
+        return;
+    }
+    
+    method void next() {
+        var Ghost g;
+        var int i;
+        
+        if (ghostsVulnerable) {
+            let vulnerableTimer = vulnerableTimer - 1;
+            if (vulnerableTimer < 0) {
+                let ghostsVulnerable = false;
+                do changeColor(true); 
+            }
+            
+            if ((vulnerableTimer < 60) & ((vulnerableTimer & 8) = 0)) {
+                do changeColor(true);
+            } else {
+                if ((vulnerableTimer < 60) & ((vulnerableTimer & 8) > 0)) {
+                    do changeColor(false);
+                }
+            }
+        }
+        
+
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.next();
+            let i = i + 1;
+        }
+        return;
+    }
+    
+    method void makeVulnerable() {
+        let ghostsVulnerable = true;
+        let vulnerableTimer = 300;
+        do changeColor(false);
+        return;
+    }
+    
+    method void changeColor(boolean color) {
+        var Ghost g;
+        var int i;
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.changeColor(color);
+            let i = i + 1;
+        }
+        return;
+    }
+    
+    method void draw() {
+        var Ghost g;
+        var int i;
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.draw();
+            let i = i + 1;
+        }
+        return;
+    }
+    
+    method void clearGhosts() {
+        var Ghost g;
+        var int i;
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.clearGhost();
+            let i = i + 1;
+        }
+        return;
+    }
+    
+    method boolean checkPacmanCollision() {
+        var Ghost g;
+        var int i;
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            if (g.checkPacmanCollision()) {
+                if (ghostsVulnerable) {
+                    do g.init();
+					if (~(score = null)) {
+                        do score.addPoints(200);
+                    }
+                    return false;
+                }
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+    
+    method boolean areVulnerable() {
+        return ghostsVulnerable;
+    }
+    
+    method void dispose() {
+        var Ghost g;
+        var int i;
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.dispose();
+            let i = i + 1;
+        }
+        do Memory.deAlloc(this);
+        return;
+    }
 }

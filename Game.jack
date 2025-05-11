@@ -15,6 +15,7 @@ class Game {
 		let score = Score.new(~color, map);
 		let pacman = PacMan.new(~color, map, score);
 		let ghosts = Ghosts.new(~color, map, pacman);
+		do ghosts.setScore(score); 
 		return this;
 	}
 
@@ -33,6 +34,9 @@ class Game {
 		do map.drawDoor();
 		do pacman.next();
 		do ghosts.next();
+		if (score.checkPowerPelletEaten()) {
+			do ghosts.makeVulnerable();
+		}
 		if (ghosts.checkPacmanCollision()) {
 			do handlePacmanDeath();
 		} else {

@@ -12,21 +12,29 @@ class Ghost {
     field int previousDir; 
     field int leftLimit, rightLimit;
     field int spriteDelay;
+    field boolean isPursuer;
+    field int targetX, targetY;
+    field int modeTimer;
+    field boolean isChasing;
 
-    constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi) {
+    constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi, boolean pursuer) {
         let startX = xi;
         let startY = yi;
         let color = c;
         let speed = 3;
         let radius = 7;
         let map = m;
-        let pacman=p;
-        let size=12;
+        let pacman = p;
+        let size = 12;
         let leftLimit = 1 + radius;
         let rightLimit = 510 - radius;
+        let isPursuer = pursuer;
+        
+        let modeTimer = 300;
+        let isChasing = false;
+        
         do init();
         return this;
-
     }
 
     method void init() {
@@ -39,6 +47,8 @@ class Ghost {
         let dir = 2;
         let firstMove = true;
         let nextDir = 2;
+        let modeTimer = 300;
+        let isChasing = false;
 
         do Screen.setColor(color);
         do Screen.drawCircle(x, y, radius);      
@@ -59,11 +69,17 @@ class Ghost {
         let color = c;
         return;
     }
+    
     method void next() {
         var int oldX, oldY;
         var boolean didMove;
-        let oldX=x;
-        let oldY=y;
+        
+        do updateMode();
+        
+        do updateTarget();
+        
+        let oldX = x;
+        let oldY = y;
         let didMove = advance();
         if (didMove) {
             do Screen.setColor(~color);
@@ -72,35 +88,222 @@ class Ghost {
         }
         return;
     }
-
     
+    method void updateMode() {
+        let modeTimer = modeTimer - 1;
+        if (modeTimer < 0) {
+            let isChasing = ~isChasing;
+            if (isChasing) {
+                let modeTimer = 600;
+            } else {
+                let modeTimer = 300;
+            }
+        }
+        return;
+    }
+    
+    method void updateTarget() {
+        var int pacmanX, pacmanY;
+        
+        let pacmanX = pacman.getX();
+        let pacmanY = pacman.getY();
+        
+        if (~isPursuer) {
+            if ((Random.rand() & 31) = 0) {
+                let targetX = Random.rand() & 511;
+                let targetY = (Random.rand() & 127) + 50;
+            } else {
+                if (isChasing) {
+                    if ((Random.rand() & 7) = 0) {
+                        do setNextDirRandom();
+                    } else {
+                        let targetX = pacmanX;
+                        let targetY = pacmanY;
+                    }
+                } else {
+                    if ((targetX = 0) | (targetY = 0) | ((Random.rand() & 31) = 0)) {
+                        let targetX = Random.rand() & 511;
+                        let targetY = (Random.rand() & 127) + 50;
+                    }
+                }
+            }
+        } else {
+            if (isChasing) {
+                let targetX = pacmanX;
+                let targetY = pacmanY;
+
+            } else {
+
+                let targetX = (Random.rand() & 1) * 430 + 40;
+                let targetY = (Random.rand() & 1) * 170 + 40;
+            }
+        }
+        return;
+    }
 
     method boolean advance() {
         var int nextX, nextY;
         if (firstMove) {
             let dir = 1;           
             let firstMove = false; 
-        }    
+        }
+        
+        if (isPursuer | isChasing) {
+            if ((Random.rand() & 7) > 0) {
+                do setNextDir();
+            } else {
+                do setNextDirRandom();
+            }
+        } else {
+            if ((Random.rand() & 3) > 0) {
+                do setNextDir();
+            } else {
+                do setNextDirRandom();
+            }
+        }
+        
         let nextX = getNextX();
         let nextY = getNextY();
+        
         if (checkWalls(nextX, nextY)) {
-          	do setNextDirRandom();
-          	return false;
+            do setNextDirRandom();
+            return false;
         }
+        
         if ((x = nextX) & (y = nextY)) {
-          	return false;
+            return false;
         }
+        
         let x = nextX;
         let y = nextY;
+        
         if (x < 9) {
             let x = rightLimit - 1;
         }
         if (x > rightLimit) {
             let x = leftLimit + 1;
         }
+        
         return true;
     }
+    
+    method void setNextDir() {
+        var int possibleDirs;
+        var int bestDir;
+        var int bestDist;
+        var int testDist;
+        var int testX, testY;
+        
+        let bestDist = 32767;
+        let bestDir = dir;
+        
+        let possibleDirs = 0;
+        
+        let testX = x;
+        let testY = y - speed;
+        if (~(checkWalls(testX, testY))) {
+            let possibleDirs = possibleDirs | 1;
+        }
+        
+        let testX = x;
+        let testY = y + speed;
+        if (~(checkWalls(testX, testY))) {
+            let possibleDirs = possibleDirs | 2;
+        }
+        
+        let testX = x - speed;
+        let testY = y;
+        if (~(checkWalls(testX, testY))) {
+            let possibleDirs = possibleDirs | 4; 
+        }
+        
+        let testX = x + speed;
+        let testY = y;
+        if (~(checkWalls(testX, testY))) {
+            let possibleDirs = possibleDirs | 8;
+        }
+        
+        if (dir = 1) { let possibleDirs = possibleDirs & (~2); }
+        if (dir = 2) { let possibleDirs = possibleDirs & (~1); }
+        if (dir = 3) { let possibleDirs = possibleDirs & (~8); }
+        if (dir = 4) { let possibleDirs = possibleDirs & (~4); }
+        
+        if (possibleDirs = 0) {
+            if (dir = 1) { let possibleDirs = 2; }
+            if (dir = 2) { let possibleDirs = 1; }
+            if (dir = 3) { let possibleDirs = 8; }
+            if (dir = 4) { let possibleDirs = 4; }
+        }
+        
+        if ((possibleDirs & 1) > 0) {
+            let testX = x;
+            let testY = y - speed;
+            let testDist = distanceSquared(testX, testY, targetX, targetY);
+            if (testDist < bestDist) {
+                let bestDist = testDist;
+                let bestDir = 1;
+            }
+        }
+        
+        if ((possibleDirs & 2) > 0) {
+            let testX = x;
+            let testY = y + speed;
+            let testDist = distanceSquared(testX, testY, targetX, targetY);
+            if (testDist < bestDist) {
+                let bestDist = testDist;
+                let bestDir = 2;
+            }
+        }
+        
+        if ((possibleDirs & 4) > 0) {
+            let testX = x - speed;
+            let testY = y;
+            let testDist = distanceSquared(testX, testY, targetX, targetY);
+            if (testDist < bestDist) {
+                let bestDist = testDist;
+                let bestDir = 3;
+            }
+        }
+        
+        if ((possibleDirs & 8) > 0) {
+            let testX = x + speed;
+            let testY = y;
+            let testDist = distanceSquared(testX, testY, targetX, targetY);
+            if (testDist < bestDist) {
+                let bestDist = testDist;
+                let bestDir = 4;
+            }
+        }
+        
+        let dir = bestDir;
+        return;
+    }
+    
+    method int distanceSquared(int x1, int y1, int x2, int y2) {
+        var int dx, dy;
+        let dx = x2 - x1;
+        let dy = y2 - y1;
+        return (dx * dx) + (dy * dy);
+    }
  
+    method void setNextDirRandom() {
+        var int i;
+        let i = Random.rand() & 15;
+        if (i < 4) {
+            let dir = 1;
+            return;
+        }
+        if (i < 8) {
+            let dir = 2;
+            return;
+        }
+        if (i < 12) {
+            let dir = 3;
+        }
+        let dir = 4; 
+        return;
+    }
+  
     method boolean checkWalls(int nextX, int nextY) {
         var int nextEndX, nextEndY;
         let nextEndX = nextX + size - 1;
@@ -108,102 +311,55 @@ class Ghost {
         return map.checkOverlapping(nextX, nextY, radius);
     }
 
-	method boolean checkPacmanCollision() {
-		var int pacmanX, pacmanY;
-		let pacmanX = pacman.getX();
-		let pacmanY = pacman.getY();
-		if ((Math.abs(x-pacmanX)<radius) & (Math.abs(y-pacmanY)<radius)) {
-			return true;
-		}
-		return false;
-	}
+    method boolean checkPacmanCollision() {
+        var int pacmanX, pacmanY;
+        let pacmanX = pacman.getX();
+        let pacmanY = pacman.getY();
+        if ((Math.abs(x-pacmanX)<radius) & (Math.abs(y-pacmanY)<radius)) {
+            return true;
+        }
+        return false;
+    }
    
-  	method void setNextDir() {
-    	var int pacmanX, pacmanY;
-    	var int diffX, diffY;
-    	let pacmanX = pacman.getX();
-    	let pacmanY = pacman.getY();
-    	let diffX = Math.max(x, pacmanX) - Math.min(x, pacmanX);
-    	let diffY = Math.max(y, pacmanY) - Math.min(y, pacmanY);
-    	if (~(diffX = 0) & (diffX > diffY)) {
-    		if (pacmanX < x) {
-    			let dir = 3;
-        		return;
-      		}
-      		let dir = 4;
-      		return;
-    	}
-    	if (pacmanY < y) {
-    		let dir = 1;
-    		return;
-    	}
-    	let dir = 2;
-    	return;
-	}
-  
-  	method void setNextDirRandom() {
-	  	var int i;
-	  	let i = Random.randRange(150);
-    	if (i < 10) {
-			let dir = 1;
-    		return;
-	  	}
-	  	if (i < 20) {
-		  	let dir = 2;
-      	return;
-	  	}
-	  	if (i < 25) {
-		  	let dir = 3;
-      		return;
-	  	}
-	  	if (i < 150) {
-		  	let dir = 4;
-      		return;
-	  	}
-	  	do setNextDir();
-    	return;
-  	}
-  
-  	method int getNextX() {
-    	var int nextX;
-    	let nextX = x;
-    	if (dir = 4) {
-      		let nextX = x + speed;
-    	}
-    	if (dir = 3) {
-      		let nextX = x - speed;
-    	}
-    	return nextX;
-  	}
+    method int getNextX() {
+        var int nextX;
+        let nextX = x;
+        if (dir = 4) {
+            let nextX = x + speed;
+        }
+        if (dir = 3) {
+            let nextX = x - speed;
+        }
+        return nextX;
+    }
 
-  	method int getNextY() {
-    	var int nextY;
-    	let nextY = y;
-    	if (dir = 2) {
-      		let nextY = y + speed;
-    	}
-    	if (dir = 1) {
-      		let nextY = y - speed;
-    	}
-	  	if (nextY > 250) {
-      		let nextY = 12;
-      		do Screen.setColor(false);
-      		do Screen.drawRectangle(x, y, endX(), endY());
-    	}
-    	if (nextY < 12) {
-      		let nextY = 250;
-      		do Screen.setColor(false);
-      		do Screen.drawRectangle(x, y, endX(), endY());
-    	}
-    	return nextY;
-  	}
+    method int getNextY() {
+        var int nextY;
+        let nextY = y;
+        if (dir = 2) {
+            let nextY = y + speed;
+        }
+        if (dir = 1) {
+            let nextY = y - speed;
+        }
+        if (nextY > 250) {
+            let nextY = 12;
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, y, endX(), endY());
+        }
+        if (nextY < 12) {
+            let nextY = 250;
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, y, endX(), endY());
+        }
+        return nextY;
+    }
  
-	method void clearGhost() {
-    	do Screen.setColor(~color);
-    	do Screen.drawRectangle(x - radius, y - radius, x + radius, y + radius + 2);
-    	return;
-	}
-
+    method void clearGhost() {
+        do Screen.setColor(~color);
+        do Screen.drawRectangle(x - radius, y - radius, x + radius, y + radius + 2);
+        return;
+    }
 
     method void draw() {
         var int i, ghostBottom;
@@ -223,18 +379,15 @@ class Ghost {
             let i = i + 1;
         }
     
-  
-        if (dir = 1) { let pupilOffsetX = 1; let pupilOffsetY = 0; }  //right
-        if (dir = 2) { let pupilOffsetX = -1; let pupilOffsetY = 0; } // left
-        if (dir = 3) { let pupilOffsetX = 0; let pupilOffsetY = 1; }  // down
-        if (dir = 4) { let pupilOffsetX = 0; let pupilOffsetY = -1; } // up
+        if (dir = 1) { let pupilOffsetX = 0; let pupilOffsetY = -1; }
+        if (dir = 2) { let pupilOffsetX = 0; let pupilOffsetY = 1; } 
+        if (dir = 3) { let pupilOffsetX = -1; let pupilOffsetY = 0; } 
+        if (dir = 4) { let pupilOffsetX = 1; let pupilOffsetY = 0; }
     
-   
         do Screen.setColor(~color);
         do Screen.drawCircle(x - 3, y - 2, 2);
         do Screen.drawCircle(x + 3, y - 2, 2);
     
-
         do Screen.setColor(color);
         do Screen.drawCircle(x - 3 + pupilOffsetX, y - 2 + pupilOffsetY, 1);
         do Screen.drawCircle(x + 3 + pupilOffsetX, y - 2 + pupilOffsetY, 1);
@@ -259,8 +412,7 @@ class Ghost {
     }
 
     method void dispose() {
-    	do Memory.deAlloc(this);
+        do Memory.deAlloc(this);
         return;
-    }   
-
+    }
 }

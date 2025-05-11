@@ -30,6 +30,10 @@ push this 2
 push this 0
 call Ghosts.new 3
 pop this 1
+push this 1
+push this 3
+call Ghosts.setScore 2
+pop temp 0
 push pointer 0
 return
 function Game.init 0
@@ -71,26 +75,35 @@ pop temp 0
 push this 1
 call Ghosts.next 1
 pop temp 0
-push this 1
-call Ghosts.checkPacmanCollision 1
+push this 3
+call Score.checkPowerPelletEaten 1
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push pointer 0
-call Game.handlePacmanDeath 1
+push this 1
+call Ghosts.makeVulnerable 1
 pop temp 0
-goto IF_END0
 label IF_FALSE0
-push this 3
-call Score.allPelletsCollected 1
+push this 1
+call Ghosts.checkPacmanCollision 1
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push pointer 0
+call Game.handlePacmanDeath 1
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push this 3
+call Score.allPelletsCollected 1
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
 call Game.newLevel 1
 pop temp 0
-label IF_FALSE1
-label IF_END0
+label IF_FALSE2
+label IF_END1
 push constant 0
 return
 function Game.handleKey 0

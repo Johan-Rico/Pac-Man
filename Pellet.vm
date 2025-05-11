@@ -111,6 +111,18 @@ return
 label IF_FALSE0
 push constant 0
 return
+function Pellet.getIsCokie 0
+push argument 0
+pop pointer 0
+push this 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+return
+label IF_FALSE0
+push constant 0
+return
 function Pellet.getPoints 0
 push argument 0
 pop pointer 0
