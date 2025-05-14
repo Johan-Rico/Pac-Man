@@ -5,7 +5,6 @@ class Score {
 	field int nPellets;
 	field Array pellets;
 	field boolean color;
-	field boolean powerPelletEaten;
 	
 	constructor Score new(boolean c, Map m) {
 		let map = m;
@@ -13,7 +12,6 @@ class Score {
 		let score = 0;
 		let high = 0;
 		let color = c;
-		let powerPelletEaten = false;
 		return this;
 	}
 	
@@ -169,11 +167,9 @@ class Score {
 		let i = 0;
 		while (i < nPellets) {
 			let p = pellets[i];
-			if (p.getCollected()) {
-				if (p.getIsCokie()) {
-					let powerPelletEaten = true;
-					return true;
-				}
+			if (~p.getPowerUsed() & p.getCollected()) {
+				do p.setPowerUsed(true);
+				return true;
 			}
 			let i = i + 1;
 		}

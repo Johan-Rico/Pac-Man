@@ -75,9 +75,9 @@ class Game {
 		let color = c;
 		do clearScreen();
 		do printLives();
+		do ghosts.changeColor(~color);
 		do map.changeColor(~color);
 		do pacman.changeColor(~color);
-		do ghosts.changeColor(~color);
 		do score.changeColor(~color);
 		return;
 	}

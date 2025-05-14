@@ -1,19 +1,21 @@
 function Ghosts.new 0
-push constant 7
+push constant 8
 call Memory.alloc 1
 pop pointer 0
 push argument 1
 pop this 0
 push argument 2
 pop this 1
+push argument 0
+pop this 4
 push constant 5
 pop this 3
 push constant 0
-pop this 4
-push constant 0
 pop this 5
+push constant 0
+pop this 6
 push pointer 0
-push argument 0
+push this 4
 call Ghosts.createGhosts 2
 pop temp 0
 push pointer 0
@@ -36,6 +38,14 @@ pop pointer 1
 push that 0
 pop local 0
 push local 0
+push constant 0
+call Ghost.setVulnerable 2
+pop temp 0
+push local 0
+push this 4
+call Ghost.changeColor 2
+pop temp 0
+push local 0
 call Ghost.init 1
 pop temp 0
 push local 1
@@ -53,7 +63,7 @@ function Ghosts.setScore 0
 push argument 0
 pop pointer 0
 push argument 1
-pop this 6
+pop this 7
 push constant 0
 return
 function Ghosts.createGhosts 0
@@ -107,7 +117,7 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-push constant 3
+push constant 4
 push this 2
 add
 push argument 1
@@ -121,7 +131,7 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-push constant 4
+push constant 3
 push this 2
 add
 push argument 1
@@ -140,66 +150,26 @@ return
 function Ghosts.next 2
 push argument 0
 pop pointer 0
-push this 4
+push this 5
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 5
+push this 6
 push constant 1
 sub
-pop this 5
-push this 5
+pop this 6
+push this 6
 push constant 0
 lt
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push constant 0
-pop this 4
+pop this 5
 push pointer 0
-push constant 0
-not
-call Ghosts.changeColor 2
+push this 4
+call Ghosts.changeGhostsColor 2
 pop temp 0
-label IF_FALSE1
-push this 5
-push constant 60
-lt
-push this 5
-push constant 8
-and
-push constant 0
-eq
-and
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
-push pointer 0
-push constant 0
-not
-call Ghosts.changeColor 2
-pop temp 0
-goto IF_END2
-label IF_FALSE2
-push this 5
-push constant 60
-lt
-push this 5
-push constant 8
-and
-push constant 0
-gt
-and
-if-goto IF_TRUE3
-goto IF_FALSE3
-label IF_TRUE3
-push pointer 0
-push constant 0
-call Ghosts.changeColor 2
-pop temp 0
-label IF_FALSE3
-label IF_END2
-label IF_FALSE0
 push constant 0
 pop local 1
 label WHILE_EXP0
@@ -215,7 +185,8 @@ pop pointer 1
 push that 0
 pop local 0
 push local 0
-call Ghost.next 1
+push constant 0
+call Ghost.setVulnerable 2
 pop temp 0
 push local 1
 push constant 1
@@ -223,23 +194,85 @@ add
 pop local 1
 goto WHILE_EXP0
 label WHILE_END0
+label IF_FALSE1
+label IF_FALSE0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END1
+push local 1
+push this 2
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+call Ghost.next 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
 push constant 0
 return
-function Ghosts.makeVulnerable 0
+function Ghosts.makeVulnerable 2
 push argument 0
 pop pointer 0
 push constant 0
 not
-pop this 4
-push constant 300
 pop this 5
-push pointer 0
+push constant 300
+pop this 6
 push constant 0
-call Ghosts.changeColor 2
+pop local 1
+label WHILE_EXP0
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 2
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+push constant 0
+not
+call Ghost.setVulnerable 2
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push pointer 0
+push this 4
+not
+call Ghosts.changeGhostsColor 2
 pop temp 0
 push constant 0
 return
-function Ghosts.changeColor 2
+function Ghosts.changeColor 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 4
+push pointer 0
+push this 4
+call Ghosts.changeGhostsColor 2
+pop temp 0
+push constant 0
+return
+function Ghosts.changeGhostsColor 2
 push argument 0
 pop pointer 0
 push constant 0
@@ -314,6 +347,10 @@ pop pointer 1
 push that 0
 pop local 0
 push local 0
+push this 4
+call Ghost.changeColor 2
+pop temp 0
+push local 0
 call Ghost.clearGhost 1
 pop temp 0
 push local 1
@@ -346,31 +383,35 @@ call Ghost.checkPacmanCollision 1
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 4
+push local 0
+call Ghost.isVulnerable 1
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push local 0
+push this 4
+call Ghost.changeColor 2
+pop temp 0
+push local 0
+call Ghost.clearGhost 1
+pop temp 0
+push local 0
 call Ghost.init 1
 pop temp 0
-push this 6
-push constant 0
-eq
-not
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
-push this 6
+push this 7
 push constant 200
 call Score.addPoints 2
 pop temp 0
-label IF_FALSE2
+push local 0
 push constant 0
-return
+call Ghost.setVulnerable 2
+pop temp 0
+goto IF_END1
 label IF_FALSE1
 push constant 0
 not
 return
+label IF_END1
 label IF_FALSE0
 push local 1
 push constant 1
@@ -379,11 +420,6 @@ pop local 1
 goto WHILE_EXP0
 label WHILE_END0
 push constant 0
-return
-function Ghosts.areVulnerable 0
-push argument 0
-pop pointer 0
-push this 4
 return
 function Ghosts.dispose 2
 push argument 0

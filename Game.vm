@@ -178,6 +178,11 @@ pop temp 0
 push pointer 0
 call Game.printLives 1
 pop temp 0
+push this 1
+push this 4
+not
+call Ghosts.changeColor 2
+pop temp 0
 push this 2
 push this 4
 not
@@ -187,11 +192,6 @@ push this 0
 push this 4
 not
 call PacMan.changeColor 2
-pop temp 0
-push this 1
-push this 4
-not
-call Ghosts.changeColor 2
 pop temp 0
 push this 3
 push this 4

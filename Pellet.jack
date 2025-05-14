@@ -1,17 +1,20 @@
 class Pellet {
 	field int x, y;
-	field boolean isCokie;
+	field boolean isCookie;
 	field boolean collected;
+	field boolean powerUsed;
 	field int radius;
 
-  	constructor Pellet new(int xi, int yi, boolean cokie) {
+  	constructor Pellet new(int xi, int yi, boolean cookie) {
 		let collected = false;
-		let isCokie = cokie;
+		let isCookie = cookie;
 		let x = xi*9+24;
 		let y = yi*9+45;
-		if (isCokie) {
+		if (isCookie) {
+			let powerUsed = false;
 			let radius = 4;
 		} else {	
+			let powerUsed = true;
 			let radius = 1;
 		}
 		return this;
@@ -21,7 +24,7 @@ class Pellet {
 		if (collected) {
 			return;
 		}
-		if (isCokie) {
+		if (isCookie) {
 			do Screen.drawCircle(x, y, radius);
 		} else {	
 			do Screen.drawRectangle(x, y, x+1, y+1);
@@ -31,11 +34,14 @@ class Pellet {
 
 	method void restart() {
 		let collected = false;
+		if (isCookie) {
+			let powerUsed = false;
+		}
 		return;
 	}
 
 	method void delete() {
-		if (isCokie) {
+		if (isCookie) {
 			do Screen.drawCircle(x, y, radius);
 		} else {	
 			do Screen.drawRectangle(x, y, x+1, y+1);
@@ -50,15 +56,17 @@ class Pellet {
 		return 0;
 	}
 
-	method int getIsCokie() {
-		if (isCokie) {
-			return 1;
-		}
-		return 0;
+	method boolean getPowerUsed() {
+		return powerUsed;
+	}
+
+	method void setPowerUsed(boolean p) {
+		let powerUsed = p;
+		return;
 	}
 
 	method int getPoints() {
-		if (isCokie) {
+		if (isCookie) {
 			return 50;
 		}
 		return 10;

@@ -28,9 +28,10 @@ sub
 pop this 20
 push argument 5
 pop this 22
-push constant 300
-pop this 25
 push constant 0
+pop this 23
+push constant 0
+not
 pop this 26
 push pointer 0
 call Ghost.init 1
@@ -55,67 +56,6 @@ not
 pop this 1
 push constant 2
 pop this 11
-push constant 300
-pop this 25
-push constant 0
-pop this 26
-push this 0
-call Screen.setColor 1
-pop temp 0
-push this 6
-push this 7
-push this 17
-call Screen.drawCircle 3
-pop temp 0
-push this 17
-neg
-pop local 0
-label WHILE_EXP0
-push local 0
-push this 17
-gt
-not
-not
-if-goto WHILE_END0
-push local 0
-push constant 20
-add
-push constant 1
-and
-push constant 0
-eq
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push this 7
-push this 17
-add
-push constant 2
-sub
-pop local 1
-goto IF_END0
-label IF_FALSE0
-push this 7
-push this 17
-add
-pop local 1
-label IF_END0
-push this 6
-push local 0
-add
-push this 7
-push this 6
-push local 0
-add
-push local 1
-call Screen.drawLine 4
-pop temp 0
-push local 0
-push constant 1
-add
-pop local 0
-goto WHILE_EXP0
-label WHILE_END0
 push constant 0
 return
 function Ghost.changeColor 0
@@ -128,9 +68,6 @@ return
 function Ghost.next 3
 push argument 0
 pop pointer 0
-push pointer 0
-call Ghost.updateMode 1
-pop temp 0
 push pointer 0
 call Ghost.updateTarget 1
 pop temp 0
@@ -145,10 +82,20 @@ push local 2
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
+push this 23
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+call Screen.setColor 1
+pop temp 0
+goto IF_END1
+label IF_FALSE1
 push this 0
 not
 call Screen.setColor 1
 pop temp 0
+label IF_END1
 push local 0
 push this 17
 sub
@@ -168,36 +115,6 @@ pop temp 0
 push pointer 0
 call Ghost.draw 1
 pop temp 0
-label IF_FALSE0
-push constant 0
-return
-function Ghost.updateMode 0
-push argument 0
-pop pointer 0
-push this 25
-push constant 1
-sub
-pop this 25
-push this 25
-push constant 0
-lt
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push this 26
-not
-pop this 26
-push this 26
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
-push constant 600
-pop this 25
-goto IF_END1
-label IF_FALSE1
-push constant 300
-pop this 25
-label IF_END1
 label IF_FALSE0
 push constant 0
 return
@@ -226,13 +143,13 @@ label IF_TRUE1
 call Random.rand 0
 push constant 511
 and
-pop this 23
+pop this 24
 call Random.rand 0
 push constant 127
 and
 push constant 50
 add
-pop this 24
+pop this 25
 goto IF_END1
 label IF_FALSE1
 push this 26
@@ -253,16 +170,16 @@ pop temp 0
 goto IF_END3
 label IF_FALSE3
 push local 0
-pop this 23
-push local 1
 pop this 24
+push local 1
+pop this 25
 label IF_END3
 goto IF_END2
 label IF_FALSE2
-push this 23
+push this 24
 push constant 0
 eq
-push this 24
+push this 25
 push constant 0
 eq
 or
@@ -278,13 +195,13 @@ label IF_TRUE4
 call Random.rand 0
 push constant 511
 and
-pop this 23
+pop this 24
 call Random.rand 0
 push constant 127
 and
 push constant 50
 add
-pop this 24
+pop this 25
 label IF_FALSE4
 label IF_END2
 label IF_END1
@@ -295,9 +212,9 @@ if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
 push local 0
-pop this 23
-push local 1
 pop this 24
+push local 1
+pop this 25
 goto IF_END5
 label IF_FALSE5
 call Random.rand 0
@@ -307,7 +224,7 @@ push constant 430
 call Math.multiply 2
 push constant 40
 add
-pop this 23
+pop this 24
 call Random.rand 0
 push constant 1
 and
@@ -315,7 +232,7 @@ push constant 170
 call Math.multiply 2
 push constant 40
 add
-pop this 24
+pop this 25
 label IF_END5
 label IF_END0
 push constant 0
@@ -629,8 +546,8 @@ pop local 5
 push pointer 0
 push local 4
 push local 5
-push this 23
 push this 24
+push this 25
 call Ghost.distanceSquared 5
 pop local 3
 push local 3
@@ -662,8 +579,8 @@ pop local 5
 push pointer 0
 push local 4
 push local 5
-push this 23
 push this 24
+push this 25
 call Ghost.distanceSquared 5
 pop local 3
 push local 3
@@ -695,8 +612,8 @@ pop local 5
 push pointer 0
 push local 4
 push local 5
-push this 23
 push this 24
+push this 25
 call Ghost.distanceSquared 5
 pop local 3
 push local 3
@@ -728,8 +645,8 @@ pop local 5
 push pointer 0
 push local 4
 push local 5
-push this 23
 push this 24
+push this 25
 call Ghost.distanceSquared 5
 pop local 3
 push local 3
@@ -808,6 +725,30 @@ label IF_FALSE2
 push constant 4
 pop this 10
 push constant 0
+return
+function Ghost.setVulnerable 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 23
+push argument 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop this 26
+goto IF_END0
+label IF_FALSE0
+push constant 0
+not
+pop this 26
+label IF_END0
+push constant 0
+return
+function Ghost.isVulnerable 0
+push argument 0
+pop pointer 0
+push this 23
 return
 function Ghost.checkWalls 2
 push argument 0

@@ -13,8 +13,8 @@ class Ghost {
     field int leftLimit, rightLimit;
     field int spriteDelay;
     field boolean isPursuer;
+    field boolean isVulnerable;
     field int targetX, targetY;
-    field int modeTimer;
     field boolean isChasing;
 
     constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi, boolean pursuer) {
@@ -29,9 +29,9 @@ class Ghost {
         let leftLimit = 1 + radius;
         let rightLimit = 510 - radius;
         let isPursuer = pursuer;
-        
-        let modeTimer = 300;
-        let isChasing = false;
+        let isVulnerable = false;
+
+        let isChasing = true;
         
         do init();
         return this;
@@ -47,21 +47,6 @@ class Ghost {
         let dir = 2;
         let firstMove = true;
         let nextDir = 2;
-        let modeTimer = 300;
-        let isChasing = false;
-
-        do Screen.setColor(color);
-        do Screen.drawCircle(x, y, radius);      
-        let i = -radius;
-        while (~(i > radius)) {
-            if (((i + 20) & 1) = 0) {
-              	let ghostBottom = y + radius - 2;
-            } else {
-              	let ghostBottom = y + radius;
-            }
-            do Screen.drawLine(x + i, y, x + i, ghostBottom);
-            let i = i + 1;
-        }
         return;
     }
 
@@ -74,30 +59,19 @@ class Ghost {
         var int oldX, oldY;
         var boolean didMove;
         
-        do updateMode();
-        
         do updateTarget();
         
         let oldX = x;
         let oldY = y;
         let didMove = advance();
         if (didMove) {
-            do Screen.setColor(~color);
+            if (isVulnerable) {
+                do Screen.setColor(color);
+            } else {
+                do Screen.setColor(~color);
+            }
     	    do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2);
           	do draw();
-        }
-        return;
-    }
-    
-    method void updateMode() {
-        let modeTimer = modeTimer - 1;
-        if (modeTimer < 0) {
-            let isChasing = ~isChasing;
-            if (isChasing) {
-                let modeTimer = 600;
-            } else {
-                let modeTimer = 300;
-            }
         }
         return;
     }
@@ -303,6 +277,20 @@ class Ghost {
         let dir = 4; 
         return;
     }
+
+    method void setVulnerable(boolean v) {
+        let isVulnerable = v;
+        if (v) {
+            let isChasing = false;
+        } else {
+            let isChasing = true;
+        }
+        return;
+    }
+
+    method boolean isVulnerable() {
+        return isVulnerable;
+    }
   
     method boolean checkWalls(int nextX, int nextY) {
         var int nextEndX, nextEndY;
@@ -367,7 +355,7 @@ class Ghost {
 
         do Screen.setColor(color);
         do Screen.drawCircle(x, y, radius);
-    
+
         let i = -radius;
         while (~(i > radius)) {
             if (((i + 20) & 1) = 0) {
