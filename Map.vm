@@ -497,7 +497,7 @@ push constant 38
 push this 1
 add
 push constant 20
-push constant 12
+push constant 13
 push constant 20
 push constant 18
 call Wall.new 4
@@ -509,7 +509,7 @@ push constant 39
 push this 1
 add
 push constant 34
-push constant 12
+push constant 13
 push constant 34
 push constant 18
 call Wall.new 4
@@ -605,9 +605,9 @@ push constant 47
 push this 1
 add
 push constant 17
-push constant 9
+push constant 10
 push constant 20
-push constant 9
+push constant 10
 call Wall.new 4
 pop temp 0
 pop pointer 1
@@ -617,9 +617,9 @@ push constant 48
 push this 1
 add
 push constant 34
-push constant 9
+push constant 10
 push constant 37
-push constant 9
+push constant 10
 call Wall.new 4
 pop temp 0
 pop pointer 1
@@ -655,7 +655,7 @@ add
 push constant 20
 push constant 3
 push constant 20
-push constant 6
+push constant 7
 call Wall.new 4
 pop temp 0
 pop pointer 1
@@ -667,7 +667,7 @@ add
 push constant 34
 push constant 3
 push constant 34
-push constant 6
+push constant 7
 call Wall.new 4
 pop temp 0
 pop pointer 1

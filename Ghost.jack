@@ -1,5 +1,5 @@
 class Ghost {
-    field boolean color, firstMove;
+    field boolean color;
     field Map map;
     field PacMan pacman;
     field Score score;
@@ -14,6 +14,8 @@ class Ghost {
     field int spriteDelay;
     field boolean isPursuer;
     field boolean isVulnerable;
+    field boolean isOut;
+    field int outX, outY;
     field int targetX, targetY;
     field boolean isChasing;
 
@@ -23,6 +25,8 @@ class Ghost {
         let color = c;
         let speed = 3;
         let radius = 7;
+        let outX = 256;
+        let outY = 108;
         let map = m;
         let pacman = p;
         let size = 12;
@@ -39,13 +43,24 @@ class Ghost {
 
     method void init() {
         var int i, ghostBottom;
-
         let x = startX;
         let y = startY;
         let spriteDelay = 0;
         let previousDir = 2;
         let dir = 2;
-        let firstMove = true;
+        let isOut = false;
+        let nextDir = 2;
+        return;
+    }
+
+    method void reset() {
+        var int i, ghostBottom;
+        let x = 256;
+        let y = 144;
+        let spriteDelay = 0;
+        let previousDir = 2;
+        let dir = 2;
+        let isOut = false;
         let nextDir = 2;
         return;
     }
@@ -63,15 +78,32 @@ class Ghost {
         
         let oldX = x;
         let oldY = y;
+        if (isVulnerable) {
+            do Screen.setColor(color);
+        } else {
+            do Screen.setColor(~color);
+        }
+        do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2);
         let didMove = advance();
-        if (didMove) {
-            if (isVulnerable) {
-                do Screen.setColor(color);
-            } else {
-                do Screen.setColor(~color);
+        if (isOut) {
+            if (didMove) {
+                do draw();
             }
-    	    do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2);
-          	do draw();
+        } else {
+            if (~(x = outX)) {
+                if ((outX - x) > 0) {
+                    let x = oldX + speed;
+                } else {
+                    let x = oldX - speed;
+                }
+            } else {
+                if (y = outY) {
+                    let isOut = true;
+                } else {
+                    let y = oldY - speed;
+                }
+            }
+            do draw();
         }
         return;
     }
@@ -117,11 +149,6 @@ class Ghost {
 
     method boolean advance() {
         var int nextX, nextY;
-        if (firstMove) {
-            let dir = 1;           
-            let firstMove = false; 
-        }
-        
         if (isPursuer | isChasing) {
             if ((Random.rand() & 7) > 0) {
                 do setNextDir();
@@ -296,7 +323,7 @@ class Ghost {
         var int nextEndX, nextEndY;
         let nextEndX = nextX + size - 1;
         let nextEndY = nextY + size - 1;
-        return map.checkOverlapping(nextX, nextY, radius);
+        return (map.checkOverlapping(nextX, nextY, radius) | map.checkDoorOverlaping(nextX, nextY, radius));
     }
 
     method boolean checkPacmanCollision() {

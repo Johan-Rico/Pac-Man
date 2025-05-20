@@ -8,10 +8,6 @@ push argument 1
 pop this 1
 push argument 2
 pop this 2
-push constant 254
-pop this 3
-push constant 234
-pop this 4
 push constant 7
 pop this 12
 push constant 9
@@ -29,7 +25,7 @@ return
 function PacMan.init 0
 push argument 0
 pop pointer 0
-push constant 254
+push constant 255
 pop this 3
 push constant 234
 pop this 4
@@ -47,6 +43,8 @@ push this 4
 push this 12
 call Screen.drawCircle 3
 pop temp 0
+push constant 256
+pop this 3
 push constant 0
 return
 function PacMan.changeColor 0
@@ -156,8 +154,6 @@ push this 12
 call Screen.drawCircle 3
 pop temp 0
 push this 9
-push constant 3
-call Math.divide 2
 push constant 0
 eq
 not
@@ -166,7 +162,7 @@ goto IF_FALSE0
 label IF_TRUE0
 push constant 2
 push this 9
-push constant 3
+push constant 2
 call Math.divide 2
 call Math.multiply 2
 push constant 5
@@ -174,7 +170,7 @@ sub
 pop local 2
 push constant 3
 push this 9
-push constant 3
+push constant 2
 call Math.divide 2
 call Math.multiply 2
 push constant 1
@@ -297,7 +293,7 @@ pop this 10
 goto IF_END2
 label IF_FALSE2
 push this 9
-push constant 8
+push constant 5
 eq
 if-goto IF_TRUE3
 goto IF_FALSE3
@@ -313,17 +309,9 @@ add
 pop this 9
 push constant 0
 return
-function PacMan.NextMoveIsPossible 1
+function PacMan.NextMoveIsPossible 0
 push argument 0
 pop pointer 0
-push this 11
-pop local 0
-label WHILE_EXP0
-push local 0
-push constant 0
-gt
-not
-if-goto WHILE_END0
 push this 3
 pop this 7
 push this 4
@@ -335,7 +323,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push this 3
-push local 0
+push this 11
 add
 pop this 7
 goto IF_END0
@@ -347,7 +335,7 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push this 3
-push local 0
+push this 11
 sub
 pop this 7
 goto IF_END1
@@ -359,7 +347,7 @@ if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
 push this 4
-push local 0
+push this 11
 add
 pop this 8
 goto IF_END2
@@ -371,7 +359,7 @@ if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
 push this 4
-push local 0
+push this 11
 sub
 pop this 8
 label IF_FALSE3
@@ -389,21 +377,14 @@ push this 8
 push this 12
 call Map.checkDoorOverlaping 4
 or
-not
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
 push constant 0
-not
 return
 label IF_FALSE4
-push local 0
-push constant 1
-sub
-pop local 0
-goto WHILE_EXP0
-label WHILE_END0
 push constant 0
+not
 return
 function PacMan.deathAnimationFunction 0
 push argument 0

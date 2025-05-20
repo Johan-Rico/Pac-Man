@@ -42,11 +42,11 @@ class Ghosts {
     method void createGhosts(boolean color) {
         let ghosts = Array.new(nGhosts);
         
-        let ghosts[0] = Ghost.new(color, map, pacman, 256, 150, true);
-        let ghosts[1] = Ghost.new(color, map, pacman, 256, 150, true); 
-        let ghosts[2] = Ghost.new(color, map, pacman, 256, 150, true);  
-        let ghosts[4] = Ghost.new(color, map, pacman, 256, 150, false); 
-        let ghosts[3] = Ghost.new(color, map, pacman, 256, 150, false); 
+        let ghosts[0] = Ghost.new(color, map, pacman, 256, 108, true);
+        let ghosts[1] = Ghost.new(color, map, pacman, 241, 135, true); 
+        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, true);  
+        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, false); 
+        let ghosts[3] = Ghost.new(color, map, pacman, 268, 153, false); 
         
         return;
     }
@@ -147,7 +147,7 @@ class Ghosts {
                 if (g.isVulnerable()) {
                     do g.changeColor(color);
                     do g.clearGhost();
-                    do g.init();
+                    do g.reset();
                     do score.addPoints(200);
                     do g.setVulnerable(false);
                 } else {

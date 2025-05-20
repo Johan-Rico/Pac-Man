@@ -79,7 +79,7 @@ push argument 1
 push this 0
 push this 1
 push constant 256
-push constant 150
+push constant 108
 push constant 0
 not
 call Ghost.new 6
@@ -93,8 +93,8 @@ add
 push argument 1
 push this 0
 push this 1
-push constant 256
-push constant 150
+push constant 241
+push constant 135
 push constant 0
 not
 call Ghost.new 6
@@ -108,8 +108,8 @@ add
 push argument 1
 push this 0
 push this 1
-push constant 256
-push constant 150
+push constant 268
+push constant 135
 push constant 0
 not
 call Ghost.new 6
@@ -123,8 +123,8 @@ add
 push argument 1
 push this 0
 push this 1
-push constant 256
-push constant 150
+push constant 241
+push constant 153
 push constant 0
 call Ghost.new 6
 pop temp 0
@@ -137,8 +137,8 @@ add
 push argument 1
 push this 0
 push this 1
-push constant 256
-push constant 150
+push constant 268
+push constant 153
 push constant 0
 call Ghost.new 6
 pop temp 0
@@ -396,7 +396,7 @@ push local 0
 call Ghost.clearGhost 1
 pop temp 0
 push local 0
-call Ghost.init 1
+call Ghost.reset 1
 pop temp 0
 push this 7
 push constant 200
