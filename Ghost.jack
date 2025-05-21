@@ -11,7 +11,7 @@ class Ghost {
     field int speed, radius;
     field int previousDir; 
     field int leftLimit, rightLimit;
-    field int spriteDelay;
+    field int spriteDelay, time, tm;
     field boolean isPursuer;
     field boolean isVulnerable;
     field boolean isOut;
@@ -19,9 +19,11 @@ class Ghost {
     field int targetX, targetY;
     field boolean isChasing;
 
-    constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi, boolean pursuer) {
+    constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi, boolean pursuer, int t) {
         let startX = xi;
         let startY = yi;
+        let time = t;
+        let tm = t;
         let color = c;
         let speed = 3;
         let radius = 7;
@@ -45,6 +47,7 @@ class Ghost {
         var int i, ghostBottom;
         let x = startX;
         let y = startY;
+        let tm = time;
         let spriteDelay = 0;
         let previousDir = 2;
         let dir = 2;
@@ -83,13 +86,18 @@ class Ghost {
         } else {
             do Screen.setColor(~color);
         }
-        do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2);
         let didMove = advance();
-        if (isOut) {
-            if (didMove) {
-                do draw();
-            }
-        } else {
+        do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2);
+        if (~(tm < 0)) {
+            let tm = tm - 1;
+            let x = oldX;
+            let y = oldY;
+            let dir = 2;
+            let nextDir = 2;
+            do draw();
+            return;
+        }
+        if (~(isOut)) {
             if (~(x = outX)) {
                 if ((outX - x) > 0) {
                     let x = oldX + speed;
@@ -103,8 +111,8 @@ class Ghost {
                     let y = oldY - speed;
                 }
             }
-            do draw();
         }
+        do draw();
         return;
     }
     

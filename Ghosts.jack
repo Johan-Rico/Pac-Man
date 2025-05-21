@@ -42,11 +42,11 @@ class Ghosts {
     method void createGhosts(boolean color) {
         let ghosts = Array.new(nGhosts);
         
-        let ghosts[0] = Ghost.new(color, map, pacman, 256, 108, true);
-        let ghosts[1] = Ghost.new(color, map, pacman, 241, 135, true); 
-        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, true);  
-        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, false); 
-        let ghosts[3] = Ghost.new(color, map, pacman, 268, 153, false); 
+        let ghosts[0] = Ghost.new(color, map, pacman, 256, 108, true, 0);
+        let ghosts[1] = Ghost.new(color, map, pacman, 241, 135, true, 100); 
+        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, true, 200);  
+        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, false, 300); 
+        let ghosts[3] = Ghost.new(color, map, pacman, 268, 153, false, 400); 
         
         return;
     }

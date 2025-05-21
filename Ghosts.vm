@@ -82,7 +82,8 @@ push constant 256
 push constant 108
 push constant 0
 not
-call Ghost.new 6
+push constant 0
+call Ghost.new 7
 pop temp 0
 pop pointer 1
 push temp 0
@@ -97,7 +98,8 @@ push constant 241
 push constant 135
 push constant 0
 not
-call Ghost.new 6
+push constant 100
+call Ghost.new 7
 pop temp 0
 pop pointer 1
 push temp 0
@@ -112,7 +114,8 @@ push constant 268
 push constant 135
 push constant 0
 not
-call Ghost.new 6
+push constant 200
+call Ghost.new 7
 pop temp 0
 pop pointer 1
 push temp 0
@@ -126,7 +129,8 @@ push this 1
 push constant 241
 push constant 153
 push constant 0
-call Ghost.new 6
+push constant 300
+call Ghost.new 7
 pop temp 0
 pop pointer 1
 push temp 0
@@ -140,7 +144,8 @@ push this 1
 push constant 268
 push constant 153
 push constant 0
-call Ghost.new 6
+push constant 400
+call Ghost.new 7
 pop temp 0
 pop pointer 1
 push temp 0
