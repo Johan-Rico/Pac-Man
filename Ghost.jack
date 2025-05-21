@@ -47,7 +47,7 @@ class Ghost {
         var int i, ghostBottom;
         let x = startX;
         let y = startY;
-        let tm = time;
+        let tm = time / Game.getLevel();
         let spriteDelay = 0;
         let previousDir = 2;
         let dir = 2;
@@ -55,11 +55,12 @@ class Ghost {
         let nextDir = 2;
         return;
     }
-
+    
     method void reset() {
         var int i, ghostBottom;
         let x = 256;
         let y = 144;
+        let tm = 50 / Game.getLevel();
         let spriteDelay = 0;
         let previousDir = 2;
         let dir = 2;
@@ -98,17 +99,19 @@ class Ghost {
             return;
         }
         if (~(isOut)) {
+            let x = oldX;
+            let y = oldY;
             if (~(x = outX)) {
                 if ((outX - x) > 0) {
-                    let x = oldX + speed;
+                    let x = x + speed;
                 } else {
-                    let x = oldX - speed;
+                    let x = x - speed;
                 }
             } else {
                 if (y = outY) {
                     let isOut = true;
                 } else {
-                    let y = oldY - speed;
+                    let y = y - speed;
                 }
             }
         }

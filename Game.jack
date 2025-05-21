@@ -5,7 +5,7 @@ class Game {
 	field Score score;
 	field boolean color;
 	field int lives;
-	field int level;
+	static int level;
 	
 	constructor Game new() {
 		let color = true;
@@ -27,6 +27,10 @@ class Game {
 		do score.init();
 		do startLevel();
 		return;
+	}
+
+	function int getLevel () {
+		return level;
 	}
 
 	method void next() {
