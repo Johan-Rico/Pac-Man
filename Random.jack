@@ -1,5 +1,11 @@
  class Random {
     static int seed;
+
+    function void changeSeed(int s) {
+            let seed = (seed + s) * 5 / 2;
+
+        return;
+    }
     
     function int rand() {
         let seed = seed + 20251;
@@ -10,6 +16,9 @@
     }
 
     function int randRange(int range) {
+        if (range = 0) {
+            return 0;
+        }
         return (Random.rand() - 300 / (32767 / range));
     }
 

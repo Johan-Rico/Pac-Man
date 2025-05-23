@@ -42,38 +42,59 @@ class Ghosts {
     method void createGhosts(boolean color) {
         let ghosts = Array.new(nGhosts);
         
-        let ghosts[0] = Ghost.new(color, map, pacman, 256, 108, true, 0);
-        let ghosts[1] = Ghost.new(color, map, pacman, 241, 135, true, 100); 
-        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, true, 200);  
-        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, false, 300); 
-        let ghosts[3] = Ghost.new(color, map, pacman, 268, 153, false, 400); 
+        let ghosts[0] = Ghost.new(color, map, pacman, 256, 108, false, 0);
+        let ghosts[1] = Ghost.new(color, map, pacman, 241, 135, true, 150); 
+        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, true, 300);  
+        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, false, 450); 
+        let ghosts[3] = Ghost.new(color, map, pacman, 268, 153, false, 600); 
         
         return;
     }
     
     method void next() {
         var Ghost g;
-        var int i;
+        var int i, t, f;
+        let t = 75;
+        let f = t / 9;
         
         if (ghostsVulnerable) {
             let vulnerableTimer = vulnerableTimer - 1;
+            if (vulnerableTimer = t) { do setBlinking(true); }
+            if (vulnerableTimer = (t - f)) { do setBlinking(false); }
+            if (vulnerableTimer = (t - (2*f))) { do setBlinking(true); }
+            if (vulnerableTimer = (t - (3*f))) { do setBlinking(false); }
+            if (vulnerableTimer = (t - (4*f))) { do setBlinking(true); }
+            if (vulnerableTimer = (t - (5*f))) { do setBlinking(false); }
+            if (vulnerableTimer = (t - (6*f))) { do setBlinking(true); }
+            if (vulnerableTimer = (t - (7*f))) { do setBlinking(false); }
+            if (vulnerableTimer = (t - (8*f))) { do setBlinking(true); }
             if (vulnerableTimer < 0) {
                 let ghostsVulnerable = false;
-                do changeGhostsColor(color);
                 let i = 0;
                 while (i < nGhosts) {
                     let g = ghosts[i];
+                    do g.setBlinking(false);
                     do g.setVulnerable(false);
                     let i = i + 1;
                 }
             }
-        }
-        
+        } 
 
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
             do g.next();
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void setBlinking(boolean b) {
+        var Ghost g;
+        var int i;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.setBlinking(b);
             let i = i + 1;
         }
         return;
@@ -90,25 +111,11 @@ class Ghosts {
             do g.setVulnerable(true);
             let i = i + 1;
         }
-        do changeGhostsColor(~color);
         return;
     }
     
     method void changeColor(boolean c) {
         let color = c;
-        do changeGhostsColor(color);
-        return;
-    }
-
-    method void changeGhostsColor(boolean c) {
-        var Ghost g;
-        var int i;
-        let i = 0;
-        while (i < nGhosts) {
-            let g = ghosts[i];
-            do g.changeColor(c);
-            let i = i + 1;
-        }
         return;
     }
     

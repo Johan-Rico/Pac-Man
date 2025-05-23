@@ -1,5 +1,5 @@
 class Score {
-	field int score;
+	static int score;
 	field Map map;
 	static int high;
 	field int nPellets;
@@ -194,6 +194,10 @@ class Score {
 		do printLabels();
 		do printScore();
 		return;
+	}
+
+	function int getScore() {
+		return score;
 	}
   
 	method void dispose() {

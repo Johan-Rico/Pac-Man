@@ -3,23 +3,20 @@ class Ghost {
     field Map map;
     field PacMan pacman;
     field Score score;
+    field Array dirs;
     field int size;
     field int x, y, startX, startY;
-    field int dir, nextDir;
-    field int nextX, nextY;
-    field int sprite, adition;
+    field int dir;
     field int speed, radius;
-    field int previousDir; 
     field int leftLimit, rightLimit;
-    field int spriteDelay, time, tm;
+    field int time, tm;
     field boolean isPursuer;
-    field boolean isVulnerable;
+    field boolean isVulnerable, isBlinking;
     field boolean isOut;
     field int outX, outY;
-    field int targetX, targetY;
-    field boolean isChasing;
 
     constructor Ghost new(boolean c, Map m, PacMan p, int xi, int yi, boolean pursuer, int t) {
+        let dirs = Array.new(4);
         let startX = xi;
         let startY = yi;
         let time = t;
@@ -31,14 +28,12 @@ class Ghost {
         let outY = 108;
         let map = m;
         let pacman = p;
-        let size = 12;
-        let leftLimit = 1 + radius;
-        let rightLimit = 510 - radius;
+        let size = radius - 1 * 2;
+        let leftLimit = 9;
+        let rightLimit = 503;
         let isPursuer = pursuer;
         let isVulnerable = false;
 
-        let isChasing = true;
-        
         do init();
         return this;
     }
@@ -48,11 +43,9 @@ class Ghost {
         let x = startX;
         let y = startY;
         let tm = time / Game.getLevel();
-        let spriteDelay = 0;
-        let previousDir = 2;
-        let dir = 2;
+        let dir = 3;
         let isOut = false;
-        let nextDir = 2;
+        let isBlinking = false;
         return;
     }
     
@@ -61,11 +54,9 @@ class Ghost {
         let x = 256;
         let y = 144;
         let tm = 50 / Game.getLevel();
-        let spriteDelay = 0;
-        let previousDir = 2;
-        let dir = 2;
+        let dir = 3;
         let isOut = false;
-        let nextDir = 2;
+        let isBlinking = false;
         return;
     }
 
@@ -75,32 +66,19 @@ class Ghost {
     }
     
     method void next() {
-        var int oldX, oldY;
-        var boolean didMove;
-        
-        do updateTarget();
-        
-        let oldX = x;
-        let oldY = y;
-        if (isVulnerable) {
-            do Screen.setColor(color);
-        } else {
-            do Screen.setColor(~color);
-        }
-        let didMove = advance();
-        do Screen.drawRectangle(oldX - radius, oldY - radius, oldX + radius, oldY + radius + 2);
+
+        do advance();
+        do clearGhost();
         if (~(tm < 0)) {
             let tm = tm - 1;
-            let x = oldX;
-            let y = oldY;
-            let dir = 2;
-            let nextDir = 2;
+            let dir = 3;
             do draw();
             return;
         }
-        if (~(isOut)) {
-            let x = oldX;
-            let y = oldY;
+        if (isOut) {
+            let x = getNextX();
+            let y = getNextY();
+        } else {
             if (~(x = outX)) {
                 if ((outX - x) > 0) {
                     let x = x + speed;
@@ -118,211 +96,79 @@ class Ghost {
         do draw();
         return;
     }
-    
-    method void updateTarget() {
+
+    method void advance() {
+        var int d, i;
+        var int possibleDirs, oppDir;
         var int pacmanX, pacmanY;
+        var int deltaX, deltaY;
         
         let pacmanX = pacman.getX();
         let pacmanY = pacman.getY();
-        
-        if (~isPursuer) {
-            if ((Random.rand() & 31) = 0) {
-                let targetX = Random.rand() & 511;
-                let targetY = (Random.rand() & 127) + 50;
+        let deltaX = x - pacmanX;
+        let deltaY = y - pacmanY;
+
+        do Random.changeSeed(x*111 + y*195 + pacmanX*215 + pacmanY*331 + Score.getScore());
+        do updateDirs();
+
+        let possibleDirs = -1*(dirs[0] + dirs[1] + dirs[2] + dirs[3]);
+        let oppDir = getOppositeDir(dir);
+
+        if (((possibleDirs > 1) & (possibleDirs < 4)) & (dirs[oppDir - 1])) {
+            let dirs[oppDir - 1] = false;
+            let possibleDirs = possibleDirs - 1;
+        }
+
+        if (isPursuer | isVulnerable) {
+            if ((Math.abs(deltaX) > Math.abs(deltaY)) & ~(Random.randRange(2) = 0)) {
+                if (tryMove(0, deltaX < 0)) { return; }
+                if (tryMove(1, deltaX > 0)) { return; }
+                if (tryMove(2, deltaY < 0)) { return; }
+                if (tryMove(3, deltaY > 0)) { return; }
             } else {
-                if (isChasing) {
-                    if ((Random.rand() & 7) = 0) {
-                        do setNextDirRandom();
-                    } else {
-                        let targetX = pacmanX;
-                        let targetY = pacmanY;
-                    }
-                } else {
-                    if ((targetX = 0) | (targetY = 0) | ((Random.rand() & 31) = 0)) {
-                        let targetX = Random.rand() & 511;
-                        let targetY = (Random.rand() & 127) + 50;
-                    }
+                if (tryMove(2, deltaY < 0)) { return; }
+                if (tryMove(3, deltaY > 0)) { return; }
+                if (tryMove(0, deltaX < 0)) { return; }
+                if (tryMove(1, deltaX > 0)) { return; }
+            }
+        }
+        let d = Random.randRange(possibleDirs);
+        let i = 0;
+        while ((i < 4)) {
+            if (dirs[i]) {
+                if (d = 0) {
+                    let dir = i + 1;
                 }
+                let d = d - 1;
             }
-        } else {
-            if (isChasing) {
-                let targetX = pacmanX;
-                let targetY = pacmanY;
-
-            } else {
-
-                let targetX = (Random.rand() & 1) * 430 + 40;
-                let targetY = (Random.rand() & 1) * 170 + 40;
-            }
+            let i = i + 1;
         }
         return;
+       
     }
 
-    method boolean advance() {
-        var int nextX, nextY;
-        if (isPursuer | isChasing) {
-            if ((Random.rand() & 7) > 0) {
-                do setNextDir();
-            } else {
-                do setNextDirRandom();
+    method boolean tryMove(int dirIndex, boolean condition) {
+        var int oppDir;
+        if (isVulnerable) {
+            let oppDir = getOppositeDir(dir + 1);
+            if (dirs[oppDir - 1] & condition) {
+                let dir = oppDir;
+                return true;
             }
-        } else {
-            if ((Random.rand() & 3) > 0) {
-                do setNextDir();
-            } else {
-                do setNextDirRandom();
-            }
-        }
-        
-        let nextX = getNextX();
-        let nextY = getNextY();
-        
-        if (checkWalls(nextX, nextY)) {
-            do setNextDirRandom();
             return false;
         }
-        
-        if ((x = nextX) & (y = nextY)) {
-            return false;
+        if (dirs[dirIndex] & condition) {
+            let dir = dirIndex + 1;
+            return true;
         }
-        
-        let x = nextX;
-        let y = nextY;
-        
-        if (x < 9) {
-            let x = rightLimit - 1;
-        }
-        if (x > rightLimit) {
-            let x = leftLimit + 1;
-        }
-        
-        return true;
+        return false;
     }
     
-    method void setNextDir() {
-        var int possibleDirs;
-        var int bestDir;
-        var int bestDist;
-        var int testDist;
-        var int testX, testY;
-        
-        let bestDist = 32767;
-        let bestDir = dir;
-        
-        let possibleDirs = 0;
-        
-        let testX = x;
-        let testY = y - speed;
-        if (~(checkWalls(testX, testY))) {
-            let possibleDirs = possibleDirs | 1;
-        }
-        
-        let testX = x;
-        let testY = y + speed;
-        if (~(checkWalls(testX, testY))) {
-            let possibleDirs = possibleDirs | 2;
-        }
-        
-        let testX = x - speed;
-        let testY = y;
-        if (~(checkWalls(testX, testY))) {
-            let possibleDirs = possibleDirs | 4; 
-        }
-        
-        let testX = x + speed;
-        let testY = y;
-        if (~(checkWalls(testX, testY))) {
-            let possibleDirs = possibleDirs | 8;
-        }
-        
-        if (dir = 1) { let possibleDirs = possibleDirs & (~2); }
-        if (dir = 2) { let possibleDirs = possibleDirs & (~1); }
-        if (dir = 3) { let possibleDirs = possibleDirs & (~8); }
-        if (dir = 4) { let possibleDirs = possibleDirs & (~4); }
-        
-        if (possibleDirs = 0) {
-            if (dir = 1) { let possibleDirs = 2; }
-            if (dir = 2) { let possibleDirs = 1; }
-            if (dir = 3) { let possibleDirs = 8; }
-            if (dir = 4) { let possibleDirs = 4; }
-        }
-        
-        if ((possibleDirs & 1) > 0) {
-            let testX = x;
-            let testY = y - speed;
-            let testDist = distanceSquared(testX, testY, targetX, targetY);
-            if (testDist < bestDist) {
-                let bestDist = testDist;
-                let bestDir = 1;
-            }
-        }
-        
-        if ((possibleDirs & 2) > 0) {
-            let testX = x;
-            let testY = y + speed;
-            let testDist = distanceSquared(testX, testY, targetX, targetY);
-            if (testDist < bestDist) {
-                let bestDist = testDist;
-                let bestDir = 2;
-            }
-        }
-        
-        if ((possibleDirs & 4) > 0) {
-            let testX = x - speed;
-            let testY = y;
-            let testDist = distanceSquared(testX, testY, targetX, targetY);
-            if (testDist < bestDist) {
-                let bestDist = testDist;
-                let bestDir = 3;
-            }
-        }
-        
-        if ((possibleDirs & 8) > 0) {
-            let testX = x + speed;
-            let testY = y;
-            let testDist = distanceSquared(testX, testY, targetX, targetY);
-            if (testDist < bestDist) {
-                let bestDist = testDist;
-                let bestDir = 4;
-            }
-        }
-        
-        let dir = bestDir;
-        return;
-    }
-    
-    method int distanceSquared(int x1, int y1, int x2, int y2) {
-        var int dx, dy;
-        let dx = x2 - x1;
-        let dy = y2 - y1;
-        return (dx * dx) + (dy * dy);
-    }
- 
-    method void setNextDirRandom() {
-        var int i;
-        let i = Random.rand() & 15;
-        if (i < 4) {
-            let dir = 1;
-            return;
-        }
-        if (i < 8) {
-            let dir = 2;
-            return;
-        }
-        if (i < 12) {
-            let dir = 3;
-        }
-        let dir = 4; 
-        return;
-    }
-
     method void setVulnerable(boolean v) {
-        let isVulnerable = v;
-        if (v) {
-            let isChasing = false;
-        } else {
-            let isChasing = true;
+        if (v & ~isVulnerable) {
+            let dir = getOppositeDir(dir);
         }
+        let isVulnerable = v;
         return;
     }
 
@@ -350,11 +196,17 @@ class Ghost {
     method int getNextX() {
         var int nextX;
         let nextX = x;
-        if (dir = 4) {
+        if (dir = 1) {
             let nextX = x + speed;
         }
-        if (dir = 3) {
+        if (dir = 2) {
             let nextX = x - speed;
+        }
+        if (nextX < leftLimit) {
+            let nextX = rightLimit - 1;
+        }
+        if (nextX > rightLimit) {
+            let nextX = leftLimit + 1;
         }
         return nextX;
     }
@@ -362,28 +214,41 @@ class Ghost {
     method int getNextY() {
         var int nextY;
         let nextY = y;
-        if (dir = 2) {
+        if (dir = 3) {
             let nextY = y + speed;
         }
-        if (dir = 1) {
+        if (dir = 4) {
             let nextY = y - speed;
         }
-        if (nextY > 250) {
-            let nextY = 12;
-            do Screen.setColor(false);
-            do Screen.drawRectangle(x, y, endX(), endY());
-        }
-        if (nextY < 12) {
-            let nextY = 250;
-            do Screen.setColor(false);
-            do Screen.drawRectangle(x, y, endX(), endY());
-        }
+
         return nextY;
+    }
+
+    method int getOppositeDir(int d) {
+        if (d = 1) { return 2; }
+        if (d = 2) { return 1; }
+        if (d = 3) { return 4; }
+        return 3;
+    }
+
+    method void updateDirs() {
+        let dirs[0] = ~checkWalls(x + speed, y);
+        let dirs[1] = ~checkWalls(x - speed, y);
+        let dirs[2] = ~checkWalls(x, y + speed);
+        let dirs[3] = ~checkWalls(x, y - speed);
+        return;
     }
  
     method void clearGhost() {
         do Screen.setColor(~color);
         do Screen.drawRectangle(x - radius, y - radius, x + radius, y + radius + 2);
+        return;
+    }
+
+    method void setBlinking(boolean b) {
+        if (isVulnerable) {
+            let isBlinking = b;
+        }
         return;
     }
 
@@ -396,45 +261,62 @@ class Ghost {
 
         let i = -radius;
         while (~(i > radius)) {
-            if (((i + 20) & 1) = 0) {
+            if ((i & 1) = 0) {
                 let ghostBottom = y + radius - 2;
             } else {
                 let ghostBottom = y + radius;
             }
-            do Screen.drawLine(x + i, y, x + i, ghostBottom);
+            do Screen.drawLine(x + i, y + 3, x + i, ghostBottom);
             let i = i + 1;
         }
-    
-        if (dir = 1) { let pupilOffsetX = 0; let pupilOffsetY = -1; }
-        if (dir = 2) { let pupilOffsetX = 0; let pupilOffsetY = 1; } 
-        if (dir = 3) { let pupilOffsetX = -1; let pupilOffsetY = 0; } 
-        if (dir = 4) { let pupilOffsetX = 1; let pupilOffsetY = 0; }
-    
-        do Screen.setColor(~color);
-        do Screen.drawCircle(x - 3, y - 2, 2);
-        do Screen.drawCircle(x + 3, y - 2, 2);
-    
-        do Screen.setColor(color);
-        do Screen.drawCircle(x - 3 + pupilOffsetX, y - 2 + pupilOffsetY, 1);
-        do Screen.drawCircle(x + 3 + pupilOffsetX, y - 2 + pupilOffsetY, 1);
-    
-        let spriteDelay = spriteDelay + 1;
-        if (spriteDelay = 3) {
-            if (sprite = 0) { let adition = 1; }
-            if (sprite = 4) { let adition = -1; }
-            let sprite = sprite + adition;
-            let spriteDelay = 0;
-        }
-    
-        return;
-    }
 
-    method int endX() {
-        return x + size - 1;
-    }
+
+        do Screen.setColor(~color);
+        do Screen.drawPixel(x - 2, y + radius);
+        do Screen.drawPixel(x, y + radius);
+        do Screen.drawPixel(x + 2, y + radius);
     
-    method int endY() {
-        return y + size - 1;
+        if (isVulnerable) {
+            if (isBlinking) { let color = ~color; }
+            do Screen.setColor(~color);
+            do Screen.drawCircle(x, y, radius - 1);
+            do Screen.drawLine(x - radius + 2, y + radius - 3, x + radius - 2, y + radius - 3);
+            do Screen.drawLine(x - radius + 3, y + radius - 2, x + radius - 3, y + radius - 2);
+            do Screen.setColor(color);
+            
+            do Screen.drawPixel(x - 4, y + 4);
+            do Screen.drawPixel(x - 3, y + 3);
+            do Screen.drawPixel(x - 2, y + 3);
+            do Screen.drawPixel(x - 1, y + 4);
+            do Screen.drawPixel(x, y + 4);
+            do Screen.drawPixel(x + 1, y + 4);
+            do Screen.drawPixel(x + 2, y + 3);
+            do Screen.drawPixel(x + 3, y + 3);
+            do Screen.drawPixel(x + 4, y + 4);
+
+            do Screen.drawLine(x - 2, y + 3, x, y + 4);
+            do Screen.drawLine(x + 1, y + 3, x + 3, y + 4);
+            do Screen.drawLine(x - 2, y + radius - 1, x + 2, y + radius - 1);
+
+            let i = (isBlinking);
+
+            do Screen.drawRectangle(x - 3 + i, y - 2  + i, x - 2 - i, y - 1 - i);
+            do Screen.drawRectangle(x + 2 + i, y - 2 + i, x + 3 - i, y - 1 - i);
+            
+            if (isBlinking) { let color = ~color; }
+        } else {
+            if (dir = 1) { let pupilOffsetX = 1; let pupilOffsetY = 0; }
+            if (dir = 3) { let pupilOffsetX = 0; let pupilOffsetY = 1; } 
+            if (dir = 2) { let pupilOffsetX = -1; let pupilOffsetY = 0; } 
+            if (dir = 4) { let pupilOffsetX = 0; let pupilOffsetY = -1; }
+            do Screen.drawCircle(x - 3, y - 2, 2);
+            do Screen.drawCircle(x + 3, y - 2, 2);
+            do Screen.setColor(color);
+            do Screen.drawCircle(x - 3 + pupilOffsetX, y - 2 + pupilOffsetY, 1);
+            do Screen.drawCircle(x + 3 + pupilOffsetX, y - 2 + pupilOffsetY, 1);
+        }
+
+        return;
     }
 
     method void dispose() {
