@@ -120,7 +120,7 @@ class Ghost {
         }
 
         if (isPursuer | isVulnerable) {
-            if ((Math.abs(deltaX) > Math.abs(deltaY)) & ~(Random.randRange(2) = 0)) {
+            if ((Math.abs(deltaX) > Math.abs(deltaY)) & (isVulnerable | ~(Random.randRange(2) = 0))) {
                 if (tryMove(0, deltaX < 0)) { return; }
                 if (tryMove(1, deltaX > 0)) { return; }
                 if (tryMove(2, deltaY < 0)) { return; }
@@ -284,24 +284,22 @@ class Ghost {
             do Screen.drawLine(x - radius + 3, y + radius - 2, x + radius - 3, y + radius - 2);
             do Screen.setColor(color);
             
-            do Screen.drawPixel(x - 4, y + 4);
-            do Screen.drawPixel(x - 3, y + 3);
-            do Screen.drawPixel(x - 2, y + 3);
-            do Screen.drawPixel(x - 1, y + 4);
-            do Screen.drawPixel(x, y + 4);
-            do Screen.drawPixel(x + 1, y + 4);
-            do Screen.drawPixel(x + 2, y + 3);
-            do Screen.drawPixel(x + 3, y + 3);
-            do Screen.drawPixel(x + 4, y + 4);
+            do Screen.drawPixel(x - 4, y + 3);
+            do Screen.drawPixel(x - 3, y + 2);
+            do Screen.drawPixel(x - 2, y + 2);
+            do Screen.drawPixel(x - 1, y + 3);
+            do Screen.drawPixel(x, y + 3);
+            do Screen.drawPixel(x + 1, y + 3);
+            do Screen.drawPixel(x + 2, y + 2);
+            do Screen.drawPixel(x + 3, y + 2);
+            do Screen.drawPixel(x + 4, y + 3);
 
-            do Screen.drawLine(x - 2, y + 3, x, y + 4);
-            do Screen.drawLine(x + 1, y + 3, x + 3, y + 4);
             do Screen.drawLine(x - 2, y + radius - 1, x + 2, y + radius - 1);
 
             let i = (isBlinking);
 
-            do Screen.drawRectangle(x - 3 + i, y - 2  + i, x - 2 - i, y - 1 - i);
-            do Screen.drawRectangle(x + 2 + i, y - 2 + i, x + 3 - i, y - 1 - i);
+            do Screen.drawRectangle(x - 3 + i, y - 2  + i, x - 2, y - 1);
+            do Screen.drawRectangle(x + 2, y - 2 + i, x + 3 - i, y - 1);
             
             if (isBlinking) { let color = ~color; }
         } else {

@@ -296,11 +296,13 @@ call Math.abs 1
 push local 7
 call Math.abs 1
 gt
+push this 18
 push constant 2
 call Random.randRange 1
 push constant 0
 eq
 not
+or
 and
 if-goto IF_TRUE2
 goto IF_FALSE2
@@ -954,7 +956,7 @@ push this 6
 push constant 4
 sub
 push this 7
-push constant 4
+push constant 3
 add
 call Screen.drawPixel 2
 pop temp 0
@@ -962,7 +964,7 @@ push this 6
 push constant 3
 sub
 push this 7
-push constant 3
+push constant 2
 add
 call Screen.drawPixel 2
 pop temp 0
@@ -970,7 +972,7 @@ push this 6
 push constant 2
 sub
 push this 7
-push constant 3
+push constant 2
 add
 call Screen.drawPixel 2
 pop temp 0
@@ -978,13 +980,13 @@ push this 6
 push constant 1
 sub
 push this 7
-push constant 4
+push constant 3
 add
 call Screen.drawPixel 2
 pop temp 0
 push this 6
 push this 7
-push constant 4
+push constant 3
 add
 call Screen.drawPixel 2
 pop temp 0
@@ -992,7 +994,7 @@ push this 6
 push constant 1
 add
 push this 7
-push constant 4
+push constant 3
 add
 call Screen.drawPixel 2
 pop temp 0
@@ -1000,51 +1002,25 @@ push this 6
 push constant 2
 add
 push this 7
-push constant 3
-add
-call Screen.drawPixel 2
-pop temp 0
-push this 6
-push constant 3
-add
-push this 7
-push constant 3
-add
-call Screen.drawPixel 2
-pop temp 0
-push this 6
-push constant 4
-add
-push this 7
-push constant 4
-add
-call Screen.drawPixel 2
-pop temp 0
-push this 6
 push constant 2
-sub
-push this 7
-push constant 3
 add
-push this 6
-push this 7
-push constant 4
-add
-call Screen.drawLine 4
+call Screen.drawPixel 2
 pop temp 0
 push this 6
-push constant 1
-add
-push this 7
 push constant 3
 add
+push this 7
+push constant 2
+add
+call Screen.drawPixel 2
+pop temp 0
 push this 6
-push constant 3
-add
-push this 7
 push constant 4
 add
-call Screen.drawLine 4
+push this 7
+push constant 3
+add
+call Screen.drawPixel 2
 pop temp 0
 push this 6
 push constant 2
@@ -1079,19 +1055,13 @@ add
 push this 6
 push constant 2
 sub
-push local 0
-sub
 push this 7
 push constant 1
-sub
-push local 0
 sub
 call Screen.drawRectangle 4
 pop temp 0
 push this 6
 push constant 2
-add
-push local 0
 add
 push this 7
 push constant 2
@@ -1105,8 +1075,6 @@ push local 0
 sub
 push this 7
 push constant 1
-sub
-push local 0
 sub
 call Screen.drawRectangle 4
 pop temp 0
