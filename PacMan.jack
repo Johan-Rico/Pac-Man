@@ -28,8 +28,7 @@ class PacMan {
         let nextDir = 2;
         let sprite = 0;
         do Screen.setColor(color);
-        do Screen.drawCircle(x,y,radius);
-        let x = 256;
+        do draw();
         return;
     }
 
@@ -41,6 +40,10 @@ class PacMan {
     }
 
     method void next() {
+
+        if (x = 255) {
+            let x = 256;
+        }
        
         if (NextMoveIsPossible(nextDir)) {
             let dir = nextDir;
