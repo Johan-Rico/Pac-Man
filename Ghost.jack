@@ -120,7 +120,7 @@ class Ghost {
         }
 
         if (isPursuer | isVulnerable) {
-            if ((Math.abs(deltaX) > Math.abs(deltaY)) & (isVulnerable | ~(Random.randRange(2) = 0))) {
+            if ((Math.abs(deltaX) > Math.abs(deltaY)) &  ~(Random.randRange(2) = 0)) {
                 if (tryMove(0, deltaX < 0)) { return; }
                 if (tryMove(1, deltaX > 0)) { return; }
                 if (tryMove(2, deltaY < 0)) { return; }
@@ -144,13 +144,12 @@ class Ghost {
             let i = i + 1;
         }
         return;
-       
     }
 
     method boolean tryMove(int dirIndex, boolean condition) {
         var int oppDir;
         if (isVulnerable) {
-            let oppDir = getOppositeDir(dir + 1);
+            let oppDir = getOppositeDir(dirIndex + 1);
             if (dirs[oppDir - 1] & condition) {
                 let dir = oppDir;
                 return true;

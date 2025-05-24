@@ -1,21 +1,19 @@
 function Ghosts.new 0
-push constant 8
+push constant 7
 call Memory.alloc 1
 pop pointer 0
 push argument 1
 pop this 0
 push argument 2
 pop this 1
-push argument 0
-pop this 4
 push constant 5
 pop this 3
 push constant 0
-pop this 5
+pop this 4
 push constant 0
-pop this 6
+pop this 5
 push pointer 0
-push this 4
+push argument 0
 call Ghosts.createGhosts 2
 pop temp 0
 push pointer 0
@@ -42,10 +40,6 @@ push constant 0
 call Ghost.setVulnerable 2
 pop temp 0
 push local 0
-push this 4
-call Ghost.changeColor 2
-pop temp 0
-push local 0
 call Ghost.init 1
 pop temp 0
 push local 1
@@ -63,7 +57,7 @@ function Ghosts.setScore 0
 push argument 0
 pop pointer 0
 push argument 1
-pop this 7
+pop this 6
 push constant 0
 return
 function Ghosts.createGhosts 0
@@ -160,15 +154,15 @@ push local 2
 push constant 9
 call Math.divide 2
 pop local 3
-push this 5
+push this 4
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push this 6
+push this 5
 push constant 1
 sub
-pop this 6
-push this 6
+pop this 5
+push this 5
 push local 2
 eq
 if-goto IF_TRUE1
@@ -180,7 +174,7 @@ not
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE1
-push this 6
+push this 5
 push local 2
 push local 3
 sub
@@ -193,7 +187,7 @@ push constant 0
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE2
-push this 6
+push this 5
 push local 2
 push constant 2
 push local 3
@@ -209,7 +203,7 @@ not
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE3
-push this 6
+push this 5
 push local 2
 push constant 3
 push local 3
@@ -224,7 +218,7 @@ push constant 0
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE4
-push this 6
+push this 5
 push local 2
 push constant 4
 push local 3
@@ -240,7 +234,7 @@ not
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE5
-push this 6
+push this 5
 push local 2
 push constant 5
 push local 3
@@ -255,7 +249,7 @@ push constant 0
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE6
-push this 6
+push this 5
 push local 2
 push constant 6
 push local 3
@@ -271,7 +265,7 @@ not
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE7
-push this 6
+push this 5
 push local 2
 push constant 7
 push local 3
@@ -286,7 +280,7 @@ push constant 0
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE8
-push this 6
+push this 5
 push local 2
 push constant 8
 push local 3
@@ -302,14 +296,14 @@ not
 call Ghosts.setBlinking 2
 pop temp 0
 label IF_FALSE9
-push this 6
+push this 5
 push constant 0
 lt
 if-goto IF_TRUE10
 goto IF_FALSE10
 label IF_TRUE10
 push constant 0
-pop this 5
+pop this 4
 push constant 0
 pop local 1
 label WHILE_EXP0
@@ -397,9 +391,9 @@ push argument 0
 pop pointer 0
 push constant 0
 not
-pop this 5
+pop this 4
 push constant 300
-pop this 6
+pop this 5
 push constant 0
 pop local 1
 label WHILE_EXP0
@@ -416,6 +410,10 @@ push that 0
 pop local 0
 push local 0
 push constant 0
+call Ghost.setBlinking 2
+pop temp 0
+push local 0
+push constant 0
 not
 call Ghost.setVulnerable 2
 pop temp 0
@@ -427,11 +425,33 @@ goto WHILE_EXP0
 label WHILE_END0
 push constant 0
 return
-function Ghosts.changeColor 0
+function Ghosts.changeColor 2
 push argument 0
 pop pointer 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END0
+push local 1
+push this 2
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
 push argument 1
-pop this 4
+call Ghost.changeColor 2
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return
 function Ghosts.draw 2
@@ -480,10 +500,6 @@ pop pointer 1
 push that 0
 pop local 0
 push local 0
-push this 4
-call Ghost.changeColor 2
-pop temp 0
-push local 0
 call Ghost.clearGhost 1
 pop temp 0
 push local 1
@@ -522,16 +538,12 @@ if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
 push local 0
-push this 4
-call Ghost.changeColor 2
-pop temp 0
-push local 0
 call Ghost.clearGhost 1
 pop temp 0
 push local 0
 call Ghost.reset 1
 pop temp 0
-push this 7
+push this 6
 push constant 200
 call Score.addPoints 2
 pop temp 0

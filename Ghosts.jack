@@ -3,7 +3,6 @@ class Ghosts {
     field PacMan pacman;
     field Array ghosts;
     field int nGhosts;
-    field boolean color;
     field boolean ghostsVulnerable;
     field int vulnerableTimer;
 	field Score score;
@@ -11,11 +10,10 @@ class Ghosts {
     constructor Ghosts new(boolean c, Map m, PacMan p) {
         let map = m;
         let pacman = p;
-        let color = c;
         let nGhosts = 5;
         let ghostsVulnerable = false;
         let vulnerableTimer = 0;
-        do createGhosts(color);
+        do createGhosts(c);
         return this;
     }
     
@@ -26,7 +24,6 @@ class Ghosts {
         while (i < nGhosts) {
             let g = ghosts[i];
             do g.setVulnerable(false);
-            do g.changeColor(color);
             do g.init();
             let i = i + 1;
         }
@@ -108,6 +105,7 @@ class Ghosts {
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
+            do g.setBlinking(false);
             do g.setVulnerable(true);
             let i = i + 1;
         }
@@ -115,7 +113,14 @@ class Ghosts {
     }
     
     method void changeColor(boolean c) {
-        let color = c;
+        var Ghost g;
+        var int i;
+        let i = 0;
+        while (i < nGhosts) {
+            let g = ghosts[i];
+            do g.changeColor(c);
+            let i = i + 1;
+        }
         return;
     }
     
@@ -137,7 +142,6 @@ class Ghosts {
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
-            do g.changeColor(color);
             do g.clearGhost();
             let i = i + 1;
         }
@@ -152,7 +156,6 @@ class Ghosts {
             let g = ghosts[i];
             if (g.checkPacmanCollision()) {
                 if (g.isVulnerable()) {
-                    do g.changeColor(color);
                     do g.clearGhost();
                     do g.reset();
                     do score.addPoints(200);

@@ -296,13 +296,11 @@ call Math.abs 1
 push local 7
 call Math.abs 1
 gt
-push this 18
 push constant 2
 call Random.randRange 1
 push constant 0
 eq
 not
-or
 and
 if-goto IF_TRUE2
 goto IF_FALSE2
@@ -458,7 +456,7 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push pointer 0
-push this 10
+push argument 1
 push constant 1
 add
 call Ghost.getOppositeDir 2

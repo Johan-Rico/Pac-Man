@@ -7,8 +7,8 @@ class Game {
 	field int lives;
 	static int level;
 	
-	constructor Game new() {
-		let color = true;
+	constructor Game new(boolean c) {
+		let color = c;
 		let lives = 3;
 		let level = 1;
 		let map = Map.new(~color);
@@ -33,7 +33,7 @@ class Game {
 		return level;
 	}
 
-	method void next() {
+	method boolean next() {
 		do score.drawPellets();
 		do map.drawDoor();
 		do pacman.next();
@@ -41,13 +41,13 @@ class Game {
 		if (score.checkPowerPelletEaten()) {
 			do ghosts.makeVulnerable();
 		}
-		if (ghosts.checkPacmanCollision()) {
-			do handlePacmanDeath();
-		} else {
 		if (score.allPelletsCollected()) {
 			do newLevel();
+		} else {
+		if (ghosts.checkPacmanCollision()) {
+			return handlePacmanDeath();
 		}}
-		return;
+		return true;
 	}
 	
 	method void handleKey(int key) {
@@ -134,7 +134,7 @@ class Game {
 		return;
 	}
 
-	method void handlePacmanDeath() {
+	method boolean handlePacmanDeath() {
 		let lives = lives - 1;
 		
 		do Sys.wait(750);
@@ -146,14 +146,20 @@ class Game {
 			do Screen.setColor(color);
 			do Screen.drawRectangle(463-(20*(lives)), 7, 477-(20*(lives))+20, 21);
 			do startLevel();
-		} else {
-			do Output.moveCursor(16,26);
-			do Output.printString(" GAME  OVER");
+			return true;
 		}
-		return;
+		do Output.moveCursor(16,26);
+		do Output.printString(" GAME  OVER");
+		do Sys.wait(3000);
+		do dispose();
+		return false;
 	}
 
 	method void dispose() {
+			do pacman.dispose();
+			do ghosts.dispose();
+			do map.dispose();
+			do score.dispose();
 			do Memory.deAlloc(this);
 			return;
 		}
