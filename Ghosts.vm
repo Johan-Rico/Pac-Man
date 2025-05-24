@@ -392,7 +392,7 @@ pop pointer 0
 push constant 0
 not
 pop this 4
-push constant 300
+push constant 275
 pop this 5
 push constant 0
 pop local 1

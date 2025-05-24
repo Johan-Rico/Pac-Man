@@ -101,7 +101,7 @@ class Ghosts {
         var Ghost g;
         var int i;
         let ghostsVulnerable = true;
-        let vulnerableTimer = 300;
+        let vulnerableTimer = 275;
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
