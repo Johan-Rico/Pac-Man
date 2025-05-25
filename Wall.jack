@@ -2,21 +2,11 @@ class Wall {
 	field int leftX, topY, rightX, bottomY;
 
   	constructor Wall new(int x1, int y1, int x2, int y2) {
-		if ((x1 > x2) | (y1 > y2)) {
-			let leftX = x2;
-    		let topY = y2;
-    		let rightX = x1;
-    		let bottomY = y1;
-		} else {
-			let leftX = x1;
-    		let topY = y1;
-    		let rightX = x2;
-    		let bottomY = y2;
-		}
-		let leftX = leftX*9+8;
-		let topY = topY*9+28;
-		let rightX = rightX*9+15;
-		let bottomY = bottomY*9+35;
+		
+		let leftX = Math.min(x1,x2)*9 + 8;
+		let topY = Math.min(y1,y2)*9 + 28;
+		let rightX = Math.max(x1,x2)*9 + 15;
+		let bottomY = Math.max(y1,y2)*9 + 35;
     	return this;
   	}
 
@@ -79,7 +69,6 @@ class Wall {
 		);
 	}
 
-  	// dispose wall
   	method void dispose() {
     	do Memory.deAlloc(this);
     	return;

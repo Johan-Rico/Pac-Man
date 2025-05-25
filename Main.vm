@@ -1,4 +1,6 @@
 function Main.main 2
+call Math2.init 0
+pop temp 0
 push constant 0
 not
 pop static 1

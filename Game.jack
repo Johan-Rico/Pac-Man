@@ -14,8 +14,7 @@ class Game {
 		let map = Map.new(~color);
 		let score = Score.new(~color, map);
 		let pacman = PacMan.new(~color, map, score);
-		let ghosts = Ghosts.new(~color, map, pacman);
-		do ghosts.setScore(score); 
+		let ghosts = Ghosts.new(~color, map, pacman, score);
 		return this;
 	}
 
@@ -35,9 +34,9 @@ class Game {
 
 	method boolean next() {
 		do score.drawPellets();
-		do map.drawDoor();
 		do pacman.next();
 		do ghosts.next();
+		do map.drawDoor();
 		if (score.checkPowerPelletEaten()) {
 			do ghosts.makeVulnerable();
 		}

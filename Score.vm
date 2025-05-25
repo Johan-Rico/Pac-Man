@@ -226,8 +226,7 @@ push constant 9
 call Math.multiply 2
 push constant 45
 add
-push constant 2
-call Map.checkOverlapping 4
+call Map.checkOverlapping 3
 not
 if-goto IF_TRUE0
 goto IF_FALSE0

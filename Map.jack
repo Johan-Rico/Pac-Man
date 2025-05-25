@@ -1,11 +1,16 @@
 class Map {
 	field boolean color;
 	field Array walls;
+	field Array tiles;
+	field Array rows;
 	field int nWalls;
+	field int nRows, nCols;
 	field int map;
   
 	constructor Map new(boolean c) {
 		let color = c;
+		let nRows = 26;
+		let nCols = 56;
 		let nWalls = 1 + 66;
 		do createWalls();
 		return this;
@@ -21,104 +26,150 @@ class Map {
 		do draw();
 		return;
 	}
+
+	method void createWall(int n, int x1, int y1, int x2, int y2) {
+		var int topX, topY, bottomX, bottomY;
+		var Array row;
+		var int r, c, i;
+		let topX = Math.min(x1,x2);
+		let topY = Math.min(y1,y2);
+		let bottomX = Math.max(x1,x2);
+		let bottomY = Math.max(y1,y2);
+
+		let walls[n] = Wall.new(topX, topY, bottomX, bottomY);
+
+		let r  = topY;
+		while (r < (bottomY + 2)) {
+			let c = topX;
+			let row = tiles[r];
+			while (c < (bottomX + 2)) {
+				let row[c / 8] = row[c / 8] | Math2.two_to_the(7 - Math2.mod(c, 8));
+				let c = c + 1;
+			}
+			let r = r + 1;
+		}
+		return;
+	}
   
 	method void createWalls() {
-		
+		var Array row;
+		var int r, c;
+
+		let tiles = Array.new(nRows);
+
+		let r = 0;
+		while (r < nRows) {
+			let c = 0;
+			let tiles[r] = Array.new(nCols / 8);
+			let row = tiles[r];
+			while( c < (nCols / 8)) {
+				let row[c] = 0;
+				let c = c + 1;
+			}
+			let r = r + 1;
+		}
+
 		let walls = Array.new(nWalls);
 
 		// Border walls
-		let walls[0] = Wall.new(0,12,6,12);
-		let walls[1] = Wall.new(6,12,6,9);
-		let walls[2] = Wall.new(6,9,0,9);
-		let walls[3] = Wall.new(0,9,0,0);
-		let walls[4] = Wall.new(0,0,54,0);
-		let walls[5] = Wall.new(54,0,54,9);
-		let walls[6] = Wall.new(54,9,48,9);
-		let walls[7] = Wall.new(48,9,48,12);
-		let walls[8] = Wall.new(48,12,54,12);
-		let walls[9] = Wall.new(0,15,6,15);
-		let walls[10] = Wall.new(6,15,6,18);
-		let walls[11] = Wall.new(6,18,0,18);
-		let walls[12] = Wall.new(0,18,0,24);
-		let walls[13] = Wall.new(0,24,54,24);
-		let walls[14] = Wall.new(54,24,54,18);
-		let walls[15] = Wall.new(54,18,48,18);
-		let walls[16] = Wall.new(48,18,48,15);
-		let walls[17] = Wall.new(48,15,54,15);
+		do createWall(0,0,12,6,12);
+		do createWall(1,6,12,6,9);
+		do createWall(2,6,9,0,9);
+		do createWall(3,0,9,0,0);
+		do createWall(4,0,0,54,0);
+		do createWall(5,54,0,54,9);
+		do createWall(6,54,9,48,9);
+		do createWall(7,48,9,48,12);
+		do createWall(8,48,12,54,12);
+		do createWall(9,0,15,6,15);
+		do createWall(10,6,15,6,18);
+		do createWall(11,6,18,0,18);
+		do createWall(12,0,18,0,24);
+		do createWall(13,0,24,54,24);
+		do createWall(14,54,24,54,18);
+		do createWall(15,54,18,48,18);
+		do createWall(16,48,18,48,15);
+		do createWall(17,48,15,54,15);
 
 		// Ghost house walls
-		let walls[18] = Wall.new(23,15,31,15);
-		let walls[19] = Wall.new(23,15,23,10);
-		let walls[20] = Wall.new(31,15,31,10);
-		let walls[21] = Wall.new(23,10,25,10);
-		let walls[22] = Wall.new(31,10,29,10);
+		do createWall(18,23,15,31,15);
+		do createWall(19,23,15,23,10);
+		do createWall(20,31,15,31,10);
+		do createWall(21,23,10,25,10);
+		do createWall(22,31,10,29,10);
 
 		// Walls inside the map
-		let walls[23] = Wall.new(3,21,9,21);
-		let walls[24] = Wall.new(9,21,9,18);
+		do createWall(23,3,21,9,21);
+		do createWall(24,9,21,9,18);
 
-		let walls[25] = Wall.new(23,18,31,18);
-		let walls[26] = Wall.new(27,18,27,21);
-		let walls[27] = Wall.new(24,21,24,24);
+		do createWall(25,23,18,31,18);
+		do createWall(26,27,18,27,21);
+		do createWall(27,24,21,24,24);
 
-		let walls[28] = Wall.new(30,21,30,24);
-		let walls[29] = Wall.new(21,21,12,21);
-		let walls[30] = Wall.new(33,21,42,21);
+		do createWall(28,30,21,30,24);
+		do createWall(29,21,21,12,21);
+		do createWall(30,33,21,42,21);
 
-		let walls[31] = Wall.new(45,21,51,21);
-		let walls[32] = Wall.new(45,21,45,18);
+		do createWall(31,45,21,51,21);
+		do createWall(32,45,21,45,18);
 
-		let walls[33] = Wall.new(45,18,41,18);
-		let walls[34] = Wall.new(9,18,13,18);
+		do createWall(33,45,18,41,18);
+		do createWall(34,9,18,13,18);
 
-		let walls[35] = Wall.new(9,15,13,15);
-		let walls[36] = Wall.new(41,15,45,15);
+		do createWall(35,9,15,13,15);
+		do createWall(36,41,15,45,15);
 
-		let walls[37] = Wall.new(16,15,17,18);
-		let walls[38] = Wall.new(20,13,20,18);
-		let walls[39] = Wall.new(34,13,34,18);
-		let walls[40] = Wall.new(37,15,38,18);
+		do createWall(37,16,15,17,18);
+		do createWall(38,20,13,20,18);
+		do createWall(39,34,13,34,18);
+		do createWall(40,37,15,38,18);
 
 		// Walls inside the map (Upper part)
-		let walls[41] = Wall.new(23,7,31,7);
-		let walls[42] = Wall.new(27,3,27,7);
+		do createWall(41,23,7,31,7);
+		do createWall(42,27,3,27,7);
 
-		let walls[43] = Wall.new(23,3,24,4);
-		let walls[44] = Wall.new(30,3,31,4);
+		do createWall(43,23,3,24,4);
+		do createWall(44,30,3,31,4);
 
-		let walls[45] = Wall.new(17,7,17,12);
-		let walls[46] = Wall.new(37,7,37,12);
+		do createWall(45,17,7,17,12);
+		do createWall(46,37,7,37,12);
 
-		let walls[47] = Wall.new(17,10,20,10);
-		let walls[48] = Wall.new(34,10,37,10);
+		do createWall(47,17,10,20,10);
+		do createWall(48,34,10,37,10);
 
-		let walls[49] = Wall.new(3,3,6,6);
-		let walls[50] = Wall.new(48,3,51,6);
+		do createWall(49,3,3,6,6);
+		do createWall(50,48,3,51,6);
 
-		let walls[51] = Wall.new(20,3,20,7);
-		let walls[52] = Wall.new(34,3,34,7);
+		do createWall(51,20,3,20,7);
+		do createWall(52,34,3,34,7);
 
-		let walls[53] = Wall.new(17,0,17,4);
-		let walls[54] = Wall.new(37,0,37,4);
+		do createWall(53,17,0,17,4);
+		do createWall(54,37,0,37,4);
 
-		//espiral walls
-		let walls[55] = Wall.new(14,3,9,3);
-		let walls[56] = Wall.new(40,3,45,3);
+		// Spiral walls
+		do createWall(55,14,3,9,3);
+		do createWall(56,40,3,45,3);
 
-		let walls[57] = Wall.new(14,3,14,9);
-		let walls[58] = Wall.new(40,3,40,9);
+		do createWall(57,14,3,14,9);
+		do createWall(58,40,3,40,9);
 
-		let walls[59] = Wall.new(9,9,14,9);
-		let walls[60] = Wall.new(40,9,45,9);
+		do createWall(59,9,9,14,9);
+		do createWall(60,40,9,45,9);
 
-		let walls[61] = Wall.new(9,6,9,9);
-		let walls[62] = Wall.new(45,6,45,9);
+		do createWall(61,9,6,9,9);
+		do createWall(62,45,6,45,9);
 
-		let walls[63] = Wall.new(9,6,11,6);
-		let walls[64] = Wall.new(43,6,45,6);
+		do createWall(63,9,6,11,6);
+		do createWall(64,43,6,45,6);
 
-		let walls[65] = Wall.new(9,12,14,12);
-		let walls[66] = Wall.new(40,12,45,12);
+		do createWall(65,9,12,14,12);
+		do createWall(66,40,12,45,12);
+
+		//Ghost house door
+		let row = tiles[10];
+		let row[3] = -1;
+		let row = tiles[11];
+		let row[3] = -1;
 
 
 	  	return;
@@ -165,42 +216,41 @@ class Map {
 		return;
 	}
   
-	method boolean checkOverlapping(int x, int y, int radius) {
-	  	var Wall w;
-	  	var int i;
-	  	let i = 0;
-	  	while (i < nWalls) {
-			let w = walls[i];
-			if (w.checkOverlapping(x, y, radius)) {
-				return true;
-			}
-			let i = i + 1;
-		}
-	  	return false;
-	}
-	method boolean checkOverlapping2(int x1, int y1, int x2, int y2) {
-		var Wall w;
-		var int i;
-		let i = 0;
-		while (i < nWalls) {
-		  let w = walls[i];
-		  if (w.checkOverlapping2(x1, y1, x2, y2)) {
+	method boolean checkOverlapping(int x, int y) {
+		var boolean isOverlaping, dx, dy;
+		var Array row;
+	  	var int c, r;
+		let c = (x - 6) / 9;
+		let r = (y - 27) / 9;
+		let row = tiles[r];
+		let isOverlaping = (row[c / 8] | ~(Math2.two_to_the(7 - Math2.mod(c, 8)))) = -1;
+		
+		let dx = Math2.mod(x - 6, 9) > 0;
+		let dy = Math2.mod(y - 27, 9) > 0;
+
+		if (dx & dy) {
 			return true;
-		  }
-		  let i = i + 1;
 		}
-		return false;
-	  }
-	
-		method void drawDoor() {
-			do Screen.setColor(color);
-			do Screen.drawRectangle(241, 120, 268, 123);
-			return;
+		
+		if (dx) {
+			let c = c + 1;
+			let isOverlaping = isOverlaping | ((row[c / 8] | ~(Math2.two_to_the(7 - Math2.mod(c, 8)))) = -1);
+			let c = c - 1;
 		}
 
-	method boolean checkDoorOverlaping(int x, int y, int radius) {
-		return ((((x-radius) < 271) & ((x+radius) > 238)) 
-		& (((y-radius) < 126) & ((y+radius) > 115)));
+		if (dy) {
+			let r = r + 1;
+			let row = tiles[r];
+			let isOverlaping = isOverlaping | ((row[c / 8] | ~(Math2.two_to_the(7 - Math2.mod(c, 8))) = -1));
+		}
+
+		return isOverlaping;
+	}
+	
+	method void drawDoor() {
+		do Screen.setColor(color);
+		do Screen.drawRectangle(241, 120, 268, 123);
+		return;
 	}
   
 	method void dispose() {

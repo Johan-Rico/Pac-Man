@@ -78,7 +78,7 @@ class Score {
 		while (y < 22) {
 			let x = 0;
 			while (x < 52) {
-				if (~map.checkOverlapping(x*9+24, y*9+45, 2)) {
+				if (~map.checkOverlapping(x*9+24, y*9+45)) {
 					if (createPellet(x, y, i)) {
 						let i = i + 1;
 						if (i = nPellets) { return; }

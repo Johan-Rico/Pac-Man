@@ -10,9 +10,9 @@ push argument 2
 pop this 2
 push constant 7
 pop this 12
-push constant 9
+push constant 15
 pop this 13
-push constant 503
+push constant 494
 pop this 14
 push constant 2
 pop this 5
@@ -48,13 +48,6 @@ push argument 0
 pop pointer 0
 push argument 1
 pop this 0
-push this 9
-push this 10
-sub
-pop this 9
-push pointer 0
-call PacMan.draw 1
-pop temp 0
 push constant 0
 return
 function PacMan.next 0
@@ -86,6 +79,9 @@ not
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
+push pointer 0
+call PacMan.draw 1
+pop temp 0
 push constant 0
 return
 label IF_FALSE2
@@ -98,23 +94,8 @@ push this 4
 push this 12
 call Score.checkCollision 4
 pop temp 0
-push this 0
-not
-call Screen.setColor 1
-pop temp 0
-push this 3
-push this 12
-sub
-push this 4
-push this 12
-sub
-push this 3
-push this 12
-add
-push this 4
-push this 12
-add
-call Screen.drawRectangle 4
+push pointer 0
+call PacMan.clear 1
 pop temp 0
 push this 7
 pop this 3
@@ -145,6 +126,10 @@ label IF_FALSE4
 push pointer 0
 call PacMan.draw 1
 pop temp 0
+push this 9
+push this 10
+add
+pop this 9
 push constant 0
 return
 function PacMan.draw 4
@@ -308,10 +293,20 @@ neg
 pop this 10
 label IF_FALSE3
 label IF_END2
-push this 9
-push this 10
-add
-pop this 9
+push constant 0
+return
+function PacMan.clear 0
+push argument 0
+pop pointer 0
+push this 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 3
+push this 4
+push this 12
+call Screen.drawCircle 3
+pop temp 0
 push constant 0
 return
 function PacMan.NextMoveIsPossible 0
@@ -373,15 +368,10 @@ label IF_END1
 label IF_END0
 push this 1
 push this 7
+push constant 1
+sub
 push this 8
-push this 12
-call Map.checkOverlapping 4
-push this 1
-push this 7
-push this 8
-push this 12
-call Map.checkDoorOverlaping 4
-or
+call Map.checkOverlapping 3
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4

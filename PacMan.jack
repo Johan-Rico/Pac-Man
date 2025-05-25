@@ -13,8 +13,8 @@ class PacMan {
         let map = m;
         let score = s;
         let radius = 7;
-        let leftLimit = 9;
-        let rightLimit = 503;
+        let leftLimit = 15;
+        let rightLimit = 494;
         let dir = 2;
         let nextDir = 2;
         let speed = 3;
@@ -34,8 +34,6 @@ class PacMan {
 
     method void changeColor(boolean c) {
         let color = c;
-        let sprite = sprite - adition;
-        do draw();
         return;
     }
 
@@ -49,14 +47,15 @@ class PacMan {
             let dir = nextDir;
         } else {
             if (~NextMoveIsPossible(dir)) {
+                do draw();
                 return;
             }
         }
 
-        do score.checkCollision(x-1, y, radius);
-        do Screen.setColor(~color);
-        do Screen.drawRectangle(x-radius, y-radius, x+radius, y+radius);
+        do score.checkCollision(x - 1, y, radius);
 
+        do clear();
+        
         let x = nextX;
         let y = nextY;
 
@@ -68,6 +67,7 @@ class PacMan {
         }
 
         do draw();
+        let sprite = sprite + adition;
         return;
     }
     
@@ -104,9 +104,13 @@ class PacMan {
         if (sprite = 5) {
             let adition = -1;
         }}
-
-        let sprite = sprite + adition; 
         
+        return;
+    }
+
+    method void clear() {
+        do Screen.setColor(~color);
+        do Screen.drawCircle(x,y,radius);
         return;
     }
 
@@ -125,7 +129,7 @@ class PacMan {
         if (d = 4) {
             let nextY = y - speed;
         }}}}
-        if (map.checkOverlapping(nextX, nextY, radius) | map.checkDoorOverlaping(nextX, nextY, radius)) {
+        if (map.checkOverlapping(nextX - 1, nextY)) {
             return false;
         }
         return true;

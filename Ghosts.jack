@@ -2,14 +2,15 @@ class Ghosts {
     field Map map;
     field PacMan pacman;
     field Array ghosts;
+    field Score score;
     field int nGhosts;
     field boolean ghostsVulnerable;
     field int vulnerableTimer;
-	field Score score;
     
-    constructor Ghosts new(boolean c, Map m, PacMan p) {
+    constructor Ghosts new(boolean c, Map m, PacMan p, Score s) {
         let map = m;
         let pacman = p;
+        let score = s;
         let nGhosts = 5;
         let ghostsVulnerable = false;
         let vulnerableTimer = 0;
@@ -28,11 +29,6 @@ class Ghosts {
             let i = i + 1;
         }
         do draw();
-        return;
-    }
-
-	method void setScore(Score s) {
-        let score = s;
         return;
     }
     
@@ -101,7 +97,7 @@ class Ghosts {
         var Ghost g;
         var int i;
         let ghostsVulnerable = true;
-        let vulnerableTimer = 275;
+        let vulnerableTimer = 300 - ((Game.getLevel()-1) * 50);
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
@@ -142,7 +138,7 @@ class Ghosts {
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
-            do g.clearGhost();
+            do g.clear();
             let i = i + 1;
         }
         return;
@@ -156,12 +152,15 @@ class Ghosts {
             let g = ghosts[i];
             if (g.checkPacmanCollision()) {
                 if (g.isVulnerable()) {
-                    do g.clearGhost();
-                    do g.reset();
+                    do Sys.wait(700);
                     do score.addPoints(200);
+                    do g.clear();
+                    do g.setDead();
                     do g.setVulnerable(false);
                 } else {
-                    return true;
+                    if (~g.isDead()) {
+                        return true;
+                    }
                 }
             }
             let i = i + 1;

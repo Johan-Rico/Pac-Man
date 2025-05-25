@@ -4,52 +4,31 @@ call Memory.alloc 1
 pop pointer 0
 push argument 0
 push argument 2
-gt
-push argument 1
-push argument 3
-gt
-or
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push argument 2
-pop this 0
-push argument 3
-pop this 1
-push argument 0
-pop this 2
-push argument 1
-pop this 3
-goto IF_END0
-label IF_FALSE0
-push argument 0
-pop this 0
-push argument 1
-pop this 1
-push argument 2
-pop this 2
-push argument 3
-pop this 3
-label IF_END0
-push this 0
+call Math.min 2
 push constant 9
 call Math.multiply 2
 push constant 8
 add
 pop this 0
-push this 1
+push argument 1
+push argument 3
+call Math.min 2
 push constant 9
 call Math.multiply 2
 push constant 28
 add
 pop this 1
-push this 2
+push argument 0
+push argument 2
+call Math.max 2
 push constant 9
 call Math.multiply 2
 push constant 15
 add
 pop this 2
-push this 3
+push argument 1
+push argument 3
+call Math.max 2
 push constant 9
 call Math.multiply 2
 push constant 35

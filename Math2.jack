@@ -1,0 +1,28 @@
+class Math2 {
+    static int n;
+    static Array powersOfTwo;
+
+    function void init() {
+        let powersOfTwo = Array.new(8);
+        let powersOfTwo[0] = 1;
+        let powersOfTwo[1] = 2;
+        let powersOfTwo[2] = 4;
+        let powersOfTwo[3] = 8;
+        let powersOfTwo[4] = 16;
+        let powersOfTwo[5] = 32;
+        let powersOfTwo[6] = 64;
+        let powersOfTwo[7] = 128;
+        return;
+    }
+
+    function int two_to_the(int power) {
+        return powersOfTwo[power];
+    }
+
+    function int mod(int x, int y) {
+        var int q;
+        
+        let q = Math.divide(x, y);
+        return x - (q*y);
+    }
+}

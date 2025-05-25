@@ -4,6 +4,8 @@ class Main {
 		var int key;
 		var Game game;
 
+		do Math2.init();
+
 		let color = true;
 
 		while (true) {
