@@ -1,4 +1,3 @@
-
 class Ghost {
     field boolean color;
     field Map map;
