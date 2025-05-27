@@ -86,32 +86,39 @@ return
 function Ghost.setVulnerable 0
 push argument 0
 pop pointer 0
+push this 20
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
 push argument 1
 push this 17
 not
 and
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
 push pointer 0
 push this 9
 call Ghost.getOppositeDir 2
 pop this 9
 push constant 1
 pop this 10
-label IF_FALSE0
+label IF_FALSE1
 push this 17
 push argument 1
 not
 and
-push this 20
-not
-and
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push constant 3
 pop this 10
+push pointer 0
+call Ghost.clear 1
+pop temp 0
 push this 5
 push this 5
 push constant 3
@@ -126,7 +133,7 @@ push constant 3
 call Math2.mod 2
 sub
 pop this 6
-label IF_FALSE1
+label IF_FALSE2
 push argument 1
 pop this 17
 push constant 0
@@ -135,6 +142,9 @@ function Ghost.isVulnerable 0
 push argument 0
 pop pointer 0
 push this 17
+push this 20
+not
+and
 return
 function Ghost.isDead 0
 push argument 0
@@ -159,7 +169,11 @@ pop this 10
 push constant 0
 pop this 19
 push constant 0
+pop this 17
+push constant 0
 pop this 18
+push constant 0
+pop this 20
 push constant 0
 return
 function Ghost.reset 2
@@ -174,7 +188,13 @@ pop this 9
 push constant 1
 pop this 10
 push constant 0
+pop this 19
+push constant 0
+pop this 17
+push constant 0
 pop this 18
+push constant 0
+pop this 20
 push constant 0
 return
 function Ghost.changeColor 0
@@ -265,8 +285,6 @@ eq
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push constant 0
-pop this 20
 push pointer 0
 call Ghost.reset 1
 pop temp 0
@@ -521,7 +539,7 @@ call Math.abs 1
 gt
 pop local 10
 push this 20
-push constant 3
+push constant 4
 call Random.randRange 1
 push constant 0
 eq
@@ -928,16 +946,22 @@ if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
 push this 5
-push constant 5
+push constant 3
 sub
 push this 6
-push constant 4
+push constant 2
 sub
+push constant 2
+call Screen.drawCircle 3
+pop temp 0
 push this 5
-push constant 5
+push constant 3
 add
 push this 6
-call Screen.drawRectangle 4
+push constant 2
+sub
+push constant 2
+call Screen.drawCircle 3
 pop temp 0
 goto IF_END0
 label IF_FALSE0
@@ -959,6 +983,18 @@ add
 call Screen.drawRectangle 4
 pop temp 0
 label IF_END0
+push constant 0
+return
+function Ghost.drawClosePellets 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 5
+push constant 1
+sub
+push this 6
+call Score.drawClosePellets 3
+pop temp 0
 push constant 0
 return
 function Ghost.draw 4

@@ -62,17 +62,11 @@ return
 function Game.next 0
 push argument 0
 pop pointer 0
-push this 3
-call Score.drawPellets 1
-pop temp 0
 push this 0
 call PacMan.next 1
 pop temp 0
 push this 1
 call Ghosts.next 1
-pop temp 0
-push this 2
-call Map.drawDoor 1
 pop temp 0
 push this 3
 call Score.checkPowerPelletEaten 1
@@ -83,6 +77,9 @@ push this 1
 call Ghosts.makeVulnerable 1
 pop temp 0
 label IF_FALSE0
+push this 2
+call Map.drawDoor 1
+pop temp 0
 push this 3
 call Score.allPelletsCollected 1
 if-goto IF_TRUE1
@@ -295,6 +292,9 @@ pop temp 0
 push this 1
 call Ghosts.clearGhosts 1
 pop temp 0
+push this 2
+call Map.drawDoor 1
+pop temp 0
 push pointer 0
 call Game.clearScreen 1
 pop temp 0
@@ -310,9 +310,6 @@ pop temp 0
 push pointer 0
 call Game.printLives 1
 pop temp 0
-push this 3
-call Score.drawPellets 1
-pop temp 0
 push pointer 0
 call Game.startLevel 1
 pop temp 0
@@ -323,6 +320,9 @@ push argument 0
 pop pointer 0
 push this 0
 call PacMan.init 1
+pop temp 0
+push this 3
+call Score.init 1
 pop temp 0
 push this 1
 call Ghosts.init 1
@@ -389,8 +389,8 @@ pop temp 0
 push this 1
 call Ghosts.clearGhosts 1
 pop temp 0
-push this 3
-call Score.drawPellets 1
+push this 2
+call Map.drawDoor 1
 pop temp 0
 push this 0
 call PacMan.deathAnimation 1

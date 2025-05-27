@@ -53,12 +53,16 @@ class Ghost {
     }
 
     method void setVulnerable(boolean v) {
+        if (isDead) {
+            return;
+        }
         if (v & ~isVulnerable) {
             let dir = getOppositeDir(dir);
             let speed = 1;
         }
-        if (isVulnerable & ~v & ~isDead) {
+        if (isVulnerable & ~v) {
             let speed = 3;
+            do clear();
             let x = x - Math2.mod(x, 3) + 1;
             let y = y - Math2.mod(y, 3);
         }
@@ -67,7 +71,7 @@ class Ghost {
     }
     
     method boolean isVulnerable() {
-        return isVulnerable;
+        return isVulnerable & ~isDead;
     }
 
     method boolean isDead() {
@@ -82,7 +86,9 @@ class Ghost {
         let dir = 3;
         let speed = 1;
         let isOut = false;
+        let isVulnerable = false;
         let isBlinking = false;
+        let isDead = false;
         return;
     }
     
@@ -91,7 +97,10 @@ class Ghost {
         let tm = 75 / Game.getLevel();
         let dir = 4;
         let speed = 1;
+        let isOut = false;
+        let isVulnerable = false;
         let isBlinking = false;
+        let isDead = false;
         return;
     }
 
@@ -126,7 +135,6 @@ class Ghost {
                 let dir = 3;
                 let y = y + speed;
                 if (y = 144) {
-                    let isDead = false;
                     do reset();
                 }
             } else {
@@ -191,7 +199,7 @@ class Ghost {
             let possibleDirs = possibleDirs - 1;
         }
         let condition = Math.abs(deltaX) > Math.abs(deltaY);
-        if (isDead | (Random.randRange(3) = 0)) {
+        if (isDead | (Random.randRange(4) = 0)) {
             let condition = ~condition;
         }
         if (isVulnerable | isDead | (isPursuer & ~(Random.randRange(6) = 0))) {
@@ -295,11 +303,17 @@ class Ghost {
     method void clear() {
         do Screen.setColor(~color);
         if (isDead) {
-            do Screen.drawRectangle(x - 5, y - 4, x + 5, y);
+            do Screen.drawCircle(x - 3, y - 2, 2);
+            do Screen.drawCircle(x + 3, y - 2, 2);
         } else {
             do Screen.drawCircle(x, y, radius);
             do Screen.drawRectangle(x - radius, y, x + radius, y + radius);
         }
+        return;
+    }
+
+    method void drawClosePellets(Score score) {
+        do score.drawClosePellets(x-1, y);
         return;
     }
 

@@ -252,68 +252,6 @@ call Screen.drawRectangle 4
 pop temp 0
 push constant 0
 return
-function Wall.checkOverlapping 0
-push argument 0
-pop pointer 0
-push argument 1
-push argument 3
-sub
-push this 2
-push constant 3
-add
-lt
-push argument 1
-push argument 3
-add
-push this 0
-push constant 3
-sub
-gt
-and
-push argument 2
-push argument 3
-sub
-push this 3
-push constant 3
-add
-lt
-push argument 2
-push argument 3
-add
-push this 1
-push constant 3
-sub
-gt
-and
-and
-return
-function Wall.checkOverlapping2 0
-push argument 0
-pop pointer 0
-push argument 1
-push this 2
-push constant 1
-add
-lt
-push argument 3
-push this 0
-push constant 1
-sub
-gt
-and
-push argument 2
-push this 3
-push constant 1
-add
-lt
-push argument 4
-push this 1
-push constant 1
-sub
-gt
-and
-and
-return
 function Wall.dispose 0
 push argument 0
 pop pointer 0

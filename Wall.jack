@@ -56,19 +56,6 @@ class Wall {
 		return;
 	}
 
-  	method boolean checkOverlapping(int x, int y, int radius) {
-		return ((((x-radius) < (rightX+3)) & ((x+radius) > (leftX-3))) 
-		& (((y-radius) < (bottomY+3)) & ((y+radius) > (topY-3))));	
-  	}
-	method boolean checkOverlapping2(int x1, int y1, int x2, int y2) {
-		return (
-		  (x1 < (rightX + 1)) & (x2 > (leftX - 1))
-		) & (
-	
-		  (y1 < (bottomY + 1)) & (y2 > (topY - 1))
-		);
-	}
-
   	method void dispose() {
     	do Memory.deAlloc(this);
     	return;

@@ -101,7 +101,6 @@ push this 1
 push constant 268
 push constant 135
 push constant 0
-not
 push constant 300
 call Ghost.new 7
 pop temp 0
@@ -117,6 +116,7 @@ push this 1
 push constant 241
 push constant 153
 push constant 0
+not
 push constant 450
 call Ghost.new 7
 pop temp 0
@@ -343,6 +343,10 @@ add
 pop pointer 1
 push that 0
 pop local 0
+push local 0
+push this 3
+call Ghost.drawClosePellets 2
+pop temp 0
 push local 0
 call Ghost.next 1
 pop temp 0

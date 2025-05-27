@@ -1,5 +1,5 @@
 function Score.new 0
-push constant 4
+push constant 8
 call Memory.alloc 1
 pop pointer 0
 push argument 1
@@ -7,24 +7,31 @@ pop this 0
 push constant 366
 pop this 1
 push constant 0
-pop static 0
-push constant 0
-pop static 1
-push argument 0
+pop this 2
+push constant 26
 pop this 3
+push constant 56
+pop this 4
+push constant 0
+pop static 0
+push argument 0
+pop this 6
+push this 3
+call Array.new 1
+pop this 5
 push pointer 0
 return
 function Score.init 0
 push argument 0
 pop pointer 0
 push pointer 0
+call Score.createPellets 1
+pop temp 0
+push pointer 0
 call Score.printLabels 1
 pop temp 0
 push pointer 0
 call Score.printScore 1
-pop temp 0
-push pointer 0
-call Score.createPellets 1
 pop temp 0
 push pointer 0
 call Score.drawPellets 1
@@ -35,7 +42,7 @@ function Score.changeColor 0
 push argument 0
 pop pointer 0
 push argument 1
-pop this 3
+pop this 6
 push pointer 0
 call Score.printLabels 1
 pop temp 0
@@ -50,7 +57,7 @@ return
 function Score.printLabels 0
 push argument 0
 pop pointer 0
-push this 3
+push this 6
 call Output.setColor 1
 pop temp 0
 push constant 1
@@ -109,37 +116,10 @@ pop temp 0
 label IF_END0
 push constant 0
 return
-function Score.allPelletsCollected 3
+function Score.allPelletsCollected 0
 push argument 0
 pop pointer 0
-push constant 0
-pop local 0
-push constant 0
-pop local 1
-label WHILE_EXP0
-push local 1
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 1
 push this 2
-add
-pop pointer 1
-push that 0
-pop local 2
-push local 0
-push local 2
-call Pellet.getCollected 1
-add
-pop local 0
-push local 1
-push constant 1
-add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
-push local 0
 push this 1
 eq
 return
@@ -150,7 +130,7 @@ push constant 1
 push constant 4
 call Output.moveCursor 2
 pop temp 0
-push this 3
+push this 6
 call Output.setColor 1
 pop temp 0
 push static 0
@@ -191,27 +171,41 @@ pop temp 0
 label IF_FALSE1
 push constant 0
 return
-function Score.createPellets 3
+function Score.createPellets 4
 push argument 0
 pop pointer 0
-push this 1
-call Array.new 1
-pop this 2
 push constant 0
 pop local 0
 push constant 0
 pop local 2
 label WHILE_EXP0
 push local 2
-push constant 22
+push this 3
 lt
 not
 if-goto WHILE_END0
+push local 2
+push this 5
+add
+push this 4
+push constant 8
+call Math.divide 2
+call Array.new 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 2
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 3
 push constant 0
 pop local 1
 label WHILE_EXP1
 push local 1
-push constant 52
+push this 4
 lt
 not
 if-goto WHILE_END1
@@ -219,40 +213,41 @@ push this 0
 push local 1
 push constant 9
 call Math.multiply 2
-push constant 24
+push constant 6
 add
 push local 2
 push constant 9
 call Math.multiply 2
-push constant 45
+push constant 27
 add
 call Map.checkOverlapping 3
 not
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push pointer 0
 push local 1
-push local 2
-push local 0
-call Score.createPellet 4
-if-goto IF_TRUE1
-goto IF_FALSE1
-label IF_TRUE1
-push local 0
-push constant 1
+push constant 8
+call Math.divide 2
+push local 3
 add
-pop local 0
-push local 0
-push this 1
-eq
-if-goto IF_TRUE2
-goto IF_FALSE2
-label IF_TRUE2
-push constant 0
-return
-label IF_FALSE2
-label IF_FALSE1
+push local 1
+push constant 8
+call Math.divide 2
+push local 3
+add
+pop pointer 1
+push that 0
+push constant 7
+push local 1
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
+or
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
 label IF_FALSE0
 push local 1
 push constant 1
@@ -266,21 +261,241 @@ add
 pop local 2
 goto WHILE_EXP0
 label WHILE_END0
+push constant 11
+pop local 0
+label WHILE_EXP2
+push local 0
+push constant 18
+lt
+not
+if-goto WHILE_END2
+push local 0
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 3
+push constant 0
+push local 3
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 3
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP2
+label WHILE_END2
+push constant 12
+pop local 0
+label WHILE_EXP3
+push local 0
+push constant 18
+lt
+not
+if-goto WHILE_END3
+push local 0
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 3
+push constant 2
+push local 3
+add
+push constant 2
+push local 3
+add
+pop pointer 1
+push that 0
+push constant 2
+neg
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 3
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 3
+add
+push constant 4
+push local 3
+add
+pop pointer 1
+push that 0
+push constant 129
+neg
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP3
+label WHILE_END3
+push constant 23
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 3
+push constant 3
+push local 3
+add
+push constant 3
+push local 3
+add
+pop pointer 1
+push that 0
+push constant 25
+neg
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
 push constant 0
 return
-function Score.createPellet 0
+function Score.drawPellets 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 3
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 2
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 4
+lt
+not
+if-goto WHILE_END1
+push local 1
+push constant 8
+call Math.divide 2
+push local 2
+add
+pop pointer 1
+push that 0
+push constant 7
+push local 1
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
+not
+or
+push constant 1
+neg
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 1
+push local 0
+push constant 0
+call Score.drawPellet 4
+pop temp 0
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Score.checkCollision 6
 push argument 0
 pop pointer 0
 push argument 1
 push constant 6
-lt
+sub
+push constant 9
+call Math.divide 2
+pop local 0
 push argument 2
+push constant 27
+sub
+push constant 9
+call Math.divide 2
+pop local 1
+push local 1
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 5
+push argument 1
 push constant 6
+sub
+push constant 9
+call Math2.mod 2
+push constant 0
 gt
-and
+pop local 3
 push argument 2
-push constant 18
+push constant 27
+sub
+push constant 9
+call Math2.mod 2
+push constant 0
+gt
+pop local 4
+push local 1
+push constant 9
+gt
+push local 1
+push constant 19
 lt
+and
+push local 0
+push constant 49
+gt
+push local 0
+push constant 6
+lt
+or
 and
 if-goto IF_TRUE0
 goto IF_FALSE0
@@ -288,349 +503,566 @@ label IF_TRUE0
 push constant 0
 return
 label IF_FALSE0
+push constant 7
+push local 0
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
+not
+pop local 2
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+pop pointer 1
+push that 0
+push local 2
+or
+push constant 1
+neg
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+pop pointer 1
+push that 0
+push local 2
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push pointer 0
+push local 0
+push local 1
+call Score.eatPellet 3
+pop temp 0
+label IF_FALSE1
+push local 3
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+push constant 1
+add
+pop local 0
+push constant 7
+push local 0
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
+not
+pop local 2
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+pop pointer 1
+push that 0
+push local 2
+or
+push constant 1
+neg
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+pop pointer 1
+push that 0
+push local 2
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push pointer 0
+push local 0
+push local 1
+call Score.eatPellet 3
+pop temp 0
+label IF_FALSE3
+label IF_FALSE2
+push local 4
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 1
+push constant 1
+add
+pop local 1
+push local 1
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 5
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+pop pointer 1
+push that 0
+push local 2
+or
+push constant 1
+neg
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+push local 0
+push constant 8
+call Math.divide 2
+push local 5
+add
+pop pointer 1
+push that 0
+push local 2
+and
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push pointer 0
+push local 0
+push local 1
+call Score.eatPellet 3
+pop temp 0
+label IF_FALSE5
+label IF_FALSE4
+push constant 0
+return
+function Score.drawClosePellets 7
+push argument 0
+pop pointer 0
 push argument 1
-push constant 17
+push constant 6
+sub
+push constant 9
+call Math.divide 2
+pop local 0
+push argument 2
+push constant 27
+sub
+push constant 9
+call Math.divide 2
+pop local 1
+push local 1
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 6
+push argument 1
+push constant 6
+sub
+push constant 9
+call Math2.mod 2
+push constant 0
 gt
-push argument 1
-push constant 34
+pop local 4
+push argument 2
+push constant 27
+sub
+push constant 9
+call Math2.mod 2
+push constant 0
+gt
+pop local 5
+push local 1
+push constant 9
+gt
+push local 1
+push constant 19
 lt
 and
-push argument 2
-push constant 4
+push local 0
+push constant 49
 gt
-and
-push argument 2
-push constant 18
+push local 0
+push constant 6
 lt
+or
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 4
+not
+push local 5
+not
 and
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push constant 0
-return
-label IF_FALSE1
-push argument 1
-push constant 45
-gt
-push argument 2
-push constant 6
-gt
-and
-push argument 2
-push constant 18
+push local 1
+push constant 1
+sub
+pop local 3
+push local 0
+push constant 1
+sub
+pop local 2
+label WHILE_EXP0
+push local 3
+push local 1
+push constant 2
+add
 lt
-and
+not
+if-goto WHILE_END0
+push local 3
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 6
+push local 0
+push constant 1
+sub
+pop local 2
+label WHILE_EXP1
+push local 2
+push local 0
+push constant 2
+add
+lt
+not
+if-goto WHILE_END1
+push local 3
+push this 5
+add
+pop pointer 1
+push that 0
+pop local 6
+push local 2
+push constant 8
+call Math.divide 2
+push local 6
+add
+pop pointer 1
+push that 0
+push constant 7
+push local 2
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
+not
+or
+push constant 1
+neg
+eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
+push pointer 0
+push local 2
+push local 3
+push constant 0
+call Score.drawPellet 4
+pop temp 0
+label IF_FALSE2
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP1
+label WHILE_END1
+push local 3
+push constant 1
+add
+pop local 3
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return
-label IF_FALSE2
-push argument 1
-push constant 24
-gt
-push argument 1
-push constant 27
-lt
-and
-push argument 2
-push constant 17
-gt
-and
+label IF_FALSE1
+push local 4
 if-goto IF_TRUE3
 goto IF_FALSE3
 label IF_TRUE3
-push constant 0
-return
-label IF_FALSE3
-push argument 1
-push constant 0
+push local 0
+push constant 1
+sub
+pop local 2
+label WHILE_EXP2
+push local 2
+push local 0
+push constant 3
+add
+lt
+not
+if-goto WHILE_END2
+push local 2
+push constant 8
+call Math.divide 2
+push local 6
+add
+pop pointer 1
+push that 0
+push constant 7
+push local 2
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
+not
+or
+push constant 1
+neg
 eq
-push argument 2
-push constant 0
-eq
-and
 if-goto IF_TRUE4
 goto IF_FALSE4
 label IF_TRUE4
-push argument 3
-push this 2
-add
-push argument 1
-push argument 2
+push pointer 0
+push local 2
+push local 1
 push constant 0
-not
-call Pellet.new 3
+call Score.drawPellet 4
 pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push constant 0
-not
-return
 label IF_FALSE4
-push argument 1
-push constant 51
-eq
-push argument 2
-push constant 0
-eq
-and
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP2
+label WHILE_END2
+label IF_FALSE3
+push local 5
 if-goto IF_TRUE5
 goto IF_FALSE5
 label IF_TRUE5
-push argument 3
-push this 2
+push local 1
+push constant 1
+sub
+pop local 3
+label WHILE_EXP3
+push local 3
+push local 1
+push constant 3
 add
-push argument 1
-push argument 2
-push constant 0
+lt
 not
-call Pellet.new 3
-pop temp 0
+if-goto WHILE_END3
+push local 3
+push this 5
+add
 pop pointer 1
-push temp 0
-pop that 0
-push constant 0
+push that 0
+pop local 6
+push local 0
+push constant 8
+call Math.divide 2
+push local 6
+add
+pop pointer 1
+push that 0
+push constant 7
+push local 0
+push constant 8
+call Math2.mod 2
+sub
+call Math2.two_to_the 1
 not
-return
-label IF_FALSE5
-push argument 1
-push constant 9
+or
+push constant 1
+neg
 eq
-push argument 2
-push constant 6
-eq
-and
 if-goto IF_TRUE6
 goto IF_FALSE6
 label IF_TRUE6
-push argument 3
-push this 2
-add
-push argument 1
-push argument 2
-push constant 0
-not
-call Pellet.new 3
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push constant 0
-not
-return
-label IF_FALSE6
-push argument 1
-push constant 42
-eq
-push argument 2
-push constant 6
-eq
-and
-if-goto IF_TRUE7
-goto IF_FALSE7
-label IF_TRUE7
-push argument 3
-push this 2
-add
-push argument 1
-push argument 2
-push constant 0
-not
-call Pellet.new 3
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push constant 0
-not
-return
-label IF_FALSE7
-push argument 1
-push constant 0
-eq
-push argument 2
-push constant 21
-eq
-and
-if-goto IF_TRUE8
-goto IF_FALSE8
-label IF_TRUE8
-push argument 3
-push this 2
-add
-push argument 1
-push argument 2
-push constant 0
-not
-call Pellet.new 3
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push constant 0
-not
-return
-label IF_FALSE8
-push argument 1
-push constant 51
-eq
-push argument 2
-push constant 21
-eq
-and
-if-goto IF_TRUE9
-goto IF_FALSE9
-label IF_TRUE9
-push argument 3
-push this 2
-add
-push argument 1
-push argument 2
-push constant 0
-not
-call Pellet.new 3
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push constant 0
-not
-return
-label IF_FALSE9
-push argument 3
-push this 2
-add
-push argument 1
-push argument 2
-push constant 0
-call Pellet.new 3
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push constant 0
-not
-return
-function Score.drawPellets 2
-push argument 0
-pop pointer 0
-push constant 0
-pop local 1
-push this 3
-call Screen.setColor 1
-pop temp 0
-label WHILE_EXP0
-push local 1
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 1
-push this 2
-add
-pop pointer 1
-push that 0
-pop local 0
-push local 0
-call Pellet.draw 1
-pop temp 0
-push local 1
-push constant 1
-add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
-push constant 0
-return
-function Score.checkCollision 2
-push argument 0
-pop pointer 0
-push constant 0
-pop local 1
-push this 3
-not
-call Screen.setColor 1
-pop temp 0
-label WHILE_EXP0
-push local 1
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 1
-push this 2
-add
-pop pointer 1
-push that 0
-pop local 0
-push local 0
-push argument 1
-push argument 2
-push argument 3
-call Pellet.checkCollision 4
-if-goto IF_TRUE0
-goto IF_FALSE0
-label IF_TRUE0
-push static 0
-push local 0
-call Pellet.getPoints 1
-add
-pop static 0
 push pointer 0
-call Score.printScore 1
+push local 0
+push local 3
+push constant 0
+call Score.drawPellet 4
 pop temp 0
-label IF_FALSE0
-push local 1
+label IF_FALSE6
+push local 3
 push constant 1
 add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+pop local 3
+goto WHILE_EXP3
+label WHILE_END3
+label IF_FALSE5
 push constant 0
 return
-function Score.checkPowerPelletEaten 2
+function Score.eatPellet 0
 push argument 0
 pop pointer 0
-push constant 0
-pop local 1
-label WHILE_EXP0
-push local 1
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 1
-push this 2
-add
-pop pointer 1
-push that 0
-pop local 0
-push local 0
-call Pellet.getPowerUsed 1
-not
-push local 0
-call Pellet.getCollected 1
-and
+push pointer 0
+push argument 1
+push argument 2
+call Score.isCookie 3
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push local 0
-push constant 0
-not
-call Pellet.setPowerUsed 2
+push pointer 0
+push constant 50
+call Score.addPoints 2
 pop temp 0
 push constant 0
 not
-return
+pop this 7
+goto IF_END0
 label IF_FALSE0
+push pointer 0
+push constant 10
+call Score.addPoints 2
+pop temp 0
+label IF_END0
+push pointer 0
+push argument 1
+push argument 2
+push constant 0
+not
+call Score.drawPellet 4
+pop temp 0
+push this 2
+push constant 1
+add
+pop this 2
+push constant 0
+return
+function Score.isCookie 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 2
+eq
+push argument 2
+push constant 2
+eq
+and
+push argument 1
+push constant 53
+eq
+push argument 2
+push constant 2
+eq
+and
+or
+push argument 1
+push constant 11
+eq
+push argument 2
+push constant 8
+eq
+and
+or
+push argument 1
+push constant 44
+eq
+push argument 2
+push constant 8
+eq
+and
+or
+push argument 1
+push constant 2
+eq
+push argument 2
+push constant 23
+eq
+and
+or
+push argument 1
+push constant 53
+eq
+push argument 2
+push constant 23
+eq
+and
+or
+return
+function Score.drawPellet 2
+push argument 0
+pop pointer 0
+push argument 1
+push constant 9
+call Math.multiply 2
+push constant 6
+add
+pop local 0
+push argument 2
+push constant 9
+call Math.multiply 2
+push constant 27
+add
+pop local 1
+push argument 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 6
+not
+call Screen.setColor 1
+pop temp 0
+goto IF_END0
+label IF_FALSE0
+push this 6
+call Screen.setColor 1
+pop temp 0
+label IF_END0
+push pointer 0
+push argument 1
+push argument 2
+call Score.isCookie 3
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push local 1
+push constant 4
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+label IF_FALSE1
+push local 0
+push local 1
+push local 0
+push constant 1
+add
 push local 1
 push constant 1
 add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+call Screen.drawRectangle 4
+pop temp 0
 push constant 0
 return
 function Score.addPoints 0
@@ -645,32 +1077,26 @@ call Score.printScore 1
 pop temp 0
 push constant 0
 return
-function Score.nextLevel 2
+function Score.checkPowerPelletEaten 0
+push argument 0
+pop pointer 0
+push this 7
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop this 7
+push constant 0
+not
+return
+label IF_FALSE0
+push constant 0
+return
+function Score.nextLevel 0
 push argument 0
 pop pointer 0
 push constant 0
-pop local 1
-label WHILE_EXP0
-push local 1
-push this 1
-lt
-not
-if-goto WHILE_END0
-push local 1
-push this 2
-add
-pop pointer 1
-push that 0
-pop local 0
-push local 0
-call Pellet.restart 1
-pop temp 0
-push local 1
-push constant 1
-add
-pop local 1
-goto WHILE_EXP0
-label WHILE_END0
+pop this 2
 push pointer 0
 call Score.printLabels 1
 pop temp 0
@@ -689,18 +1115,18 @@ push constant 0
 pop local 1
 label WHILE_EXP0
 push local 1
-push this 1
+push this 3
 lt
 not
 if-goto WHILE_END0
 push local 1
-push this 2
+push this 5
 add
 pop pointer 1
 push that 0
 pop local 0
 push local 0
-call Pellet.dispose 1
+call Memory.deAlloc 1
 pop temp 0
 push local 1
 push constant 1
@@ -708,8 +1134,8 @@ add
 pop local 1
 goto WHILE_EXP0
 label WHILE_END0
-push this 2
-call Array.dispose 1
+push this 5
+call Memory.deAlloc 1
 pop temp 0
 push pointer 0
 call Memory.deAlloc 1

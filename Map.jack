@@ -2,7 +2,6 @@ class Map {
 	field boolean color;
 	field Array walls;
 	field Array tiles;
-	field Array rows;
 	field int nWalls;
 	field int nRows, nCols;
 	field int map;
@@ -12,6 +11,7 @@ class Map {
 		let nRows = 26;
 		let nCols = 56;
 		let nWalls = 1 + 66;
+		let tiles = Array.new(nRows);
 		do createWalls();
 		return this;
 	}
@@ -54,8 +54,6 @@ class Map {
 	method void createWalls() {
 		var Array row;
 		var int r, c;
-
-		let tiles = Array.new(nRows);
 
 		let r = 0;
 		while (r < nRows) {
@@ -254,7 +252,9 @@ class Map {
 	}
   
 	method void dispose() {
+		var Array row;
 		var Wall w;
+
 	  	var int i;
 	  	let i = 0;
 	  	while (i < nWalls) {
@@ -263,6 +263,15 @@ class Map {
 			let i = i + 1;
 		}
 		do walls.dispose();
+		
+		let i = 0;
+		while (i < nRows) {
+			let row = tiles[i];
+			do Memory.deAlloc(row);
+			let i = i + 1;
+		}
+		do Memory.deAlloc(tiles);
+
 	  	do Memory.deAlloc(this);
 	  	return;
 	}

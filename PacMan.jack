@@ -40,6 +40,7 @@ class PacMan {
     method void next() {
 
         if (x = 255) {
+            do clear();
             let x = 256;
         }
        
@@ -47,12 +48,13 @@ class PacMan {
             let dir = nextDir;
         } else {
             if (~NextMoveIsPossible(dir)) {
+                do score.drawClosePellets(x - 1, y);
                 do draw();
                 return;
             }
         }
 
-        do score.checkCollision(x - 1, y, radius);
+        do score.checkCollision(x - 1, y);
 
         do clear();
         
@@ -66,6 +68,7 @@ class PacMan {
             let x = leftLimit + 1;
         }
 
+        do score.drawClosePellets(x - 1, y);
         do draw();
         let sprite = sprite + adition;
         return;

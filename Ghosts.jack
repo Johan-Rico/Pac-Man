@@ -37,8 +37,8 @@ class Ghosts {
         
         let ghosts[0] = Ghost.new(color, map, pacman, 256, 108, false, 0);
         let ghosts[1] = Ghost.new(color, map, pacman, 241, 135, true, 150); 
-        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, true, 300);  
-        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, false, 450); 
+        let ghosts[2] = Ghost.new(color, map, pacman, 268, 135, false, 300);  
+        let ghosts[4] = Ghost.new(color, map, pacman, 241, 153, true, 450); 
         let ghosts[3] = Ghost.new(color, map, pacman, 268, 153, false, 600); 
         
         return;
@@ -76,6 +76,7 @@ class Ghosts {
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
+            do g.drawClosePellets(score);
             do g.next();
             let i = i + 1;
         }

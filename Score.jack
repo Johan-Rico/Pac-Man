@@ -2,23 +2,28 @@ class Score {
 	static int score;
 	field Map map;
 	static int high;
-	field int nPellets;
-	field Array pellets;
+	field int nPellets, collectedPellets;
+	field int nRows, nCols;
+	field Array tiles;
 	field boolean color;
+	field boolean power;
 	
 	constructor Score new(boolean c, Map m) {
 		let map = m;
 		let nPellets = 366;
+		let collectedPellets = 0;
+		let nRows = 26;
+		let nCols = 56;
 		let score = 0;
-		let high = 0;
 		let color = c;
+		let tiles = Array.new(nRows);
 		return this;
 	}
 	
 	method void init() {
+		do createPellets();
 		do printLabels();
 		do printScore();
-		do createPellets();
 		do drawPellets();
 		return;
 	}
@@ -45,16 +50,7 @@ class Score {
 	}
 
 	method boolean allPelletsCollected() {
-		var int collected, i;
-		var Pellet p;
-		let collected = 0;
-		let i = 0;
-		while (i < nPellets) {
-			let p = pellets[i];
-			let collected = collected + p.getCollected();
-			let i = i + 1;
-		}
-		return (collected = nPellets);
+		return (collectedPellets = nPellets);
 	}
 
 	method void printScore() {
@@ -69,111 +65,204 @@ class Score {
 		}
 		return;
 	}
-  
-	method void createPellets() {
-		var int i, x, y;
-		let pellets = Array.new(nPellets);
-		let i = 0;
-		let y = 0;
-		while (y < 22) {
-			let x = 0;
-			while (x < 52) {
-				if (~map.checkOverlapping(x*9+24, y*9+45)) {
-					if (createPellet(x, y, i)) {
-						let i = i + 1;
-						if (i = nPellets) { return; }
-					}
-				}
-				let x = x + 1;
-			}
-			let y = y + 1;
-		}
-		return;
-	}
 
-	method boolean createPellet(int x, int y, int i) {
-		if ((x < 6) & (y > 6) & (y < 18)) {
-			return false;
+	method void createPellets() {
+		var int i, c, r;
+		var Array row;
+
+		let i = 0;
+		let r = 0;
+
+		while (r < nRows) {
+			let tiles[r] = Array.new(nCols / 8);
+			let row = tiles[r];
+			let c = 0;
+			while (c < nCols) {
+				if (~map.checkOverlapping(c*9+6, r*9+27)) {
+					let row[c / 8] = row[c / 8] | Math2.two_to_the(7 - Math2.mod(c, 8));
+				}
+				let c = c + 1;
+			}
+			let r = r + 1;
 		}
-		if ((x > 17) & (x < 34) & (y > 4) & (y < 18)) {
-			return false;
+		
+		let i = 11;
+		while (i < 18) {
+			let row = tiles[i];
+			let row[0] = 0;
+			let row[6] = 0;
+			let i = i + 1;
 		}
-		if ((x > 45) & (y > 6) & (y < 18)) {
-			return false;
+		
+		let i = 12;
+		while (i < 18) {
+			let row = tiles[i];
+			let row[2] = row[2] & (-2);
+			let row[3] = 0;
+			let row[4] = row[4] & (-129);
+			let i = i + 1;
 		}
-		if ((x > 24) & (x < 27) & (y > 17)) {
-			return false;
-		}
-		if ((x = 0) & (y = 0)) {
-			let pellets[i] = Pellet.new(x, y, true);
-			return true	;
-		} 
-		if ((x = 51) & (y = 0)) {
-			let pellets[i] = Pellet.new(x, y, true);
-			return true;
-		}
-		if ((x = 9) & (y = 6)) {
-			let pellets[i] = Pellet.new(x, y, true);
-			return true;
-		}
-		if ((x = 42) & (y = 6)) {
-			let pellets[i] = Pellet.new(x, y, true);
-			return true;
-		}
-		if ((x = 0) & (y = 21)) {
-			let pellets[i] = Pellet.new(x, y, true);
-			return true;
-		}
-		if ((x = 51) & (y = 21)) {
-			let pellets[i] = Pellet.new(x, y, true);
-			return true;
-		}
-		let pellets[i] = Pellet.new(x, y, false);
-		return true;
+
+		let row = tiles[23];
+		let row[3] = row[3] & (-25);
+
+		return;
 	}
 
 	method void drawPellets() {
-		var Pellet p;
-	  	var int i;
-	  	let i = 0;
-		do Screen.setColor(color);
-	  	while (i < nPellets) {
-			let p = pellets[i];
-			do p.draw();
-			let i = i + 1;
+		var int r, c;
+		var Array row;
+
+		let r = 0;
+		while (r < nRows) {
+			let row = tiles[r];
+			let c = 0;
+			while (c < nCols) {
+				if ((row[c / 8] | ~Math2.two_to_the(7 - Math2.mod(c, 8))) = -1) {
+					do drawPellet(c, r, false);
+				}
+				let c = c + 1;
+			}
+			let r = r + 1;
 		}
 		return;
 	}
   
-	method void checkCollision(int x, int y, int radius) {
-		var Pellet p;
-		var int i;
-	  	let i = 0;
-		do Screen.setColor(~color);
-	  	while (i < nPellets) {
-			let p = pellets[i];
-			if (p.checkCollision(x, y, radius)) {
-				let score = score + p.getPoints();
-				do printScore();
-			}
-			let i = i + 1;
+	method void checkCollision(int x, int y) {
+		var int c, r, pos;
+		var boolean dx, dy;
+		var Array row;
+		let c = (x - 6) / 9;
+		let r = (y - 27) / 9;
+		let row = tiles[r];
+		
+		let dx = Math2.mod(x - 6, 9) > 0;
+		let dy = Math2.mod(y - 27, 9) > 0;
+
+		if ((r > 9) & (r < 19) & ((c > 49) | (c < 6))) {
+			return;
 		}
+
+		let pos = ~Math2.two_to_the(7 - Math2.mod(c, 8));
+		if ((row[c / 8] | pos) = -1) {
+			let row[c / 8] = row[c / 8] & pos;
+			do eatPellet(c, r);
+		}
+
+		if (dx) {
+			let c = c + 1;
+			let pos = ~Math2.two_to_the(7 - Math2.mod(c, 8));
+			if ((row[c / 8] | pos) = -1) {
+				let row[c / 8] = row[c / 8] & pos;
+				do eatPellet(c, r);
+			}
+		}
+
+		if (dy) {
+			let r = r + 1;
+			let row = tiles[r];
+			if ((row[c / 8] | pos) = -1) {
+				let row[c / 8] = row[c / 8] & pos;
+				do eatPellet(c, r);
+			}
+		}
+
 	  	return;
 	}
 
-	method boolean checkPowerPelletEaten() {
-		var Pellet p;
-		var int i;
-		let i = 0;
-		while (i < nPellets) {
-			let p = pellets[i];
-			if (~p.getPowerUsed() & p.getCollected()) {
-				do p.setPowerUsed(true);
-				return true;
-			}
-			let i = i + 1;
+	method void drawClosePellets(int x, int y) {
+		var int c, r, dc, dr;
+		var boolean dx, dy;
+		var Array row;
+		let c = (x - 6) / 9;
+		let r = (y - 27) / 9;
+		let row = tiles[r];
+		
+		let dx = Math2.mod(x - 6, 9) > 0;
+		let dy = Math2.mod(y - 27, 9) > 0;
+
+		if ((r > 9) & (r < 19) & ((c > 49) | (c < 6))) {
+			return;
 		}
-		return false;
+
+		if (~dx & ~dy) {
+			let dr = r - 1;
+			let dc = c - 1;
+			while (dr < (r + 2)) {
+				let row = tiles[dr];
+				let dc = c - 1;
+				while (dc < (c + 2)) {
+					let row = tiles[dr];
+					if ((row[dc / 8] | ~Math2.two_to_the(7 - Math2.mod(dc, 8))) = -1) {
+						do drawPellet(dc, dr, false);
+					}
+					let dc = dc + 1;
+				}
+				let dr = dr + 1;
+			}
+			return;
+		}
+
+		if (dx) {
+			let dc = c - 1;
+			while (dc < (c + 3)) {
+				if ((row[dc / 8] | ~Math2.two_to_the(7 - Math2.mod(dc, 8))) = -1) {
+					do drawPellet(dc, r, false);
+				}
+				let dc = dc + 1;
+			}
+		}
+
+		if (dy) {
+			let dr = r - 1;
+			while (dr < (r + 3)) {
+				let row = tiles[dr];
+				if ((row[c / 8] | ~Math2.two_to_the(7 - Math2.mod(c, 8))) = -1) {
+					do drawPellet(c, dr, false);
+				}
+				let dr = dr + 1;
+			}
+		}
+
+		return;
+		
+	}
+
+	method void eatPellet(int c, int r) {
+		if (isCookie(c, r)) {
+			do addPoints(50);
+			let power = true;
+		} else {
+			do addPoints(10);
+		}
+		do drawPellet(c, r, true);
+		let collectedPellets = collectedPellets + 1;
+		return;
+	}
+
+	method boolean isCookie(int c, int r) {
+		return ((c = 2) & (r = 2)) | ((c = 53) & (r = 2)) | ((c = 11) & (r = 8)) | 
+		((c = 44) & (r = 8)) | ((c = 2) & (r = 23)) | ((c = 53) & (r = 23));
+	}
+
+	method void drawPellet(int c, int r, boolean eat) {
+		var int x, y;
+		
+		let x = c * 9 + 6;
+		let y = r * 9 + 27;
+
+		if (eat) {
+			do Screen.setColor(~color);
+		} else {
+			do Screen.setColor(color);
+		}
+
+		if (isCookie(c, r)) {
+			do Screen.drawCircle(x, y, 4);
+			return;
+		}	
+		do Screen.drawRectangle(x, y, x+1, y+1);
+		return;
 	}
 
 	method void addPoints(int points) {
@@ -182,15 +271,16 @@ class Score {
 		return;
 	}
 
-	method void nextLevel() {
-		var Pellet p;
-		var int i;
-		let i = 0;
-		while (i < nPellets) {
-			let p = pellets[i];
-			do p.restart();
-			let i = i + 1;
+	method boolean checkPowerPelletEaten() {
+		if (power) {
+			let power = false;
+			return true;
 		}
+		return false;
+	}
+
+	method void nextLevel() {
+		let collectedPellets = 0;
 		do printLabels();
 		do printScore();
 		return;
@@ -201,15 +291,15 @@ class Score {
 	}
   
 	method void dispose() {
-		var Pellet p;
-	  	var int i;
-	  	let i = 0;
-	  	while (i < nPellets) {
-			let p = pellets[i];
-			do p.dispose();
+		var Array row;
+		var int i;
+		let i = 0;
+		while (i < nRows) {
+			let row = tiles[i];
+			do Memory.deAlloc(row);
 			let i = i + 1;
 		}
-		do pellets.dispose();
+		do Memory.deAlloc(tiles);
 	  	do Memory.deAlloc(this);
 	  	return;
 	}

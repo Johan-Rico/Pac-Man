@@ -22,7 +22,7 @@ class Game {
 		do Output.setColor(~color);
 		do clearScreen();
 		do printLives();
-		do map.init();
+		do map.init();	
 		do score.init();
 		do startLevel();
 		return;
@@ -33,19 +33,19 @@ class Game {
 	}
 
 	method boolean next() {
-		do score.drawPellets();
 		do pacman.next();
 		do ghosts.next();
-		do map.drawDoor();
 		if (score.checkPowerPelletEaten()) {
 			do ghosts.makeVulnerable();
 		}
+		do map.drawDoor();
 		if (score.allPelletsCollected()) {
 			do newLevel();
 		} else {
 		if (ghosts.checkPacmanCollision()) {
 			return handlePacmanDeath();
 		}}
+		
 		return true;
 	}
 	
@@ -112,18 +112,19 @@ class Game {
 		let level = level + 1;
 		do Sys.wait(2000);
 		do ghosts.clearGhosts();
+		do map.drawDoor();
 		do clearScreen();
 		do Sys.wait(100);
 		do score.nextLevel();
 		do map.draw();
 		do printLives();
-		do score.drawPellets();
 		do startLevel();
 		return;
 	}
 
 	method void startLevel() {
 		do pacman.init();
+		do score.init();
 		do ghosts.init();
 		do Output.moveCursor(16,28);
 		do Output.printString(" READY!");
@@ -138,7 +139,7 @@ class Game {
 		
 		do Sys.wait(750);
 		do ghosts.clearGhosts();
-		do score.drawPellets();
+		do map.drawDoor();
 		do pacman.deathAnimation();
 		do Sys.wait(2000);
 		if (lives > 0) {
