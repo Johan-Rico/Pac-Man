@@ -301,11 +301,11 @@ pop temp 0
 push constant 100
 call Sys.wait 1
 pop temp 0
-push this 3
-call Score.nextLevel 1
-pop temp 0
 push this 2
 call Map.draw 1
+pop temp 0
+push this 3
+call Score.nextLevel 1
 pop temp 0
 push pointer 0
 call Game.printLives 1
@@ -320,9 +320,6 @@ push argument 0
 pop pointer 0
 push this 0
 call PacMan.init 1
-pop temp 0
-push this 3
-call Score.init 1
 pop temp 0
 push this 1
 call Ghosts.init 1
@@ -388,6 +385,9 @@ call Sys.wait 1
 pop temp 0
 push this 1
 call Ghosts.clearGhosts 1
+pop temp 0
+push this 3
+call Score.drawPellets 1
 pop temp 0
 push this 2
 call Map.drawDoor 1

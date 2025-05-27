@@ -252,7 +252,6 @@ class Map {
 	}
   
 	method void dispose() {
-		var Array row;
 		var Wall w;
 
 	  	var int i;
@@ -264,14 +263,7 @@ class Map {
 		}
 		do walls.dispose();
 		
-		let i = 0;
-		while (i < nRows) {
-			let row = tiles[i];
-			do Memory.deAlloc(row);
-			let i = i + 1;
-		}
 		do Memory.deAlloc(tiles);
-
 	  	do Memory.deAlloc(this);
 	  	return;
 	}

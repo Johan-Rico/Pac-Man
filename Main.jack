@@ -20,6 +20,7 @@ class Main {
 					do game.handleKey(key);
 				}
 			}
+			do Memory.deAlloc(game);
 		}
 		return;
 	}

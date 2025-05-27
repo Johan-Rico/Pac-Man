@@ -22,9 +22,7 @@ class Score {
 	
 	method void init() {
 		do createPellets();
-		do printLabels();
-		do printScore();
-		do drawPellets();
+		do changeColor(color);
 		return;
 	}
 	
@@ -290,17 +288,9 @@ class Score {
 		return score;
 	}
   
-	method void dispose() {
-		var Array row;
-		var int i;
-		let i = 0;
-		while (i < nRows) {
-			let row = tiles[i];
-			do Memory.deAlloc(row);
-			let i = i + 1;
-		}
-		do Memory.deAlloc(tiles);
+	method void dispose() {	
 	  	do Memory.deAlloc(this);
+		do Memory.deAlloc(tiles);
 	  	return;
 	}
 
