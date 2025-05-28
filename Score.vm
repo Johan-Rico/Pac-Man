@@ -4,7 +4,7 @@ call Memory.alloc 1
 pop pointer 0
 push argument 1
 pop this 0
-push constant 366
+push constant 410
 pop this 1
 push constant 0
 pop this 2
@@ -151,6 +151,10 @@ label IF_END0
 push static 0
 push static 1
 gt
+push constant 1
+push constant 0
+gt
+or
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
@@ -1092,6 +1096,12 @@ push argument 0
 pop pointer 0
 push constant 0
 pop this 2
+push pointer 0
+call Score.createPellets 1
+pop temp 0
+push pointer 0
+call Score.drawPellets 1
+pop temp 0
 push pointer 0
 call Score.printLabels 1
 pop temp 0

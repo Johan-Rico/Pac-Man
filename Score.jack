@@ -10,7 +10,7 @@ class Score {
 	
 	constructor Score new(boolean c, Map m) {
 		let map = m;
-		let nPellets = 366;
+		let nPellets = 410;
 		let collectedPellets = 0;
 		let nRows = 26;
 		let nCols = 56;
@@ -56,7 +56,7 @@ class Score {
 		do Output.setColor(color);
 		if (score > 0) { do Output.printInt(score);	}
 		else {	do Output.printString("00");	}
-		if (score > high) {
+		if ((score > high) | (1 > 0)) {
 			let high = score;
 			do Output.moveCursor(1,36);
 			do Output.printInt(high);
@@ -279,6 +279,8 @@ class Score {
 
 	method void nextLevel() {
 		let collectedPellets = 0;
+		do createPellets();
+		do drawPellets();
 		do printLabels();
 		do printScore();
 		return;
