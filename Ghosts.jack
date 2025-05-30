@@ -24,7 +24,6 @@ class Ghosts {
         let i = 0;
         while (i < nGhosts) {
             let g = ghosts[i];
-            do g.setVulnerable(false);
             do g.init();
             let i = i + 1;
         }

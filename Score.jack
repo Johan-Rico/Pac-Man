@@ -280,9 +280,9 @@ class Score {
 	method void nextLevel() {
 		let collectedPellets = 0;
 		do createPellets();
-		do drawPellets();
 		do printLabels();
 		do printScore();
+		do drawPellets();
 		return;
 	}
 

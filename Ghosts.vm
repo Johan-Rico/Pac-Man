@@ -38,10 +38,6 @@ pop pointer 1
 push that 0
 pop local 0
 push local 0
-push constant 0
-call Ghost.setVulnerable 2
-pop temp 0
-push local 0
 call Ghost.init 1
 pop temp 0
 push local 1

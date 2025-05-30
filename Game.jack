@@ -115,8 +115,8 @@ class Game {
 		do clearScreen();
 		do Sys.wait(100);
 		do map.draw();
-		do score.nextLevel();
 		do printLives();
+		do score.nextLevel();
 		do startLevel();
 		return;
 	}
